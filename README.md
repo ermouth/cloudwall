@@ -1,5 +1,5 @@
 # CloudWall 1.5β
-CloudWall is noBackend toy operation system, that syncs with CouchDB.
+CloudWall is noBackend toy operating system, that syncs with CouchDB.
 
 See docs, details and running version at http://cloudwall.me.
 
