@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CloudWall Me 1.5</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="icon"  type="image/png" href="i/favicon.png">
+	
+<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, minimum-scale=0.5, user-scalable=no">
+
+<!-- CSS first for correct pixel measuring during start -->
+<link rel="stylesheet" type="text/css" href="css/general.css" />
+<link rel="stylesheet" type="text/css" href="css/cw.css" />
+	
+<!-- Proxima Nova font -->
+<link rel="stylesheet" type="text/css" href="css/nova.css" />
+
+<!-- Base libs -->
+<script src="lib/general.js"></script>
+<script src="lib/pouchdb.js"></script>
+<script src="lib/plugins.js"></script>
+
+<!-- CloudWall.me -->
+<script src="sys/crypto.js"></script>
+<script src="sys/cw.js"></script>
+
+<!-- System apps and components -->
+<script src="sys/apps.js"></script>
+
+
+<style>* {box-sizing:border-box;-moz-box-sizing:border-box;margin:0;padding:0;}</style>
+</head>
+
+<body>
+<div id="cw-notes"></div>
+<div id="cw-body" >
+	<div id="cw-page" class="cw-Static w600" style="margin:30px auto;">
+		<div id="cw-header" class="cb fs90 blue pb20 mb30" style="width:100%;border-bottom: 1px solid rgba(35, 118, 200, 0.25);">
+			<a href="../"><img src="i/logo.png" class="mr2" style="width:241px;height:20px;margin-left:-43px;" alt="CloudWall"></a>
+		</div>
+		<div id="cw-space" class="tac">
+		
+			<div class="cw-busy w90" style="margin:150px auto;"></div>
+		
+		</div>
+	</div>
+	
+	<!-- RUNTIME -->
+	
+	<div id="cw-header" class="cw-Runtime hide mt20 cb fs90 blue pb15" style="width:100%;border-bottom: 1px solid rgba(35, 118, 200, 0.25);">
+		<img src="i/logo.png" class="mr2" style="width:198px;height:16px;margin-left:-36px;" alt="CloudWall" id="cw-header-logo">
+		<div class="vat dib lgray fs95 ml15 lh150 mt2 hoverlink">
+			<a class="mr10 pseudolink" target="_blank" href="docs/about.html">About</a>
+			<a class="mr10 pseudolink" target="_blank" href="docs/arch.html">Architecture</a>
+			
+			<a class="mr10 pseudolink" target="_blank" href="docs/ide.html">IDE</a>
+			<a class="mr10 pseudolink" target="_blank" href="docs/api.html">API</a>
+			<a class="mr10 pseudolink" target="_blank" href="docs/app.html">App authoring</a>
+			<a class="mr10 pseudolink" target="_blank" href="docs/build.html">Custom builds</a>
+			
+			<a class="mr10 pseudolink" target="_blank" href="docs/sync.html">Sync guide</a>
+			<a class="mr10 pseudolink" target="_blank" href="docs/howto.html">FAQ</a>
+			
+		</div>
+		<a href="profile.html" target="_blank"><img id="cw-upic" title="Manage account"/></a>
+	</div>
+	<div id="cw-space" class="cw-Runtime hide "><div id="cw-side" class=""></div><div id="cw-slots" class=""></div><div id="cw-dock" class="">
+		<div class="ml20 fs80"></div>
+	</div></div></div>
+</body>
+
+			
+<script>
+$(function(){
+	$.my.modal.parent("#cw-body");
+	
+	$("#cw-header-logo").on("click", function(){$("#cw-header").slideUp(200);})
+	
+	PouchDB.enableAllDbs = true;
+
+	var db = new PouchDB("cw", function(e,r){ if (!e) db.get("cw", _start);});
+	
+	function _start (e) {
+		if (e) {
+			$('body').append('<'+'script src="sys/quickstart.js"'+'></'+'script'+'>');
+		}
+		else cw.start().then(function (a){
+			console.log ("======== CloudWall Started ========");
+		}, function (e, msg) {
+			console.log("===== CloudWall fail to start ====",msg, e);
+		});
+	}
+});
+
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-49966684-1', 'cloudwall.me');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+
+</script>
+	
+</html>
