@@ -319,7 +319,9 @@
 									// everything is ok, reload page	
 									$.my.modal();
 									cw.lib.note("Account created, reloading page.", "ok", 5000);
-									window.location.replace("./index.html#sysmanual/List");
+									//window.location.replace("./index.html#sysmanual/List");
+									window.location.hash="sysmanual/List";
+									window.location.reload();
 								},
 								function(a){
 									$.my.modal();
@@ -338,7 +340,7 @@
 				} else {
 
 					this.db.put(cw.crypto.enc(d.doc), function (){
-						window.location.replace("./")
+						window.location.reload();
 					});
 
 				}

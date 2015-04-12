@@ -170,11 +170,11 @@
 					for (i in list) {
 						fi=that.Actions.fi[i]||"";
 						name = that.Actions.name[i]||i.capitalize();
-						html+='<span data-action="'+i+'" '
+						html+='<button data-action="'+i+'" '
 							+' title="'+(that.Actions.tip[i]||"").assign(d.doc)+'"'
 							+' class="'+css+' button'
 						if (fi) html+=' fs90 '+fi+'"> <span class="fs110">'+name+'</span></span>';
-						else html+='"> '+name+'</span>';
+						else html+='"> '+name+'</button>';
 					}
 					return html;
 				}

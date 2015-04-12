@@ -2800,6 +2800,8 @@ _connect = function (id) {
 			delete cw.start;
 			delete cw.lock;
 			delete cw.read;
+		} else {
+			cw.forms = forms;
 		}
 
 		//freeze state obj
