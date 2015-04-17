@@ -2569,14 +2569,17 @@
 		$o.on("click",".cw-att-dl", function(){
 			var fname =$(this).data("fname"), 
 				text = $(this).attr("title"),
-				oatt = cw.db(d.doc._db).att(d.doc._id);
+				oatt;
 			
 			if (d.doc._attachments && d.doc._attachments[fname] && !d.doc._attachments[fname].stub) {
 				var att = {}; 
 				att[fname] = d.doc._attachments[fname];
 				if (null != att[fname].data) processAtt(fname, att);
-			} else if (oatt) {
-				oatt.url(fname).then(processAtt.fill(fname));
+			} else {				
+				try {
+					oatt = cw.db(d.doc._db).att(d.doc._id);
+				} catch (e) {}
+				if (oatt) oatt.url(fname).then(processAtt.fill(fname));
 			} 
 		});
 		
@@ -2698,7 +2701,7 @@
 	"ModalManageAtt": {
 		"init": function ($o, form) {
 
-		var html="", d=form.data;
+		var html="", d=form.data, size = +(d.size || d.length || 0);
 		if (/^image/.test(d.mime)) {
 			html+='<div class="w800 tac">'
 			+'<img src="'+d.url+'" class="dib mb15" style="max-width:800px; max-height:600px;" />'
@@ -2706,7 +2709,7 @@
 		}
 		html+= '<div class="lh110 fs130 xgray" style="word-break: break-all;">'+d.name+'</div>';
 		html+= '<div class="lh110 fs90 gray mt5">'
-		+d.size.format(0,' ')+' byte'+(/(^1|[02-9]1)$/.test(d.size+"")?'':'s')
+		+size.format(0,' ')+' byte'+(/(^1|[02-9]1)$/.test(size+"")?'':'s')
 		+(!d.digest?", not yet saved to DB":"")
 		+'</div>';
 		html+= '<div class="my-row pt15 mt20 btd fs85 mb-5">'
@@ -2858,10 +2861,10 @@
 	"init": function ($o, form) {
 
 		
-		var pi=$.Deferred(), that=this;
+	var pi=$.Deferred(), that=this;
 				
 		$o.formgen([
-		'<div class="fs90">',
+		'<div class="fs90" id="manedframe">',
 			'<div id="cmcont" class="dib vat maned oh hide" style="border:1px solid #C1D0DA">',
 				'<textarea id="cm" class="maned fs80"></textarea>',
 			'</div>',
@@ -2877,40 +2880,76 @@
 		'</div>'
 		]);
 		
-		$o.find("#pane").on("keyup","textarea", function (){
-			var $t=$(this);
-			$t.height(0).height($t[0].scrollHeight-6);
-		});
-		var ed = form.data.editor;
-		
-		that.MakePostfix(ed._id);
-		that.Editor.Prefix = function(){
-			return {id:form.data.editor.id};
-			/*return $.extend(
-				{id:form.data.editor.id},
-				(form.data.editor.manifest && form.data.editor.manifest.app)?{app:Object.reject(form.data.editor.manifest.app,"com")}:{}
-			);*/
-		};
-		
-		that.$Ed = $o.find("#manifesto");
-		
-		that.Editor.Postfix = function(){
-			return that.Postfix;
-		};
-		
-		(function(){pi.resolve();}).delay(1);
-		
-		return pi.promise();
+	$o.find("#pane").on("keyup","textarea", function (){
+		var $t=$(this);
+		$t.height(0).height($t[0].scrollHeight-6);
+	});
 	
+	//try {
+	
+	var ed = form.data.editor;
+	
+	that.$Ed = $o.find("#manifesto");
+
+	that.MakePostfix(ed._id);
+	that.MakeSubs("cw."+ed.raw.name);
+	
+	that.Editor.Prefix = function(){
+		return {id:form.data.editor.id};
+	};
+
+	that.Editor.Postfix = function(){
+		return that.Postfix;
+	};
+		
+	that.Editor.Subs = function(){
+		return that.Subs;
+	};
+		
+	//} catch (err) {console.log(err);}
+	
+	(function(){pi.resolve();}).delay(1);
+		
+	return pi.promise();
+		
 			},
 	"MakePostfix": function (docid) {
 
-		this.Postfix = {}
-		var that = this;
-		this.db.load(docid, true).then(function(doc){
-			if ( doc && doc._attachments ) that.Postfix.files = doc._attachments;
-		})
-	
+	var that = this;
+	that.db.load(docid, true)
+	.then(function(doc){
+		if ( doc && doc._attachments ) that.Postfix.files = doc._attachments;
+
+	})
+		
+			},
+	"MakeSubs": function (formid) {
+
+	var that = this,
+			i, 
+			childs = that.db.ram(function(e){
+				return (e.type == "manifest" && e.manifest && e.manifest.id.startsWith(formid+"."))
+			});
+
+	if (childs.length) {
+		childs = childs.map(function(e){return Object.clone(e,true)});
+		childs.forEach(function(e){
+			var man = cw.lib.unjson(e.manifest),
+					ref = man.id.from(formid.length+1);
+			$.extend(!0, that.Subs, cw.lib.unmask(man, ref));
+			man = cw.lib.getref(that.Subs, ref);
+
+			//has attaches?
+			if (Object.size(e._attachments)) {
+				that.db.load(e._id, true)
+				.then(function(man2){
+					man.files = man2._attachments;
+				});
+			}
+
+		});
+	}
+		
 			},
 	"app": {
 		"name": "Manifest",
@@ -2957,19 +2996,9 @@
 	},
 	"ui": {
 		"#pane": {
-			"manifest": function () {
-
-			console.log(this.Side);
-			return this.Side;
-		
-					},
+			"manifest": "Side",
 			"check": true,
-			"bind": "editor.raw",
-			"init": function ($o,d) {
-
-			//console.log($o,d)
-		
-					}
+			"bind": "editor.raw"
 		},
 		"#manifesto": {
 			"bind": "editor.raw",
@@ -3149,6 +3178,10 @@
 
 					}
 		}
+	},
+	"Postfix": {
+	},
+	"Subs": {
 	},
 	"Side": {
 		"IsApp": function (d) {
@@ -3640,6 +3673,7 @@
 		{
 			"JSHINT": "lib/jshint.js"
 		}],
+	"inherit": ["db"],
 	"data": {
 		"_src": "",
 		"com": [],
@@ -3717,18 +3751,21 @@
 	function _runPreview(){ 
 		// Preview in modal
 		if (d._opts.runMode=="modal") {
-			$o.parents(".cw-app").eq(0).modal({
-				root:$("#cw-body"),
+			var $r = $o.parents("#manedframe").eq(0);
+			$r.modal({
+				root:$r.parent(),
 				manifest: that.Preview,
 				data:{
 					_opts:d._opts,
 					_src:that._preview,
-					_prefix:_prefix
+					_prefix:_prefix,
+					_subs:that.Subs,
+					_db:that.db
 				},
 				width:d._opts.runWidth||1000,
 				esc:true,
 				global:false,
-				screen:false,
+				screen:'rgba(255,255,255,0.5)',
 				drag:true
 			}).then(function(r){
 				//Object.merge(d._opts,r,true)
@@ -3754,7 +3791,9 @@
 			.my(that.Preview, {
 				_opts:d._opts,
 				_src:that._preview,
-				_prefix:_prefix
+				_prefix:_prefix,
+				_subs:that.Subs,
+				_db:that.db
 			}).fail(function(){
 				cw.lib.note("Preview failed to init. "
 										+"See console for details", "error");
@@ -3860,7 +3899,8 @@
 					manifest: this.Compiler,
 					data:{
 						_src:that._src,
-						opts:d._opts.compileTo
+						opts:d._opts.compileTo,
+						Subs:that.Subs
 					},
 					width:$o.my().root.width(),
 					esc:true,
@@ -3887,7 +3927,7 @@
 
 		for (var i=0;i<d.com.length;i++) {
 			row = d.com[i];
-			ext = {}, ins={};
+			ext = {};
 			
 			conv = opts[row.type].compile || function(s){return [[], s||""];};
 			a = conv(row.data);
@@ -4292,7 +4332,9 @@
 	},
 	"Compiler": {
 		"init": function ($o) {
-			 $o.formgen(this.HTML); 
+			 
+		$o.formgen(this.HTML); 
+	
 			},
 		"Stats": 0,
 		"Critic": function (content) {
@@ -4430,16 +4472,25 @@
 			"#opts": {
 				"bind": function (d,v,$o) {
 
-				var jsmin = cw.lib.jsmin, toj = $.my.tojson;
+				var that = this,
+						jsmin = cw.lib.jsmin, 
+						toj = $.my.tojson;
 				if (v!=null) {
-					var i = v+"";
-					if (i == "json") d.src = toj(eval(jsmin(d._src)), '\t');
-					else if (i == "cjson") d.src = toj(eval(jsmin(d._src)));
-					else if (i == "jsmin") d.src = jsmin(d._src);
-					else if (i == "uglify") {
+					var i = cw.lib.a2o(v),
+							_src = d._src;
+					
+					if (i.childs) {
+						_src = "("+cw.lib.js2txt($.extend(!0, eval(d._src), d.Subs()),'\t')+")";
+					} 
+					//else _src = d._src;
+					
+					if (i.json) d.src = toj(eval(jsmin(_src)), '\t');
+					else if (i.cjson) d.src = toj(eval(jsmin(_src)));
+					else if (i.jsmin) d.src = jsmin(_src);
+					else if (i.uglify) {
 						// compress and uglify 
 						var u = UglifyJS,
-								ast = u.parse(d._src);
+								ast = u.parse(_src);
 						ast.figure_out_scope();
 						ast = ast.transform(u.Compressor({side_effects  : false}));
 						ast.figure_out_scope();
@@ -4447,9 +4498,11 @@
 						ast.mangle_names();
 						d.src = ast.print_to_string().replace(/;$/,'');
 					}
-					else d.src=d._src;
+					else d.src=_src;
+					
 					this.Stats = unescape(encodeURIComponent(d.src)).length;
-					this.About = this.Critic(/json$/.test(i)?d._src:d.src);
+					this.About = this.Critic(i.json||i.cjson?_src:d.src);
+					
 					d.opts = v;
 				}
 				return d.opts;
@@ -4457,13 +4510,21 @@
 					},
 				"init": function ($o, form) {
 
-				$o.tags({tags:[[
-					{"JS min":"jsmin"},
-					{"JS ugly":"uglify"},
-					{"JSON":"json"},
-					{"JSON min":"cjson"}
-					//{"Apply over...":"selector"}
-				].compact()], empty:{"JS object":"js"}})
+				$o.tags({
+					tags:[
+						[
+							{"JS object":"js"},
+							{"JS min":"jsmin"},
+							{"JS ugly":"uglify"},
+							{"JSON":"json"},
+							{"JSON min":"cjson"}
+						],
+						[
+							{"Include childs":"childs"}
+						]
+					], 
+					groupshim:' &nbsp;<span class="orange">|</span>&nbsp; '
+				})
 			
 					}
 			},
@@ -4536,8 +4597,18 @@
 
 		var d=form.data, 
 				p = d._opts, 
-				m = d._src;
-		this.Manifest = $.extend({},(d._prefix||{}),eval(d._src));
+				m = d._src,
+				pi = $.Deferred();
+		
+		try {
+			this.Manifest = $.extend({db:d._db},(d._prefix||{}),eval(d._src));
+			$.extend(!0, this.Manifest, d._subs());
+		} catch (err){
+			console.log(err, err.stack)
+			pi.reject(err);
+		}
+
+		
 		$o.html(
 			'<div id="btn-close" class="'
 			+(p.runMode=="modal"?"hide":"")
@@ -4546,6 +4617,9 @@
 			+p.runCss+'" style="margin:0 auto;width:'
 			+d._opts.runWidth+'px"></div>'
 		);
+		pi.resolve();
+		
+		return pi.promise();
 	
 			},
 		"data": {
@@ -4617,8 +4691,8 @@
 
 			var err=[], res="";
 			res = ((css+"")
-			.replace(/\/\*[\s\S]+\*\//gm,"")
-			.replace(/@charset[^;]+;/gim,'')
+			.replace(/\/\*[\s\S]+?\*\//gm,"")
+			.replace(/@charset[^;]+?;/gim,'')
 			.replace(/[\n\t\s]+/g,' ')
 			.replace(/\}/g,'}⊻')
 			.replace(/^\n+/g,"").replace(/[\n\s]+$/g,"")

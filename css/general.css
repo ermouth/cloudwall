@@ -97,7 +97,7 @@ button:disabled {
 	color: #999; opacity:0.65;
 }
 
-input:not([type=radio]):not([type=checkbox]):focus
+input:not([type=radio]):not([type=checkbox]):not([type=button]):focus
 {
 	outline:none;
 	border:1px solid #acf; 
@@ -1624,7 +1624,7 @@ div.my-modal.nose-bottom:before {
 	padding: 4px 22px 4px 10px;
 	outline: 0;
 	border: 1px solid #aaa;
-	font-size: 1em;
+	font-size: 80%;
 	width:100%;
 	margin:0;
 	height:auto !important;
@@ -1632,6 +1632,8 @@ div.my-modal.nose-bottom:before {
 	box-shadow: none;
 	border-radius:100px;
 }
+
+.select2-search-field .select2-focused:focus {border:transparent!important}
 
 .select2-drop.select2-drop-above .select2-search input
 {
@@ -1645,7 +1647,7 @@ div.my-modal.nose-bottom:before {
 
 .select2-container-active .select2-choice,
 .select2-container-active .select2-choices {
-	border: 1px solid #5897fb;
+	border: 1px solid #acf;
 	outline: none;
 }
 
@@ -1700,7 +1702,7 @@ div.my-modal.nose-bottom:before {
 
 .select2-results li {
 	list-style: none;
-	display: list-item;font-size: 90%;
+	display: list-item;font-size: 80%;
 	line-height: 1.15em;
 	margin-left:0;
 }
@@ -1797,7 +1799,7 @@ cursor: default;
 }
 
 .select2-container-multi.select2-container-active .select2-choices {
-	border: 1px solid #5897fb;
+	border: 1px solid #acf;
 	outline: none;
 }
 .select2-container-multi .select2-choices li {

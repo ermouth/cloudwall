@@ -62,6 +62,7 @@
 	,dbWatchersDebounce:5
 	,appNameMask:/^[A-Z][A-Za-z0-9]{2,24}(\.[A-Za-z0-9]{1,25}){0,4}$/
 	,updateURL:"http://cloudwall.me/x/"
+	,pluginSetDoc:"cw-Sys-Plugins-4vx1"
 
 	,syncRestart:21000								// restart interval of replication
 	,dbConnTimeout:30000
@@ -2742,6 +2743,58 @@ _connect = function (id) {
 	} // -- end _extdb()
 }
 	
+	// Ajax hook for $.my,
+// intercepts requests, that can be 
+// resolved with locally stashed versions
+// of plugins
+
+function _ajax (A1, A2){
+	
+	var p = sys.ram(CW.pluginSetDoc)[0],
+			a, url, lib;
+	
+	if (p && (a=p._attachments)) {
+		url = isS(A1)?A1:((A1||{}).url);
+		if (url && !/^http[s]?:\/\//.test(url)) {
+			// local url
+			url = url.split("/").last();
+			if (a[url]) {
+				// Load attach
+				var pi = _pi();
+				
+				sys.att(CW.pluginSetDoc)
+				.data(url)
+				.then(function(obj){
+					var r, src = obj[url].data;
+					try {
+						r = decodeURIComponent(escape(window.atob(src)));
+					}catch(e) {
+						r=null;
+					}
+					if (r) {
+						try {
+							window.eval(r);
+							con("Succesfully started local lib "+url);
+						} catch (e) {
+							pi.reject("Error initializing local lib "+url);
+						}
+						pi.resolve(null);
+						
+					} else pi.resolve(null);
+				})
+				
+				return pi.promise();
+			}
+		}
+	}
+	
+	// No local, request real ajax
+		
+	return $.ajax.apply(this, Array.prototype.slice.call(arguments));	
+}
+
+$.my.ajax(_ajax);
+	
 	
 	//#######################
 
@@ -2777,12 +2830,13 @@ _connect = function (id) {
 
 
 	// exec startup sequence
-	_db()											//1
-	.then(_readSettings)			//2
-	.then(_processSettings)		//3, ext
-	.then(_startUi)						//4
-	.then(_startMonitors)			//5
-	.then(_readUsers)					//6
+	_db()											// 1
+	.then(_readSettings)			// 2
+	.then(_processSettings)		// 3, external
+	//.then(_readLocalLibs)			// 4
+	.then(_startUi)						// 5
+	.then(_startMonitors)			// 6
+	.then(_readUsers)					// 7
 	.then(function(){
 
 		// hide unsafe methods
@@ -2800,6 +2854,8 @@ _connect = function (id) {
 			delete cw.start;
 			delete cw.lock;
 			delete cw.read;
+			
+			delete $.my.ajax;
 		} else {
 			cw.forms = forms;
 		}
@@ -2835,8 +2891,9 @@ _connect = function (id) {
 	
 	
 	// - - - - - - - - - - - - - - - - - - - 
+	
 
-	//##### 6
+	//##### 7
 	function _readUsers(){
 		var pi0 = _pi(),
 				i=0, 
@@ -2881,7 +2938,7 @@ _connect = function (id) {
 		return pi0.promise();
 	}
 
-	//##### 5
+	//##### 6
 	function _startMonitors(){
 		con("Start url observers and savers");
 		var pi0 = _pi();	
@@ -2899,7 +2956,7 @@ _connect = function (id) {
 		return pi0.promise();
 	}
 
-	//##### 4
+	//##### 5
 	function _startUi(){
 		var pi0 = _pi(), _fail=false;
 		var _paneStarted = function(){	
