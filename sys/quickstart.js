@@ -36,35 +36,468 @@
 		},
 	"Intro": "<h3 class=\"mt0 xgray\">Welcome!</h3> \n<p class=\"lh170\">\n\tNo user profile found on this device.\n\tPlease, provide data for creating your local profile.\n</p>\n<p class=\"lh170\">\n\tPIN better be short – CloudWall will ask to enter it on every start.\n</p>\n\n<h3 class=\"xgray\">Connect to profile</h3>\n<p class=\"lh170\">\n\tIf you already have CouchDB, that holds your CloudWall account from other device –\n\tyou can <span class=\"pseudolink btn-link\">link accounts</span>.\n</p>",
 	"IntroExt": "<p class=\"lh170 mt-5\">\n\tConnecting to external DB will sync this browser’s local databases \n\twith external account. Sync destroys all existing local \n\tCloudWall DBs if any – with no rollback possible.\n</p>\n<p class=\"\">\n\tPlease note that full account sync may take significant time.\n</p>",
-	"params": {
-		"animate": 100,
-		"effect": function ($e, onoff, duration) {
-
-			if (onoff) { $e.slideDown(duration); return; }
-			$e.slideUp(duration);
-		
-			}
+	"style": {
+		" h3": "margin:20px 0 12px 0;",
+		" p": "margin: 0.2em 0 0.7em 0;"
 	},
-	"Dbs": ["sysmanual"],
-	"ui": {
-		"#dburl": {
-			"bind": "dburl",
-			"check": function (d,v) {
+	"Cropper": {
+		"init": function ($o, form) {
 
-			if (!v.length) return "";
-			if (!/^http[s]?:\/\/.+/.test(v)) return "URL required";
-			if (!/^http[s]?:\/\/[a-z0-9\-]{1,63}(\.[a-z0-9\-]{1,63}){1,5}/.test(v)) 
-				return "Invalid domain";
-			if (!/.+\/[a-zA-Z0-9_\-\(\)]{1,200}$/.test(v)) return "No DB name provided";
-			return "";
+		var html = $.my.formgen([
+			'<div class="fl mr20 tac vat bg-lgray" style="width:600px;height:450px;'
+			+'overflow:hidden;position:relative;line-height:450px;" id="crop-frame">',
+			'<img id="source" class="vam" style="max-width:600px; max-height:450px; background:white" src="" />',
+			'<div class="w600  dib" style="height:450px;position:absolute;top:0;left:0">',
+			'<span class="dib vam fs110 button">',
+			'<span class="fi-photo"><span class="fs110"> &nbsp;Select Image</span></span>',
+			'</span>',
+			'<input type="file" id="file" class="w600 dib" accept="image/jpeg,image/png" '
+			+'style="height:450px;cursor:pointer;opacity:0; position:absolute;top:0;left:0">',
+			'</div>',
+			'</div>',
+			'<div class="w200 dib vat" id="xpreview">',
+			'<canvas id="preview" class="bg-lgray" style="width:200px;height:200px" width='
+			+form.data.size+' height='+form.data.size+' style="overflow:hidden;"></canvas>',
+			{row:"200px",rowCss:"mt10 pt15 btd fs90 tac"},
+			["","btn#btn-apply.mr5.green",{val:"Apply"}, "btn#btn-close.mr0",{val:"Cancel"}],
+			'</div>',
+			'<div class="w200 dib vat" id="xwarn">',		
+			'</div>',
+			'<div class="hide"><canvas id="x2" width='+form.data.size*2+' height='+form.data.size*2+'></canvas></div>'
+		]);
+		$o.html(html);
+	
+			},
+		"ui": {
+			"#btn-close": {
+				"bind": function (d,v,$o) {
+					if (v!=null) $o.my().root.trigger("cancel");
+					},
+				"events": "click.my"
+			},
+			"#btn-apply": {
+				"bind": function (d,v,$o) {
+
+				if (v!=null && d.cropped) {
+					d.data = $o.my().root.find("#preview")[0]
+					.toDataURL('image/jpeg',0.93)
+					.substr(23);
+					$o.my().root.trigger("commit");
+				}
+			
+					},
+				"events": "click.my"
+			},
+			"#file": {
+				"bind": function (d, v, $o) {
+
+
+				var f,
+						$r = $o.my().root,
+						$c = $r.find("#preview"),
+						$img = $r.find("#source"),
+						$c2 = $r.find("#x2"),
+						n={k:1}, img="";
+
+
+				if (v!=null && v) {
+					f = $o[0].files[0];
+					if (f) (function(){
+						d.filename = f.name;
+
+						var fr = new FileReader(), ri, sb64 = [];
+						fr.onload=function(e){
+							ri = new Uint8Array(e.target.result);
+							for (var i=0; i<ri.length; i++) sb64.push(String.fromCharCode(ri[i]));
+							img = window.btoa(sb64.join(""));
+						};
+
+						fr.onloadend = function (){
+							$img.load(function(){
+								n.k = $img[0].naturalWidth/$img.width();
+							});
+							$img.removeClass("hide")
+							.attr("src","data:image/jpeg;base64,"+img);
+
+							n.k=$img[0].naturalWidth/$img.width();	
+							$img.Jcrop({
+								onChange: preview,
+								onSelect: preview.debounce(20),
+								aspectRatio: 1,
+								allowMove:true
+							}, function (){
+								this.animateTo([100,100,300,300]);
+							});
+							img="";
+							$o.parent().addClass("hide");
+
+						};
+						fr.readAsArrayBuffer(f);	
+					})();
+				}
+
+				function preview (c){
+					if(parseInt(c.w) > 0) {
+						// Show image preview
+						var img = $img[0], cs, ctx, cs2, ctx2, 
+								k = n.k,
+								w = c.w*k; //width to scale in 200px
+						if (w>d.size*2) {
+							// double downsample to remove
+							// bilinear-scaler artifacts
+							cs2 = $c2[0];
+							ctx2 = cs2.getContext("2d");
+							ctx2.fillStyle="white";
+							ctx2.fillRect(0,0,d.size*2, d.size*2);
+							ctx2.drawImage(img, c.x*k, c.y*k, w, w, 0, 0, d.size*2, d.size*2);
+							cs = $c[0];
+							ctx = cs.getContext("2d");
+							ctx.drawImage(cs2, 0, 0, d.size*2, d.size*2, 0, 0, d.size, d.size);
+						} else {
+							cs = $c[0];
+							ctx = cs.getContext("2d");
+							ctx.fillStyle="white";
+							ctx.fillRect(0,0,d.size, d.size);
+							ctx.drawImage(img, c.x*k, c.y*k, w, w, 0, 0, d.size, d.size);
+						}
+						d.cropped=true;
+					}
+				}
+			
+					}
+			}
+		},
+		"style": {
+			" .jcrop-holder": "display:inline-block;vertical-align:middle"
+		},
+		"data": {
+			"filename": "",
+			"data": "",
+			"cropped": false,
+			"size": 200
+		},
+		"params": {
+			"strict": true,
+			"width": 820
+		}
+	},
+	"HTML": ["<div id=\"cw-reg\" class=\"w600 vat dib tal\" style=\"margin:0px auto 100px auto\">",
+		"<div id=\"left\" class=\"w250 dib vat pr50\">",
+		{
+			"row": "200px",
+			"rowCss": "my-row pb10 tac"
+		},
+		"<div class=\"slide\">",
+		"<img id=\"pic\" src=\"\" style=\"width:200px;height:200px;cursor:pointer\" class=\"db mb15 br4\">",
+		["",
+			"inp#name.w200.fs130.tac",
+			{
+				"plc": "Login",
+				"title": "Can not be changed later, be careful!",
+				"autocorrect": "off",
+				"autocapitalize": "off",
+				"autocomplete": "off"
+			},
+			"msg"],
+		["",
+			"inp#contact.w200.fs110.tac",
+			{
+				"plc": "@twi or email",
+				"title": "Stored locally, published as your contact info only when you connect to external DB.",
+				"autocorrect": "off",
+				"autocapitalize": "off",
+				"autocomplete": "off"
+			}],
+		["",
+			"inp#pin.w200.fs110.tac",
+			{
+				"plc": "PIN code",
+				"title": "Every time you log in \nCloudWall will ask you to enter PIN.\nLeave blank to skip PIN reenter.",
+				"autocorrect": "off",
+				"autocapitalize": "off",
+				"autocomplete": "off"
+			}],
+		["",
+			"btn#btn-create.w180.fs100.tac.mt10.mb20",
+			{
+				"val": "Create profile",
+				"style": "border-radius:100px"
+			}],
+		"</div>",
+		"<div class=\"slide\" style=\"display:none\">",
+		["",
+			"txt#dburl.w200.fs90.pb5",
+			{
+				"rows": 5,
+				"plc": "URL of external CouchDB, which holds your account replica"
+			},
+			"msg"],
+		["",
+			"inp#dblogin.w200.fs110.tac",
+			{
+				"plc": "DB login",
+				"autocorrect": "off",
+				"autocapitalize": "off",
+				"autocomplete": "off"
+			}],
+		["",
+			"inp#dbpwd.w200.fs110.tac",
+			{
+				"plc": "DB password",
+				"autocorrect": "off",
+				"autocapitalize": "off",
+				"autocomplete": "off"
+			}],
+		["",
+			"btn#btn-connect.w120.fs100.tac.mt10.mb20",
+			{
+				"val": "Connect",
+				"style": "border-radius:100px"
+			},
+			"<br>",
+			"spn.btn-link.pseudolink.ml10.fs80",
+			{
+				"txt": "Or create new..."
+			}],
+		"</div>",
+		"</div>",
+		"<div id=\"right\" class=\"w350 dib vat\">",
+		"<div class=\"fs85 gray slide\" id=\"about\">",
+		"<div class=\"w350\" id=\"abouttext\"></div>",
+		"</div>",
+		"<div class=\"fs90 gray slide\" style=\"display:none\" id=\"aboutLink\"></div>",
+		"</div>",
+		"</div>"],
+	"Confirm": {
+		"id": "cw.Sys.Confirm",
+		"init": function ($o, form) {
+
+		var d=form.data;
+		$o.formgen([
+			'<div class="'+d.css+'">'+d.text+'</div>',
+			{label:"70px", row:"350px", rowCss:"my-row mt15 pt15 fs90 mb-5 xgray btd"},
+			['', 'btn#btn-ok.green.mr5',{val:d.ok}, 
+			 'btn#btn-cancel',{val:d.cancel}]
+		]);
+	
+			},
+		"ui": {
+			"#btn-cancel": {
+				"bind": function (d,v,$o) {
+
+				if (v!=null) {
+					$o.trigger("cancel");
+				}
+			
+					},
+				"events": "click"
+			},
+			"#btn-ok": {
+				"bind": function (d,v,$o) {
+
+				if (v!=null) {
+					$o.trigger("commit");
+				}
+			
+					},
+				"events": "click"
+			}
+		},
+		"data": {
+			"text": "",
+			"css": "xgray",
+			"ok": "Ok",
+			"cancel": "Cancel"
+		},
+		"params": {
+			"delay": 20,
+			"strict": true,
+			"width": 350
+		}
+	},
+	"data": {
+		"isnew": true,
+		"dburl": "",
+		"dbpwd": "",
+		"dblogin": "",
+		"prevpin": "",
+		"pin": "",
+		"doc": {
+		}
+	},
+	"ui": {
+		".btn-link": {
+			"bind": function (d,v,$o) {
+
+			if (v!=null) {
+				$o.my("find",".slide").slideToggle(200);
+			}
+		
+				},
+			"events": "click.my"
+		},
+		"input[name=\"dbs\"]": {
+			"bind": "this.Dbs"
+		},
+		"#btn-create": {
+			"delay": 50,
+			"bind": function (d,v, $o) {
+
+		var i, db, d2, that=this, uname = d.doc.name+"-"+d.doc.uid;
+		if (v!=null && $o.my().root.my("valid") && this.db) {
+			if (cw.lib.sdbm($o.my("find","#pic").attr("src"))=="79adusu9") {
+				cw.lib.note("Please change userpic","error");
+			}
+			else {
+
+				if (d.isnew) {
+					d.doc.pin = _pin();
+					d.doc.dbs[0].creator = uname;
+					
+					/*console.log(that.Dbs);
+					for (i=1;i<d.doc.dbs.length;i++) {
+						if (that.Dbs.indexOf(d.doc.dbs[i].name)==-1) d.doc.dbs[i] = null;
+					}*/
+					
+					d.doc.dbs = d.doc.dbs.compact(true);
+					
+					d.doc.keys = d.doc.keys.map(function(e){
+						e.emitter=uname; 
+						e.link=d.doc.contact;
+						return e;
+					});
+				} else if (d.pin) d.doc.pin = _pin();
+				
+				console.log(d.doc);
+
+				try{cw.crypto.enc(d.doc)}
+				catch(e) {console.log(e.message, e.stack, e);}
+
+				if (d.isnew) {							
+
+					$.my.modal(
+						'<div class=" pt20 pb15 w350 tac blue">'
+						+'Loading system apps, it can take a time. '
+						+'<br>Please, wait.'
+						+'<br><div class="cw-busy w50 mt10"></div>'
+						+'</div>'
+						,function(){},500);
+
+					// Read app list
+
+					$.ajax({ url:"sys/apps.json", type:"GET", dataType:"json", cache:false })
+					.then(function(a){
+						var b, i, j, o;
+						if (!Object.isArray(a) || !a.length) {
+							$.my.modal();
+							cw.lib.note("Oops, server responded with error. Please retry in 5-10 minutes.", "error", 5000);
+							console.log(a);
+						}
+						else {
+							b = Object.clone(a.filter(function(e){return Object.isObject(e)}), !0);
+							for (var i=0;i<b.length;i++) {
+								o=b[i];
+								o.srcrev = o._rev;
+								delete o._rev;
+								if (o._attachments) for (j in o._attachments) {
+									o._attachments[j] = Object.select(o._attachments[j],["content_type","data"]);
+								}
+							}
+							// encrypt settings doc
+							b.push(cw.crypto.enc(d.doc));
+							that.db.bulkDocs({docs:b})
+							.then(
+								function(a){
+									// everything is ok, reload page	
+									$.my.modal();
+									cw.lib.note("Account created, reloading page.", "ok", 5000);
+									//window.location.replace("./index.html#sysmanual/List");
+									window.location.hash="sysmanual/List";
+									window.location.reload();
+								},
+								function(a){
+									$.my.modal();
+									cw.lib.note("Saving account info and apps failed. Try again, please.", "error", 5000);
+									console.log(a);
+								}
+							)
+						}
+					})
+					.fail(function(e){
+						$.my.modal();
+						cw.lib.note("Error loading apps. Try again, please.", "error", 5000);
+						console.log(e);
+					});
+
+				} else {
+
+					this.db.put(cw.crypto.enc(d.doc), function (){
+						window.location.reload();
+					});
+
+				}
+			}
+
+		}
+
+		function _pin() {
+			return cw.lib.md5(cw.lib.md5(cw.lib.md5(d.pin)+cw.lib.hash8(d.pin))+d.doc.name);
+		}
+	
+				},
+			"events": "click.my",
+			"watch": "#name",
+			"css": {
+				":disabled": function (d) {
+					return !d.doc.name || !/^(|[a-z0-9]{3,40})$/i.test(d.doc.name)
+					}
+			}
+		},
+		"#pin": {
+			"bind": "pin"
+		},
+		"#contact": {
+			"bind": "doc.contact",
+			"check": /^.{0,60}$/,
+			"error": "60– chars"
+		},
+		"#name": {
+			"bind": "doc.name",
+			"check": /^(|[a-z0-9]{3,40})$/i,
+			"error": "3–40 latins and nums",
+			"recalc": "#pin",
+			"css": {
+				":disabled": function (d) {
+					return !d.isnew
+					}
+			}
+		},
+		"#pic": {
+			"bind": function (d,v, $o) {
+
+			if (v!=null) {
+				$.my.modal({
+					manifest:this.Cropper,
+					data:{data:"",filename:""}
+				}).then(function (crop) {
+					if (crop && crop.data) {
+						d.doc.pic="data:image/jpeg;base64,"+crop.data;
+						$o.trigger("recalc");
+						crop.data="";
+					}
+				});
+			}
+			return d.doc.pic;
+		
+				},
+			"events": "click.my"
+		},
+		"#aboutLink": {
+			"bind": function () {
+
+			return this.IntroExt;
 		
 				}
-		},
-		"#dblogin": {
-			"bind": "dblogin"
-		},
-		"#dbpwd": {
-			"bind": "dbpwd"
 		},
 		"#btn-connect": {
 			"delay": 50,
@@ -201,468 +634,35 @@
 				},
 			"events": "click.my"
 		},
-		"#aboutLink": {
-			"bind": function () {
+		"#dbpwd": {
+			"bind": "dbpwd"
+		},
+		"#dblogin": {
+			"bind": "dblogin"
+		},
+		"#dburl": {
+			"bind": "dburl",
+			"check": function (d,v) {
 
-			return this.IntroExt;
+			if (!v.length) return "";
+			if (!/^http[s]?:\/\/.+/.test(v)) return "URL required";
+			if (!/^http[s]?:\/\/[a-z0-9\-]{1,63}(\.[a-z0-9\-]{1,63}){1,5}/.test(v)) 
+				return "Invalid domain";
+			if (!/.+\/[a-zA-Z0-9_\-\(\)]{1,200}$/.test(v)) return "No DB name provided";
+			return "";
 		
 				}
-		},
-		"#pic": {
-			"bind": function (d,v, $o) {
+		}
+	},
+	"Dbs": ["sysmanual"],
+	"params": {
+		"animate": 100,
+		"effect": function ($e, onoff, duration) {
 
-			if (v!=null) {
-				$.my.modal({
-					manifest:this.Cropper,
-					data:{data:"",filename:""}
-				}).then(function (crop) {
-					if (crop && crop.data) {
-						d.doc.pic="data:image/jpeg;base64,"+crop.data;
-						$o.trigger("recalc");
-						crop.data="";
-					}
-				});
-			}
-			return d.doc.pic;
+			if (onoff) { $e.slideDown(duration); return; }
+			$e.slideUp(duration);
 		
-				},
-			"events": "click.my"
-		},
-		"#name": {
-			"bind": "doc.name",
-			"check": /^(|[a-z0-9]{3,40})$/i,
-			"error": "3–40 latins and nums",
-			"recalc": "#pin",
-			"css": {
-				":disabled": function (d) {
-					return !d.isnew
-					}
 			}
-		},
-		"#contact": {
-			"bind": "doc.contact",
-			"check": /^.{0,60}$/,
-			"error": "60– chars"
-		},
-		"#pin": {
-			"bind": "pin"
-		},
-		"#btn-create": {
-			"delay": 50,
-			"bind": function (d,v, $o) {
-
-		var i, db, d2, that=this, uname = d.doc.name+"-"+d.doc.uid;
-		if (v!=null && $o.my().root.my("valid") && this.db) {
-			if (cw.lib.sdbm($o.my("find","#pic").attr("src"))=="79adusu9") {
-				cw.lib.note("Please change userpic","error");
-			}
-			else {
-
-				if (d.isnew) {
-					d.doc.pin = _pin();
-					d.doc.dbs[0].creator = uname;
-					
-					/*console.log(that.Dbs);
-					for (i=1;i<d.doc.dbs.length;i++) {
-						if (that.Dbs.indexOf(d.doc.dbs[i].name)==-1) d.doc.dbs[i] = null;
-					}*/
-					
-					d.doc.dbs = d.doc.dbs.compact(true);
-					
-					d.doc.keys = d.doc.keys.map(function(e){
-						e.emitter=uname; 
-						e.link=d.doc.contact;
-						return e;
-					});
-				} else if (d.pin) d.doc.pin = _pin();
-				
-				console.log(d.doc);
-
-				try{cw.crypto.enc(d.doc)}
-				catch(e) {console.log(e.message, e.stack, e);}
-
-				if (d.isnew) {							
-
-					$.my.modal(
-						'<div class=" pt20 pb15 w350 tac blue">'
-						+'Loading system apps, it can take a time. '
-						+'<br>Please, wait.'
-						+'<br><div class="cw-busy w50 mt10"></div>'
-						+'</div>'
-						,function(){},500);
-
-					// Read app list
-
-					$.ajax({ url:"sys/apps.json", type:"GET", dataType:"json", cache:false })
-					.then(function(a){
-						var b, i, j, o;
-						if (!Object.isArray(a) || !a.length) {
-							$.my.modal();
-							cw.lib.note("Oops, server responded with error. Please retry in 5-10 minutes.", "error", 5000);
-							console.log(a);
-						}
-						else {
-							b = Object.clone(a.filter(function(e){return Object.isObject(e)}), !0);
-							for (var i=0;i<b.length;i++) {
-								o=b[i];
-								o.srcrev = o._rev;
-								delete o._rev;
-								if (o._attachments) for (j in o._attachments) {
-									o._attachments[j] = Object.select(o._attachments[j],["content_type","data"]);
-								}
-							}
-							// encrypt settings doc
-							b.push(cw.crypto.enc(d.doc));
-							that.db.bulkDocs({docs:b})
-							.then(
-								function(a){
-									// everything is ok, reload page	
-									$.my.modal();
-									cw.lib.note("Account created, reloading page.", "ok", 5000);
-									//window.location.replace("./index.html#sysmanual/List");
-									window.location.hash="sysmanual/List";
-									window.location.reload();
-								},
-								function(a){
-									$.my.modal();
-									cw.lib.note("Saving account info and apps failed. Try again, please.", "error", 5000);
-									console.log(a);
-								}
-							)
-						}
-					})
-					.fail(function(e){
-						$.my.modal();
-						cw.lib.note("Error loading apps. Try again, please.", "error", 5000);
-						console.log(e);
-					});
-
-				} else {
-
-					this.db.put(cw.crypto.enc(d.doc), function (){
-						window.location.reload();
-					});
-
-				}
-			}
-
-		}
-
-		function _pin() {
-			return cw.lib.md5(cw.lib.md5(cw.lib.md5(d.pin)+cw.lib.hash8(d.pin))+d.doc.name);
-		}
-	
-				},
-			"events": "click.my",
-			"watch": "#name",
-			"css": {
-				":disabled": function (d) {
-					return !d.doc.name || !/^(|[a-z0-9]{3,40})$/i.test(d.doc.name)
-					}
-			}
-		},
-		"input[name=\"dbs\"]": {
-			"bind": "this.Dbs"
-		},
-		".btn-link": {
-			"bind": function (d,v,$o) {
-
-			if (v!=null) {
-				$o.my("find",".slide").slideToggle(200);
-			}
-		
-				},
-			"events": "click.my"
-		}
-	},
-	"data": {
-		"isnew": true,
-		"dburl": "",
-		"dbpwd": "",
-		"dblogin": "",
-		"prevpin": "",
-		"pin": "",
-		"doc": {
-		}
-	},
-	"Confirm": {
-		"id": "cw.Sys.Confirm",
-		"init": function ($o, form) {
-
-		var d=form.data;
-		$o.formgen([
-			'<div class="'+d.css+'">'+d.text+'</div>',
-			{label:"70px", row:"350px", rowCss:"my-row mt15 pt15 fs90 mb-5 xgray btd"},
-			['', 'btn#btn-ok.green.mr5',{val:d.ok}, 
-			 'btn#btn-cancel',{val:d.cancel}]
-		]);
-	
-			},
-		"params": {
-			"delay": 20,
-			"strict": true,
-			"width": 350
-		},
-		"data": {
-			"text": "",
-			"css": "xgray",
-			"ok": "Ok",
-			"cancel": "Cancel"
-		},
-		"ui": {
-			"#btn-ok": {
-				"bind": function (d,v,$o) {
-
-				if (v!=null) {
-					$o.trigger("commit");
-				}
-			
-					},
-				"events": "click"
-			},
-			"#btn-cancel": {
-				"bind": function (d,v,$o) {
-
-				if (v!=null) {
-					$o.trigger("cancel");
-				}
-			
-					},
-				"events": "click"
-			}
-		}
-	},
-	"HTML": ["<div id=\"cw-reg\" class=\"w600 vat dib tal\" style=\"margin:0px auto 100px auto\">",
-		"<div id=\"left\" class=\"w250 dib vat pr50\">",
-		{
-			"row": "200px",
-			"rowCss": "my-row pb10 tac"
-		},
-		"<div class=\"slide\">",
-		"<img id=\"pic\" src=\"\" style=\"width:200px;height:200px;cursor:pointer\" class=\"db mb15 br4\">",
-		["",
-			"inp#name.w200.fs130.tac",
-			{
-				"plc": "Login",
-				"title": "Can not be changed later, be careful!",
-				"autocorrect": "off",
-				"autocapitalize": "off",
-				"autocomplete": "off"
-			},
-			"msg"],
-		["",
-			"inp#contact.w200.fs110.tac",
-			{
-				"plc": "@twi or email",
-				"title": "Stored locally, published as your contact info only when you connect to external DB.",
-				"autocorrect": "off",
-				"autocapitalize": "off",
-				"autocomplete": "off"
-			}],
-		["",
-			"inp#pin.w200.fs110.tac",
-			{
-				"plc": "PIN code",
-				"title": "Every time you log in \nCloudWall will ask you to enter PIN.\nLeave blank to skip PIN reenter.",
-				"autocorrect": "off",
-				"autocapitalize": "off",
-				"autocomplete": "off"
-			}],
-		["",
-			"btn#btn-create.w180.fs100.tac.mt10.mb20",
-			{
-				"val": "Create profile",
-				"style": "border-radius:100px"
-			}],
-		"</div>",
-		"<div class=\"slide\" style=\"display:none\">",
-		["",
-			"txt#dburl.w200.fs90.pb5",
-			{
-				"rows": 5,
-				"plc": "URL of external CouchDB, which holds your account replica"
-			},
-			"msg"],
-		["",
-			"inp#dblogin.w200.fs110.tac",
-			{
-				"plc": "DB login",
-				"autocorrect": "off",
-				"autocapitalize": "off",
-				"autocomplete": "off"
-			}],
-		["",
-			"inp#dbpwd.w200.fs110.tac",
-			{
-				"plc": "DB password",
-				"autocorrect": "off",
-				"autocapitalize": "off",
-				"autocomplete": "off"
-			}],
-		["",
-			"btn#btn-connect.w120.fs100.tac.mt10.mb20",
-			{
-				"val": "Connect",
-				"style": "border-radius:100px"
-			},
-			"<br>",
-			"spn.btn-link.pseudolink.ml10.fs80",
-			{
-				"txt": "Or create new..."
-			}],
-		"</div>",
-		"</div>",
-		"<div id=\"right\" class=\"w350 dib vat\">",
-		"<div class=\"fs85 gray slide\" id=\"about\">",
-		"<div class=\"w350\" id=\"abouttext\"></div>",
-		"</div>",
-		"<div class=\"fs90 gray slide\" style=\"display:none\" id=\"aboutLink\"></div>",
-		"</div>",
-		"</div>"],
-	"Cropper": {
-		"init": function ($o, form) {
-
-		var html = $.my.formgen([
-			'<div class="fl mr20 tac vat bg-lgray" style="width:600px;height:450px;'
-			+'overflow:hidden;position:relative;line-height:450px;" id="crop-frame">',
-			'<img id="source" class="vam" style="max-width:600px; max-height:450px; background:white" src="" />',
-			'<div class="w600  dib" style="height:450px;position:absolute;top:0;left:0">',
-			'<span class="dib vam fs110 button">',
-			'<span class="fi-photo"><span class="fs110"> &nbsp;Select Image</span></span>',
-			'</span>',
-			'<input type="file" id="file" class="w600 dib" accept="image/jpeg,image/png" '
-			+'style="height:450px;cursor:pointer;opacity:0; position:absolute;top:0;left:0">',
-			'</div>',
-			'</div>',
-			'<div class="w200 dib vat" id="xpreview">',
-			'<canvas id="preview" class="bg-lgray" style="width:200px;height:200px" width='
-			+form.data.size+' height='+form.data.size+' style="overflow:hidden;"></canvas>',
-			{row:"200px",rowCss:"mt10 pt15 btd fs90 tac"},
-			["","btn#btn-apply.mr5.green",{val:"Apply"}, "btn#btn-close.mr0",{val:"Cancel"}],
-			'</div>',
-			'<div class="w200 dib vat" id="xwarn">',		
-			'</div>',
-			'<div class="hide"><canvas id="x2" width='+form.data.size*2+' height='+form.data.size*2+'></canvas></div>'
-		]);
-		$o.html(html);
-	
-			},
-		"params": {
-			"strict": true,
-			"width": 820
-		},
-		"data": {
-			"filename": "",
-			"data": "",
-			"cropped": false,
-			"size": 200
-		},
-		"style": {
-			" .jcrop-holder": "display:inline-block;vertical-align:middle"
-		},
-		"ui": {
-			"#file": {
-				"bind": function (d, v, $o) {
-
-
-				var f,
-						$r = $o.my().root,
-						$c = $r.find("#preview"),
-						$img = $r.find("#source"),
-						$c2 = $r.find("#x2"),
-						n={k:1}, img="";
-
-
-				if (v!=null && v) {
-					f = $o[0].files[0];
-					if (f) (function(){
-						d.filename = f.name;
-
-						var fr = new FileReader(), ri, sb64 = [];
-						fr.onload=function(e){
-							ri = new Uint8Array(e.target.result);
-							for (var i=0; i<ri.length; i++) sb64.push(String.fromCharCode(ri[i]));
-							img = window.btoa(sb64.join(""));
-						};
-
-						fr.onloadend = function (){
-							$img.load(function(){
-								n.k = $img[0].naturalWidth/$img.width();
-							});
-							$img.removeClass("hide")
-							.attr("src","data:image/jpeg;base64,"+img);
-
-							n.k=$img[0].naturalWidth/$img.width();	
-							$img.Jcrop({
-								onChange: preview,
-								onSelect: preview.debounce(20),
-								aspectRatio: 1,
-								allowMove:true
-							}, function (){
-								this.animateTo([100,100,300,300]);
-							});
-							img="";
-							$o.parent().addClass("hide");
-
-						};
-						fr.readAsArrayBuffer(f);	
-					})();
-				}
-
-				function preview (c){
-					if(parseInt(c.w) > 0) {
-						// Show image preview
-						var img = $img[0], cs, ctx, cs2, ctx2, 
-								k = n.k,
-								w = c.w*k; //width to scale in 200px
-						if (w>d.size*2) {
-							// double downsample to remove
-							// bilinear-scaler artifacts
-							cs2 = $c2[0];
-							ctx2 = cs2.getContext("2d");
-							ctx2.fillStyle="white";
-							ctx2.fillRect(0,0,d.size*2, d.size*2);
-							ctx2.drawImage(img, c.x*k, c.y*k, w, w, 0, 0, d.size*2, d.size*2);
-							cs = $c[0];
-							ctx = cs.getContext("2d");
-							ctx.drawImage(cs2, 0, 0, d.size*2, d.size*2, 0, 0, d.size, d.size);
-						} else {
-							cs = $c[0];
-							ctx = cs.getContext("2d");
-							ctx.fillStyle="white";
-							ctx.fillRect(0,0,d.size, d.size);
-							ctx.drawImage(img, c.x*k, c.y*k, w, w, 0, 0, d.size, d.size);
-						}
-						d.cropped=true;
-					}
-				}
-			
-					}
-			},
-			"#btn-apply": {
-				"bind": function (d,v,$o) {
-
-				if (v!=null && d.cropped) {
-					d.data = $o.my().root.find("#preview")[0]
-					.toDataURL('image/jpeg',0.93)
-					.substr(23);
-					$o.my().root.trigger("commit");
-				}
-			
-					},
-				"events": "click.my"
-			},
-			"#btn-close": {
-				"bind": function (d,v,$o) {
-					if (v!=null) $o.my().root.trigger("cancel");
-					},
-				"events": "click.my"
-			}
-		}
-	},
-	"style": {
-		" h3": "margin:20px 0 12px 0;",
-		" p": "margin: 0.2em 0 0.7em 0;"
 	}
 },
 		{doc: ({

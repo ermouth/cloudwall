@@ -991,6 +991,8 @@ function _kill (url, nextStateUrl) {
 			app = dbs[runurl.db].form(runurl.appid);
 			dbset = _dbsettings(runurl.db);
 			
+			// Start app
+			
 			_isTrusted()
 			.then(_loadDoc)
 			.then(_isInvalid)
@@ -2830,15 +2832,28 @@ $.my.ajax(_ajax);
 
 
 	// exec startup sequence
-	_db()											// 1
-	.then(_readSettings)			// 2
-	.then(_processSettings)		// 3, external
-	//.then(_readLocalLibs)			// 4
-	.then(_startUi)						// 5
-	.then(_startMonitors)			// 6
-	.then(_readUsers)					// 7
-	.then(function(){
+	_db()											
+	.then(_readSettings)			
+	.then(_processSettings)		
+	.then(_startUi)						
+	.then(_startMonitors)		
+	.then(_readUsers)				
+	.then(_finalize)
+	.fail(function(code, msg) {
+		_note(msg,"error"), pi.reject(msg);
+	});
+	
+	
 
+	return pi.promise();
+	
+	
+	// - - - - - - - - - - - - - - - - - - - 
+	
+	// #### FINALIZE
+	
+	function _finalize(){
+		
 		// hide unsafe methods
 		if (!cw.debug) {
 
@@ -2877,20 +2892,7 @@ $.my.ajax(_ajax);
 		}
 
 		pi.resolve(dbs);
-	})
-	.fail(function(code, msg) {
-		if (code==1) {
-			//window.location.replace("reg.html");
-		}
-		else _note(msg,"error"), pi.reject(msg);
-	});
-	
-	
-
-	return pi.promise();
-	
-	
-	// - - - - - - - - - - - - - - - - - - - 
+	}
 	
 
 	//##### 7

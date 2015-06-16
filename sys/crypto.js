@@ -1,2 +1,534 @@
-/*CloudWall Cryptoprovider 0.9*/
-"cw"in window||(window.cw={}),cw.crypto||(cw.crypto=function(){function e(){return $.Deferred()}function t(e){return cw.lib.md5(cw.lib.md5(e)+cw.lib.hash8(e))}function n(e,n){return cw.lib.md5(t(e)+n)}var r,i,a,s,o=window.PouchDB,u=Object.isArray,c=(Object.isBoolean,Object.isString),l=Object.isObject,d=(Object.isNumber,Object.isRegExp,Object.isFunction),f={},h={},m={},p="type crypto stamp creator name pic tags _id _rev _attachments".split(" "),g=(p.slice(0).add("_attachments"),"CRYPTO"),v={},y=function(e){if(!e||!Object.isObject(e))return e;var t,n;return e.crypto&&(t=w(e.crypto),t=t?t.key:null),t||"cw"!==e._id||"settings"!==e.type||(t=e.pin,t&&!a&&(a=t)),t?(n=Object.select(e,p),n.CRYPTO=cw.lib.encDoc(Object.reject(e,p),t),n):e},b=function(e,t){if(!Object.isObject(e))return e;var n,r,i;if(e.hasOwnProperty(g)&&(e.crypto&&(n=w(e.crypto),n=n?n.key:null),n||"cw"!==e._id||(n=t)),n){try{r=cw.lib.decDoc(e.CRYPTO,n),i=Object.reject(Object.merge(Object.clone(e,!0),r),g)}catch(a){return e}return i}return e},k=function(e,t){if(!e||!t)return e;var n;if((n=w(t))&&(n=n.key)){var r=cw.lib.blob2base64(e),i=cw.lib.base64(btoa(cw.lib.dec(r,n).from(1)),!0);return cw.lib.base642blob(i)}return e},w=function(e){if(v[e])return v[e];v={};for(var t=i?i.keys:[],n=0;n<t.length;n++)v[t[n].id]=t[n];return v[e]||v},x=function(e){return w(),v.hasOwnProperty(e)},_=function(){var e,t=w(),n=[];return Object.keys(t).forEach(function(r){(e=t[r])&&e.name&&n.push({id:r,name:e.name+", "+e.emitter.split("-")[0]})}),n},S=function(){return Object.merge({},m||{})},C=function(){return Object.keys(h)},E=function(t,n,r){function a(){var e=cw.lib.dry(i);if(cw.lib.md5(e)===w)return b.resolve("Nothing changed – no need to save");var t=new o("cw",function(n){n?b.reject("Error connectiong DB during settings save"):t.get("cw",function(n,r){n?b.reject("Error reading previous settings during settings save"):t.put(Object.merge(y(Object.merge(e,{crypto:"PIN",pin:s||e.pin})),{_rev:r._rev,stamp:Date.now()}),function(e){e?b.reject("Error saving settings"):b.resolve.debounce(1)("Settings saved sucessfully")})})})}if(c(t)&&null==n)return Object.merge({},h[t]||{},!0);if(null==t)return Object.merge({},h,!0);if(l(n)){var m,p,g,v=Object.clone(n,!0),b=e(),k=Object.clone(i,!0),w=cw.lib.md5(cw.lib.dry(i)),x=/^(http[s]?\:\/\/)[^\:@\/]+:[^@]+@(.+)(\/?)$/,_="apps ico pic name title desc stamp start sync creator".split(" ").sort(),S={},C=[];if(i.type="settings",b.always(function(){i=k,f={};for(var e=0;e<i.dbs.length;e++)f[i.dbs[e].name]=i.dbs[e]}),"delete"===v._cmd)$.my.modal({manifest:"cw.Sys.Confirm",data:{text:'<div class="red"><span class="fi-alert mr5 fs90"></span> DB removal requested. Please close all other tabs and browsers with CloudWall opened. Removing DB on this machine does not remove it on linked machines’ accounts. When DB purge finishes, tab reloads.</div>',ok:"Remove DB"}}).then(function(e){function t(e){return e.replace(/^(http[s]?\:\/\/[^\:@\/]+:)[^@]+(@.+)$/,"$1•••••$2")}var n=[];if(l(e)&&"commit"==e.cmd){for(var r=0;r<i.dbs.length;r++)i.dbs[r].name!==v.name?n.push(i.dbs[r]):E=Object.clone(i.dbs[r],!0);i.dbs=n,cw.db(v.name).sync(!1),b.then(function(){for(var e=0;e<E.sync.length;e++)E.sync[e].dir.forEach(function(n){localStorage.removeItem(["","repl",n,t(E.sync[e].url)].join("_"))});o.destroy(v.name).then(function(){window.location.reload()})}.debounce(1e3)),a(i)}}).fail(function(){b.reject("DB deletion cancelled.")});else if("sync"===v._cmd)$.my.modal({manifest:"cw.Sys.Confirm",data:{text:'<div class=""><span class="fi-clock mr5 fs90 green"></span> DB forced sync requested. It can take some time, but you can continue working during process.  When replication finish you’ll see notification.</div>',ok:"Force replication"}}).then(function(e){var t=f[v.name];if(l(e)&&"commit"==e.cmd){for(var n=0;n<t.sync.length;n++)t.sync[n].dir.length&&!function(e,t){var n=0;cw.db(v.name).sync(!1),cw.db(v.name).replicate[e.dir[n]](e.url,function(i,a){if(i?(cw.note("Replication "+e.dir[n]+" "+t.url+" failed.","error"),console.log(i)):cw.note("Replication "+e.dir[n]+" "+t.url+" finished.","ok"),n+=1,e.dir[n])cw.db(v.name).replicate[e.dir[n]](e.url,function(i,a){if(i?cw.note("Replication "+e.dir[n]+" "+t.url+" failed.","error"):cw.note("Replication "+e.dir[n]+" "+t.url+" finished.","ok"),d(r))try{r(i,a)}catch(s){}cw.db(v.name).sync(!0)});else{if(d(r))try{r(i,a)}catch(s){}cw.db(v.name).sync(!0)}})}(t.sync[n],v.sync[n]);b.resolve("Started forced DB sync.")}}).fail(function(){b.reject("DB forced sync cancelled.")});else if("resync"===v._cmd)$.my.modal({manifest:"cw.Sys.Confirm",data:{text:'<div class=""><span class="fi-alert mr5 fs90 red"></span> DB resync requested. All content of current DB will be discarded on on this machine.  Operation does not remove it on linked machines’ accounts. When process is finished, tab reloads.</div>',ok:"Clean and resync DB"}}).then(function(e){function t(e){return e.replace(/^(http[s]?\:\/\/[^\:@\/]+:)[^@]+(@.+)$/,"$1•••••$2")}if(l(e)&&"commit"==e.cmd){var n=f[v.name];for(m=0;m<n.sync.length;m++)n.sync[m].dir.forEach(function(e){localStorage.removeItem(["","repl",e,t(n.sync[m].url)].join("_"))});o.destroy(v.name).then(function(){window.location.reload()})}}).fail(function(){b.reject("DB deletion cancelled.")});else if(f[v.name]){var E=f[v.name];for(m=0;m<E.sync.length;m++)p=E.sync[m].url.replace(x,"$1$2"),S[p]=E.sync[m].url;for(m=0;m<v.sync.length;m++)g=v.sync[m].url,g&&(g.has("•••••")?(p=S[g.replace(x,"$1$2")],p&&(v.sync[m].url=p,C.push(v.sync[m]))):C.push(v.sync[m]));f[v.name].sync=C.slice(0),Object.merge(f[v.name],Object.reject(v,"sync")),a(i)}else v.name&&u(v.sync)&&v.title&&v.pic&&(i.dbs.push(Object.clone(Object.select(v,_))),a(i));return b.promise()}},T=function(e,t){return cw.lib.getref(f[e]||{},"sync."+t+".url")},A=function(o){function d(e){var t=b(e,a);if(t.dbs&&t.uid||(t=b(e,s),t.dbs&&t.uid||p.reject("Invalid PIN, can’t decrypt settings")),t.dbs&&t.uid){m.name=t.name,m.pic=t.pic;try{if(t.pic.length>2e3){var n=new Image;n.src=t.pic,img=cw.lib.image(n),m.pic=img.sharpen(1.5).resample(50,50).sharpen(.3).jpeg(.95)}}catch(o){m.pic=t.pic}m.uid=t.uid||cw.lib.hash8(t.name+cw.lib.hash8(t.pin)),m.contact=t.contact||"",m._id=["user",t.name,t.uid].join("-"),m.crc=cw.lib.hash8(t.pic+m._id+m.contact),i=Object.merge({},t),h={},f={};for(var c,l=0;l<i.dbs.length;l++)if(c=i.dbs[l].name,h[c]=Object.clone(i.dbs[l],!0),f[c]=i.dbs[l],u(h[c].sync))for(var d=0;d<h[c].sync.length;d++)h[c].sync[d].url=h[c].sync[d].url.replace(/^(http[s]?\:\/\/[^\:@\/]+:)[^@]+(@.+)$/,"$1•••••$2");cw.debug||(r._getDbSettings=r._settings=r._settings=null,delete r._getDbSettings,delete r._getSyncUrl,delete r._settings),function(){p.resolve(Object.keys(h))}.delay(300)}}var p=e();return l(o)&&/^settings$/.test(o.type)&&o.name||p.reject("Invalid settings doc"),l(i)&&o._rev===i._rev?(p.resolve(Object.keys(h),!0),p.promise()):(o.CRYPTO&&!c(a)?b(o,n("",o.name)).uid?(a=t(""),s=n("",o.name),d(o)):$.my.modal({manifest:{data:{pin:""},init:function(e){e.formgen([{row:"350px",rowCss:"my-row pt20 tac"},'<div class="tac mt15 mb5"><img src="http://s3-eu-west-1.amazonaws.com/cloudwall.me/0.9/i/logo.png" class="mr20 o60" style="width:266px;"></div>',["",'<input id="pin" type="password" placeholder="Enter PIN" class="w250 fs150 tac pt10 pb10 blue" >'],["","btn#btn-ok.fs110.pl30.pr30.mb10",{val:"Log in",style:"border-radius:100px"}]]),e.find("#pin").keydown(function(t){13==t.keyCode&&(cw.debug=!1,e.trigger("commit.my")),9==t.keyCode&&(t.preventDefault(),cw.debug=!0,e.trigger("commit.my"))})},ui:{"#pin":"pin","#btn-ok":{bind:function(e,t,n){null!=t&&n.trigger("commit.my")},events:"click.my"}}},width:350,esc:!0}).always(function(e){l(e)?(a=t(e.pin),s=n(e.pin,o.name),d(o)):p.reject("No PIN provided to decrypt settings")}):(cw.debug=!0,d(o)),p.promise())};return r={enc:y.fill(),dec:b.fill(),keys:_.fill(),has:x.fill(),att:k.fill(),share:new Function,install:new Function,_init:A.fill(),dblist:C.fill(),me:S.fill(),_getDbSettings:E.fill(),_getSyncUrl:T.fill(),_settings:function(){return i}.fill()}}());
+/**
+ * CloudWall 2 crypto lib and settings sandbox
+ * Created by ermouth 2015-04-01
+ */
+if (!("cw" in window)) window.cw={};
+if (!cw.crypto) cw.crypto = (function() {
+
+	var Pouch = window.PouchDB,
+			isA = Object.isArray, isB = Object.isBoolean, isS = Object.isString, isO = Object.isObject,
+			isN = Object.isNumber, isR = Object.isRegExp, isF = Object.isFunction;
+
+	var C, S, S0, PIN, PIN2, D0={}, D={}, me={}, 
+			fields = "type crypto stamp creator name pic tags _id _rev _attachments".split(' '),
+			fields1 = fields.slice(0).add('_attachments'),
+			CR = 'CRYPTO',
+			keys = {},
+			keysTtl = 0;
+
+	function _pi(){return $.Deferred();}
+	
+	
+	//=======================================
+
+	var encode = function(doc) {
+		if(!doc || !Object.isObject(doc)) return doc;
+		var key, toEnc, resDoc;
+
+
+		if (doc.crypto) key = getKeys(doc.crypto), key=key?key.key:null;
+		if (!key && doc._id==="cw" && doc.type==="settings") {
+			key=doc.pin;
+			if(key && !PIN) PIN=key;
+		}
+
+		if(key) {
+			resDoc = Object.select(doc, fields);
+			resDoc.CRYPTO = cw.lib.encDoc(Object.reject(doc, fields), key);
+			//TODO: enc attachments
+			return resDoc;
+		}
+		return doc;
+	};
+	
+	
+	//=======================================
+
+	var decode = function(doc, pin) {
+		if(!Object.isObject(doc)) return doc;
+		var key, decoded, resDoc;
+
+		if(doc.hasOwnProperty(CR)) {
+			if (doc.crypto) key = getKeys(doc.crypto), key=key?key.key:null;
+			if (!key && doc._id==="cw") key=pin;
+		}
+
+		if(key) {
+			try {
+				decoded = cw.lib.decDoc(doc.CRYPTO, key);
+				resDoc = Object.reject(Object.merge(Object.clone(doc,true), decoded), CR);
+			} catch (e) {
+				return doc;
+			}
+			//doc.CRYPTO="";
+			return resDoc;
+		}
+		return doc;
+	};
+	
+	//=======================================
+
+	var decodeAtt = function(dataBlob, keyId) {
+		if(!dataBlob || !keyId) return dataBlob;
+		var key;
+		if((key = getKeys(keyId)) && (key = key.key)) {
+			var dataBase64 = cw.lib.blob2base64(dataBlob),
+					resBase64 = cw.lib.base64(btoa(cw.lib.dec(dataBase64, key).from(1)), true);
+			return cw.lib.base642blob(resBase64);
+		}
+		return dataBlob;
+	};
+	
+	
+	//=======================================
+
+	var getKeys = function(keyId) {
+		if (keys[keyId]) return keys[keyId];
+		keys={};
+		var xkeys=S?S.keys:[];
+		for (var i=0;i<xkeys.length;i++) {
+			keys[xkeys[i].id] = xkeys[i];
+		}
+		return keys[keyId]||keys;
+	};
+	
+	
+	//=======================================
+
+	var hasKey = function (keyId) {getKeys();return keys.hasOwnProperty(keyId);}
+	
+
+	//=======================================
+
+	var getKeysPub = function() { // !!!!!!!!!! MODIFIED !!!!!!!!
+		var keys = getKeys(),
+				resKeys = [],
+				key, k;
+		Object.keys(keys).forEach(function(keyId) {
+			if((key = keys[keyId]) && key.name) {
+				resKeys.push({id:keyId, name:key.name+", "+key.emitter.split("-")[0]});
+			}
+		});
+		return resKeys;
+	};
+	
+	
+	//=======================================
+
+	var getme = function () {
+		return Object.merge({}, me||{});
+	}
+	
+	//=======================================
+
+	var dbs = function () {
+		return Object.keys(D);
+	}
+	
+	//=======================================
+
+	var dbsettings = function (dbid, update, done){
+		if (isS(dbid) && null==update) return Object.merge({}, D[dbid]||{}, true);
+		else if (null==dbid) return Object.merge({}, D, true);
+		else if (isO(update)) {
+			//we have settings update request
+			var i,
+					d = Object.clone(update,true), 
+					pi=_pi(),
+					S0 = Object.clone(S, true),
+					crc = cw.lib.md5(cw.lib.dry(S)),
+					re=/^(http[s]?\:\/\/)[^\:@\/]+:[^@]+@(.+)(\/?)$/,
+					list="apps ico pic name title desc stamp start sync creator".split(" ").sort(),
+					syncs={},
+					sync=[],
+					surl,
+					xurl;
+
+			S.type="settings";
+
+			pi.always(function(){
+				// restore settings if fail
+				S=S0;
+				D0 = {};
+				for (var i=0, k;i<S.dbs.length;i++) {
+					D0[S.dbs[i].name] = S.dbs[i];
+				}
+			});
+			
+			
+			//- - - - - - - delete db - - - - - - -
+
+			if (d._cmd === "delete"){
+				$.my.modal({
+					manifest:"cw.Sys.Confirm",
+					data:{
+						text:'<div class="red">'
+						+'<span class="fi-alert mr5 fs90"></span> DB removal requested. Please '
+						+'close all other tabs and browsers with CloudWall opened. Removing DB '
+						+'on this machine does not remove it on linked machines’ accounts.'
+						+' When DB purge finishes, tab reloads.'
+						+'</div>',
+						ok:"Remove DB"
+					}
+				}).then(function(res){
+					var dbsnew=[];
+					if (isO(res) && res.cmd == "commit") {
+						for (var i=0;i<S.dbs.length;i++) {
+							if (S.dbs[i].name!==d.name) dbsnew.push(S.dbs[i]);
+							else cd = Object.clone(S.dbs[i],true);
+						}
+						S.dbs=dbsnew;
+
+						cw.db(d.name).sync(false);
+						pi.then(function(){
+
+							for (var i=0;i<cd.sync.length;i++) {
+								cd.sync[i].dir.forEach(function(dir){
+									localStorage.removeItem(["","repl",dir, _u(cd.sync[i].url)].join("_"))
+								})
+							}
+
+							Pouch.destroy(d.name).then(function(){
+								window.location.reload();
+							});
+						}.debounce(1000));
+						_saveSettings(S);
+						//console.log(S, dbid);
+					}
+					function _u(s){
+						// masks pwd in url
+						return s.replace(/^(http[s]?\:\/\/[^\:@\/]+:)[^@]+(@.+)$/,"$1•••••$2");
+					}
+				}).fail(function(){
+					pi.reject("DB deletion cancelled.");
+				})
+			}
+			
+			
+			//- - - - - - - sync db - - - - - - -
+			
+			else if (d._cmd === "sync"){
+				$.my.modal({
+					manifest:"cw.Sys.Confirm",
+					data:{
+						text:'<div class="">'
+						+'<span class="fi-clock mr5 fs90 green"></span> DB forced sync requested. '
+						+'It can take some time, but you can continue working during process. '
+						+' When replication finish you’ll see notification.'
+						+'</div>',
+						ok:"Force replication"
+					}
+				}).then(function(res){
+					var cd = D0[d.name], dbsnew=[], ptr=0;
+					if (isO(res) && res.cmd == "commit") {
+						for (var i=0;i<cd.sync.length;i++) {
+							if (cd.sync[i].dir.length) {
+								(function(sync, sync1){
+									var ptr=0;
+									cw.db(d.name).sync(false);
+									cw.db(d.name)
+									.replicate[sync.dir[ptr]](sync.url, function(e, ok){
+
+										if (!e) cw.note("Replication "+sync.dir[ptr]+" "+sync1.url+" finished.", "ok");
+										else {
+											cw.note("Replication "+sync.dir[ptr]+" "+sync1.url+" failed.", "error");
+											console.log(e)
+										}
+										ptr+=1;
+										if (sync.dir[ptr]) cw.db(d.name)
+										.replicate[sync.dir[ptr]](sync.url, function(e, ok){
+											if (!e) cw.note("Replication "+sync.dir[ptr]+" "+sync1.url+" finished.", "ok");
+											else cw.note("Replication "+sync.dir[ptr]+" "+sync1.url+" failed.", "error");
+											if (isF(done)) try {done(e, ok);}catch(err){};
+											cw.db(d.name).sync(true);
+										});
+										else {
+											if (isF(done)) try {done(e, ok);}catch(err){};
+											cw.db(d.name).sync(true);
+										}
+									})
+								})(cd.sync[i], d.sync[i]);
+							}
+						}
+						pi.resolve("Started forced DB sync.")
+					}
+				}).fail(function(){
+					pi.reject("DB forced sync cancelled.");
+				})
+			}
+			
+			
+			//- - - - - - - resync db - - - - - - -
+			
+			else if (d._cmd === "resync"){
+				$.my.modal({
+					manifest:"cw.Sys.Confirm",
+					data:{
+						text:'<div class="">'
+						+'<span class="fi-alert mr5 fs90 red"></span> DB resync requested. All '
+						+'content of current DB will be discarded on on this machine. '
+						+' Operation does not remove it on linked machines’ accounts.'
+						+' When process is finished, tab reloads.'
+						+'</div>',
+						ok:"Clean and resync DB"
+					}
+				}).then(function(res){
+					var dbsnew=[];
+					if (isO(res) && res.cmd == "commit") {
+
+						var cd = D0[d.name];
+						for (i=0;i<cd.sync.length;i++) {
+							cd.sync[i].dir.forEach(function(dir){
+								localStorage.removeItem(["","repl",dir, _u(cd.sync[i].url)].join("_"))
+							})
+						}
+
+						Pouch.destroy(d.name).then(function(){
+							window.location.reload();
+						});
+						//console.log(S, dbid);
+					}
+
+					function _u(s){
+						// masks pwd in url
+						return s.replace(/^(http[s]?\:\/\/[^\:@\/]+:)[^@]+(@.+)$/,"$1•••••$2");
+					}
+
+					function _ls(dir, url, data) {
+						if (!data) return cw.lib.unjson(JSON.parse(localStorage.getItem("_repl_"+dir+"_"+url)));
+						else localStorage.setItem("_repl_"+dir+"_"+url, cw.lib.json(data));
+					}
+				}).fail(function(){
+					pi.reject("DB deletion cancelled.");
+				})
+			}
+			
+			
+			//- - - - - - - other cmd - - - - - - -
+			
+			else  {
+				//check if we already have this db
+				if (D0[d.name]) {
+					var cd = D0[d.name];
+					// stash curr syncs idxs
+					for (i=0;i<cd.sync.length;i++) {
+						surl=cd.sync[i].url.replace(re,"$1$2");
+						syncs[surl]=cd.sync[i].url;
+					}
+					//check if and what urls changed
+					for (i=0;i<d.sync.length;i++) {
+						xurl = d.sync[i].url;
+						if (xurl){
+							if (xurl.has("•••••")) {
+								surl =syncs[xurl.replace(re,"$1$2")];
+								if (surl) {
+									d.sync[i].url = surl;
+									sync.push(d.sync[i]);
+								}
+							} else sync.push(d.sync[i]);
+						};
+
+					}
+					D0[d.name].sync=sync.slice(0);
+					Object.merge(D0[d.name], Object.reject(d,"sync"));
+					_saveSettings(S);
+				} else if (d.name && isA(d.sync) && d.title && d.pic) {
+					S.dbs.push(Object.clone(Object.select(d, list)));
+					_saveSettings(S);
+				}
+			}
+
+
+
+			return pi.promise();
+		}
+
+		function _saveSettings(obj) {
+			//S.pin=PIN2;
+			var doc = cw.lib.dry(S);
+			if (cw.lib.md5(doc)===crc) return pi.resolve("Nothing changed – no need to save");
+
+			var db = new Pouch("cw", function (e, res) {
+				if (e) pi.reject("Error connectiong DB during settings save");
+				else db.get("cw", function (e, res) {
+					if (e) pi.reject("Error reading previous settings during settings save");
+					else db.put(
+						Object.merge(
+							encode(Object.merge(doc,{crypto:"PIN", pin:PIN2||doc.pin})), 
+							{_rev:res._rev, stamp:Date.now()}
+						), 
+						function (e,res){
+							if (e) pi.reject("Error saving settings");
+							else {
+								pi.resolve.debounce(1)("Settings saved sucessfully");
+							}
+							//db.close();
+						}
+					);
+				});
+			});	
+		}
+	}
+
+	var getSyncUrl = function (dbid, idx) {
+		return cw.lib.getref(D0[dbid]||{}, 'sync.'+idx+'.url');
+	}
+
+
+	/* ############# INIT ###############*/
+
+	var init = function(doc) {
+		var pi=_pi();
+		if (!isO(doc) || !/^settings$/.test(doc.type) || !doc.name) pi.reject("Invalid settings doc");
+		if (isO(S) && doc._rev===S._rev) {
+			pi.resolve(Object.keys(D), true);
+			return pi.promise();
+		}
+		if (/*isS(doc.crypto) &&*/ doc.CRYPTO && !isS(PIN)) {
+			//check if pin===""
+			if (decode(doc, _pin2("",doc.name)).uid) {
+				PIN=_pin("");
+				PIN2=_pin2("", doc.name);
+				_decSettings (doc);
+			}
+			else $.my.modal({
+				manifest:{
+					data:{pin:""},
+					init:function ($o){
+						$o.formgen([
+							{row:"350px",rowCss:"my-row pt20 tac"},
+							'<div class="tac mt15 mb5"><img src="http://s3-eu-west-1.amazonaws.com/cloudwall.me/0.9/i/logo.png" '
+							+'class="mr20 o60" style="width:266px;"></div>',
+							['','<input id="pin" type="password" placeholder="Enter PIN" class="w250 fs150 tac pt10 pb10 blue" >'],
+							['', 'btn#btn-ok.fs110.pl30.pr30.mb10',{val:"Log in", style:"border-radius:100px"}]
+						]);
+						$o.find("#pin").keydown(function(e){
+							if(e.keyCode==13) cw.debug=false, $o.trigger("commit.my");
+							if(e.keyCode==9) e.preventDefault(), cw.debug=true, $o.trigger("commit.my");
+						})/*.trigger("focus")*/;
+					},
+					ui:{
+						"#pin":"pin",
+						"#btn-ok": {
+							bind: function(d,v,$o){
+								if (v!=null) $o.trigger("commit.my");
+							},
+							events:"click.my"
+						}
+					}
+				},
+				width:350,
+				esc:true
+			}).always(function(res){	
+				if (isO(res)) {
+					PIN=_pin(res.pin);
+					PIN2=_pin2(res.pin, doc.name);
+					_decSettings (doc);	
+				} else pi.reject("No PIN provided to decrypt settings")
+					});
+		}
+		else  cw.debug=true, _decSettings (doc);
+
+		return pi.promise();
+
+		function _decSettings (doc) {
+			var obj = decode(doc, PIN);
+			if (!obj.dbs || !obj.uid) {
+				obj = decode(doc, PIN2);
+				if (!obj.dbs || !obj.uid) pi.reject("Invalid PIN, can’t decrypt settings");
+			}
+			if (obj.dbs && obj.uid) {
+
+				//gen me
+				me.name=obj.name;
+				me.pic=obj.pic;
+				try {
+					if (obj.pic.length>2e3) {
+						var upic=new Image(); upic.src=obj.pic;
+						img = cw.lib.image(upic);
+						me.pic = img.sharpen(1.5).resample(50,50).sharpen(0.3).jpeg(0.95);
+					};
+				}catch(e) {
+					me.pic = obj.pic;
+				}
+				me.uid=obj.uid||cw.lib.hash8(obj.name+cw.lib.hash8(obj.pin));
+				me.contact=obj.contact||"";
+				me._id=["user",obj.name,obj.uid].join("-");
+				me.crc = cw.lib.hash8(obj.pic+me._id+me.contact);
+
+				S = Object.merge({}, obj);
+
+				// send stats
+				/*try {
+					//enum
+					var synced = S.dbs.reduce(function(a,b){
+						return a+(b.sync.length?1:0);
+					},0);
+					$.ajax({
+						url:"/x/started",
+						dataType:"json",
+						type:"POST",
+						data:{
+							user:me.name, 
+							uid:me.uid, 
+							dbs:S.dbs.length, 
+							synced:synced
+						}
+					});
+				} catch(e) {}*/
+
+				// gen shadow dbsettings
+				D = {};
+				D0 = {};
+				for (var i=0, k;i<S.dbs.length;i++) {
+					k=S.dbs[i].name;
+					D[k] = Object.clone(S.dbs[i], true);
+					D0[k] = S.dbs[i];
+					//augment passwords
+					if (isA(D[k].sync)){
+						for (var j=0;j<D[k].sync.length;j++)
+							D[k].sync[j].url = D[k].sync[j].url.replace(/^(http[s]?\:\/\/[^\:@\/]+:)[^@]+(@.+)$/,"$1•••••$2");
+					}
+				}
+				// delete unsafe
+				if (!cw.debug) {
+					C._getDbSettings=C._settings=C._settings=null;
+					delete C._getDbSettings;
+					delete C._getSyncUrl;
+					delete C._settings;
+				}
+
+				(function(){pi.resolve(Object.keys(D));}).delay(300);
+
+			}
+		}
+	}
+
+	// Return public methods
+	C = {
+		"enc": encode.fill(),
+		"dec": decode.fill(),
+		"keys": getKeysPub.fill(),
+		"has": hasKey.fill(),
+		"att": decodeAtt.fill(),
+		"share": (new Function),
+		"install": (new Function),
+		"_init": init.fill(),
+		"dblist":dbs.fill(),
+		"me":getme.fill(),
+		"_getDbSettings": dbsettings.fill(),
+		"_getSyncUrl":getSyncUrl.fill(),
+		"_settings": (function () {return S}).fill()
+	};
+
+	return C;
+
+	function _pin(s) {
+		return cw.lib.md5(cw.lib.md5(s)+cw.lib.hash8(s));
+	}
+
+	function _pin2(s, user) {
+		return cw.lib.md5(_pin(s)+user);
+	}
+
+})();

@@ -127,19 +127,38 @@
 	return pi.promise();
 		
 		},
-	"params": {
-		"width": 700
-	},
-	"data": {
-		"db": null,
-		"id": "",
-		"cmd": "",
-		"info": [],
-		"doc": {
+	"Actions": {
+		"tip": {
+			"edit": "Edit {type}",
+			"create": "Create new {type} with the content of this one",
+			"_run": "Run application",
+			"_runnew": "Open app and create empty {type}",
+			"_delete": "Delete {type} permanently",
+			"_hide": "Hide {type}. Doc remains in DB, \nbut you’ll never see it again.",
+			"_export": "Copy {type} to other DB",
+			"_json": "Edit as JSON"
 		},
-		"actions": {
+		"name": {
+			"create": "Clone",
+			"_more": "Info",
+			"_export": "Copy...",
+			"_run": "Run",
+			"_runnew": "Run",
+			"_delete": "Del",
+			"_hide": "Hide",
+			"_json": "JSON"
 		},
-		"actions2": {
+		"fi": {
+			"edit": "fi-pencil",
+			"view": "fi-eye",
+			"create": "fi-page-copy",
+			"_more": "fi-info",
+			"_export": "fi-page-export",
+			"_run": "fi-play-circle green",
+			"_runnew": "fi-play-circle green",
+			"_delete": "fi-trash red",
+			"_hide": "fi-minus-circle orange",
+			"_json": "fi-indent-more"
 		}
 	},
 	"ui": {
@@ -187,39 +206,20 @@
 			}
 		}
 	},
-	"Actions": {
-		"fi": {
-			"edit": "fi-pencil",
-			"view": "fi-eye",
-			"create": "fi-page-copy",
-			"_more": "fi-info",
-			"_export": "fi-page-export",
-			"_run": "fi-play-circle green",
-			"_runnew": "fi-play-circle green",
-			"_delete": "fi-trash red",
-			"_hide": "fi-minus-circle orange",
-			"_json": "fi-indent-more"
+	"data": {
+		"db": null,
+		"id": "",
+		"cmd": "",
+		"actions2": {
 		},
-		"name": {
-			"create": "Clone",
-			"_more": "Info",
-			"_export": "Copy...",
-			"_run": "Run",
-			"_runnew": "Run",
-			"_delete": "Del",
-			"_hide": "Hide",
-			"_json": "JSON"
+		"actions": {
 		},
-		"tip": {
-			"edit": "Edit {type}",
-			"create": "Create new {type} with the content of this one",
-			"_run": "Run application",
-			"_runnew": "Open app and create empty {type}",
-			"_delete": "Delete {type} permanently",
-			"_hide": "Hide {type}. Doc remains in DB, \nbut you’ll never see it again.",
-			"_export": "Copy {type} to other DB",
-			"_json": "Edit as JSON"
-		}
+		"doc": {
+		},
+		"info": []
+	},
+	"params": {
+		"width": 700
 	}
 },
 {
@@ -233,368 +233,6 @@
 		if (!form.data.pic) form.data.pic=form.data.ico;
 	
 			},
-	"app": {
-		"name": "DBSettings",
-		"version": "2",
-		"timeout": "5000",
-		"title": "DB Settings",
-		"author": "ermouth",
-		"ico": "data:image/jpeg;base64,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",
-		"nodetitle": "title",
-		"maskstate": {
-			"name": true
-		},
-		"width": [800]
-	},
-	"params": {
-		"delay": 20
-	},
-	"data": {
-		"ico": "",
-		"pic": "",
-		"name": "",
-		"title": "",
-		"desc": "",
-		"stamp": 0,
-		"start": "",
-		"creator": "",
-		"apps": [],
-		"sync": []
-	},
-	"ui": {
-		"#dbtitle": {
-			"bind": "title",
-			"watch": "#title"
-		},
-		"#title": {
-			"bind": "title",
-			"check": function (d,v) {
-
-				if (v && v.length<3) return "At least 3 characters";
-				if (v && v.length>40) return "40 chars maximum";
-				return "";
-			
-					}
-		},
-		"#desc": {
-			"bind": "desc",
-			"check": /^[\s\S]{0,300}$/,
-			"error": "300 chars maximum"
-		},
-		"#dbinfo": {
-			"bind": function (d,v,$o) {
-
-				var that=this;
-				that.db.info().then(function(res){
-					var h="", docs=0, users=1, useq=0;
-					docs=res.doc_count;
-					useq=res.update_seq;
-					h='Internal ID: '+that.db.name+'. ';
-					if (d.stamp) {
-						h+="Created "+cw.lib.date(d.stamp*1, "tiny")
-						+(d.creator?' by '+d.creator+'. ':". ");
-					}
-					if (docs) {
-						h+='Contains '+docs+' doc'+(docs>1?'s':'')+'. '
-					} else h+='DB is empty. ';
-					$o.html(h);
-				});
-			
-					}
-		},
-		"#pic": {
-			"bind": function (d,v) {
-
-				if (!d.ico.length) d.ico=d.pic;
-				return d.pic;
-			
-					}
-		},
-		"#apps": {
-			"bind": "apps",
-			"manifest": "App",
-			"check": true,
-			"watch": "#btn-addapp"
-		},
-		"#sync": {
-			"bind": "sync",
-			"manifest": "Sync",
-			"check": true,
-			"watch": "#btn-addsync"
-		},
-		"#start": {
-			"bind": function (d,v) {
-
-			if (v!=null) {
-				var a = v.split("#").last().split("/").slice(0,4).compact(true);
-				if (a[0]==this.db.name) a=a.slice(1);
-				d.start=a.join("/");
-			}
-			return d.start;
-		
-					}
-		},
-		"#btn-close": {
-			"bind": function (d,v,$o) {
-
-			if (v!=null)this.app.close(true);
-		
-					},
-			"events": "click.my"
-		},
-		"#btn-save": {
-			"bind": function (d,v,$o) {
-
-			var that=this;
-			if (v!=null){
-				if (!$o.my().root.my("valid")) {
-					cw.note(
-						"Save failed – some settings are invalid. Fix reds and try again.",
-						"error"
-					);
-					return;
-				}
-				var db = cw.db("cw");
-				d._cmd="";
-				db.settings(d).then(function(){
-					cw.note("Settings saved");
-					that.app.close(true);
-				}).fail(function(a){
-					cw.note(a,"error");
-				});
-			}
-		
-					},
-			"events": "click.my"
-		},
-		"#btn-addapp": {
-			"bind": function (d,v) {
-
-			if (v!=null) {
-				d.apps.push(Object.merge({stamp:Date.now()},this.App.data, true));
-			}
-		
-					},
-			"events": "click.my"
-		},
-		"#btn-compact": {
-			"bind": function (d,v,$o) {
-
-			var dbid = this.db.name;
-			if (v!=null) {
-				$o.parent().find(".cw-busy").removeClass("hide");
-				cw.db(dbid)
-				.compact()
-				.then(function(){
-					if ($o && $o.is(":visible")) $o.parent().find(".cw-busy").addClass("hide"); 
-					cw.note("DB "+dbid+" sucessfully compacted.","ok")
-				});
-			}
-		
-					},
-			"events": "click.my"
-		},
-		"#btn-delete": {
-			"bind": function (d,v,$o) {
-
-			var that=this;
-			if (v!=null){
-				var db = cw.db("cw");
-				d._cmd="delete";
-				db.settings(d).then(function(){
-					cw.note("Settings saved. DB is being removed.","warning");
-				}).fail(function(a){
-					cw.note(a,"error");
-				});
-			}
-		
-					},
-			"events": "click.my"
-		},
-		"#btn-pic": {
-			"bind": function (d,v,$o) {
-
-			if (v!=null) {
-				//console.log($o, $o.data(), this)
-				$.my.modal({
-					manifest:"cw.Sys.Cropper.Square",
-					data:{data:"",filename:"", size:250}
-				}).then(function (crop) {
-					if (crop && crop.data) {
-						var I=new Image;
-						I.src="data:image/jpeg;base64,"+crop.data;
-						I.onload=function(){
-							var img=cw.lib.image(I);
-							try {
-								d.pic = img.resample(128).sharpen(0.2).jpeg(0.96, true);
-								d.ico = img.resample(50).sharpen(0.2).jpeg(0.96);
-								$o.my().root.trigger("change");
-							}catch(e){
-								console.log(e)
-							}								
-							crop.data="";
-							$o.my("find", "#pic").trigger("check");
-						}
-					}
-				});
-			}
-		
-					},
-			"events": "click.my"
-		},
-		"#btn-resync": {
-			"bind": function (d,v,$o) {
-
-			var that=this;
-			if (v!=null){
-				var db = cw.db("cw");
-				d._cmd="resync";
-				db.settings(d).then(function(){
-					cw.note("Settings saved. DB is prepared to resync","warning");
-				}).fail(function(a){
-					cw.note(a,"error");
-				});
-			}
-		
-					},
-			"events": "click.my",
-			"css": {
-				"hide": function (d,v,$o) {
-						return !d.sync.length
-						}
-			}
-		},
-		"#btn-tosync": {
-			"bind": function (d,v,$o) {
-
-			var that=this;
-			if (v!=null){
-				$o.parent().find(".cw-busy").removeClass("hide");
-				d._cmd="sync";
-				
-				var sl = that.db.settings().sync.filter(function(e){return !!e.dir.length}).length,
-						end = function(){
-							if ($o && jQuery.contains(document, $o[0])) $o.parent().find(".cw-busy").addClass("hide");
-						},
-						end2 = end.after(sl);
-				
-				cw.db("cw").settings(d, function(){
-					end2();
-				}).then(function(a){
-					cw.note(a,"ok");
-				}).fail(function(a){
-					end();
-					cw.note(a,"error");
-				});
-
-				//_getSyncUrl(dbid,i)
-			}
-		
-					},
-			"events": "click.my",
-			"css": {
-				"hide": function (d) {
-						return !d.sync.length
-						}
-			}
-		},
-		"#btn-addsync": {
-			"bind": function (d,v) {
-
-			if (v!=null) {
-				d.sync.push(Object.merge({stamp:Date.now()},this.Sync.data, true));
-			}
-		
-					},
-			"events": "click.my"
-		}
-	},
-	"App": {
-		"data": {
-			"ico": "",
-			"title": "",
-			"url": ""
-		},
-		"init": [{
-				"row": "350px",
-				"rowCss": "my-row pb10"
-			},
-			["",
-				"<div class=\"w125 mr5 dib\">",
-				"inp#apptitle.fs85.w125",
-				{
-					"plc": "Title"
-				},
-				"</div><div class=\"dib\">",
-				"inp#appurl.fs75.w220.pt4.pb4.gray",
-				{
-					"plc": "App URL hash"
-				},
-				"</div>"]],
-		"ui": {
-			"#apptitle": {
-				"bind": "title",
-				"check": /^.{0,40}$/,
-				"error": "40 chars max"
-			},
-			"#appurl": {
-				"bind": function (d,v) {
-
-				if (v!=null) {
-					var a = v.split("#").last().split("/").slice(0,4).compact(true);
-					if (a[0]==this.db.name) a=a.slice(1);
-					d.url=a.join("/");
-				}
-				return d.url;
-			
-						}
-			}
-		}
-	},
-	"Sync": {
-		"data": {
-			"url": "",
-			"interval": "0",
-			"dir": ["from"]
-		},
-		"init": [{
-				"row": "350px",
-				"rowCss": "my-row pb15"
-			},
-			["",
-				"<div class=\"w350 mb5 dib\">",
-				"inp#syncurl.fs80.w350",
-				{
-					"plc": "CouchDB URL"
-				},
-				"</div>",
-				"spn#syncdir.dib.mt1.vat.fs80",
-				"<div class=\"w250 dib vat\">",
-				"<span class=\"fs80 gray ml2\"> in </span>",
-				"num#interval.fs80.w70.pt2.pb2",
-				{
-					"min": 0,
-					"max": 7220
-				},
-				"<span class=\"fs80 gray\"> minute intervals</span>",
-				"</div>"]],
-		"ui": {
-			"#interval": "interval",
-			"#syncurl": {
-				"bind": "url",
-				"check": /^(|http[s]?:\/\/([^\/]{1,100}\/){1,5}[a-z0-9_$\(\)+\-]{2,200}[\/]?)$/,
-				"error": "Invalid CouchDB URL"
-			},
-			"#syncdir": {
-				"bind": "dir",
-				"init": function ($o) {
-
-				$o.tags({tags:[{"From":"from"},{"To":"to"}]})
-			
-						}
-			}
-		}
-	},
 	"HTML": ["<div class=\"pl50 pr50 cw-Settings\">",
 		"<div id=\"nav\" class=\"fs90 pb20 mb25 bbs\">",
 		"<div id=\"xDbtitle\" class=\"fi-wrench pr20 fs140 lh120 w250 dib vat gray\"> <span class=\"fs110 bold\" id=\"dbtitle\"></span></div>",
@@ -728,7 +366,369 @@
 		".cw-Settings .tip {width:200px; font-size:72%; opacity:0.6;line-height:1.2em;display:inline-block;vertical-align:top;margin:-2px 0 0 30px}",
 		".cw-Settings .my-error .tip {display:none}",
 		".cw-Settings .my-error div.my-error-tip {display:inline-block;font-size:75%!important;margin-left:30px;vertical-align: top;}",
-		"</style>"]
+		"</style>"],
+	"Sync": {
+		"ui": {
+			"#interval": "interval",
+			"#syncdir": {
+				"bind": "dir",
+				"init": function ($o) {
+
+				$o.tags({tags:[{"From":"from"},{"To":"to"}]})
+			
+						}
+			},
+			"#syncurl": {
+				"bind": "url",
+				"check": /^(|http[s]?:\/\/([^\/]{1,100}\/){1,5}[a-z0-9_$\(\)+\-]{2,200}[\/]?)$/,
+				"error": "Invalid CouchDB URL"
+			}
+		},
+		"init": [{
+				"row": "350px",
+				"rowCss": "my-row pb15"
+			},
+			["",
+				"<div class=\"w350 mb5 dib\">",
+				"inp#syncurl.fs80.w350",
+				{
+					"plc": "CouchDB URL"
+				},
+				"</div>",
+				"spn#syncdir.dib.mt1.vat.fs80",
+				"<div class=\"w250 dib vat\">",
+				"<span class=\"fs80 gray ml2\"> in </span>",
+				"num#interval.fs80.w70.pt2.pb2",
+				{
+					"min": 0,
+					"max": 7220
+				},
+				"<span class=\"fs80 gray\"> minute intervals</span>",
+				"</div>"]],
+		"data": {
+			"url": "",
+			"interval": "0",
+			"dir": ["from"]
+		}
+	},
+	"App": {
+		"ui": {
+			"#appurl": {
+				"bind": function (d,v) {
+
+				if (v!=null) {
+					var a = v.split("#").last().split("/").slice(0,4).compact(true);
+					if (a[0]==this.db.name) a=a.slice(1);
+					d.url=a.join("/");
+				}
+				return d.url;
+			
+						}
+			},
+			"#apptitle": {
+				"bind": "title",
+				"check": /^.{0,40}$/,
+				"error": "40 chars max"
+			}
+		},
+		"init": [{
+				"row": "350px",
+				"rowCss": "my-row pb10"
+			},
+			["",
+				"<div class=\"w125 mr5 dib\">",
+				"inp#apptitle.fs85.w125",
+				{
+					"plc": "Title"
+				},
+				"</div><div class=\"dib\">",
+				"inp#appurl.fs75.w220.pt4.pb4.gray",
+				{
+					"plc": "App URL hash"
+				},
+				"</div>"]],
+		"data": {
+			"ico": "",
+			"title": "",
+			"url": ""
+		}
+	},
+	"ui": {
+		"#btn-addsync": {
+			"bind": function (d,v) {
+
+			if (v!=null) {
+				d.sync.push(Object.merge({stamp:Date.now()},this.Sync.data, true));
+			}
+		
+					},
+			"events": "click.my"
+		},
+		"#btn-tosync": {
+			"bind": function (d,v,$o) {
+
+			var that=this;
+			if (v!=null){
+				$o.parent().find(".cw-busy").removeClass("hide");
+				d._cmd="sync";
+				
+				var sl = that.db.settings().sync.filter(function(e){return !!e.dir.length}).length,
+						end = function(){
+							if ($o && jQuery.contains(document, $o[0])) $o.parent().find(".cw-busy").addClass("hide");
+						},
+						end2 = end.after(sl);
+				
+				cw.db("cw").settings(d, function(){
+					end2();
+				}).then(function(a){
+					cw.note(a,"ok");
+				}).fail(function(a){
+					end();
+					cw.note(a,"error");
+				});
+
+				//_getSyncUrl(dbid,i)
+			}
+		
+					},
+			"events": "click.my",
+			"css": {
+				"hide": function (d) {
+						return !d.sync.length
+						}
+			}
+		},
+		"#btn-resync": {
+			"bind": function (d,v,$o) {
+
+			var that=this;
+			if (v!=null){
+				var db = cw.db("cw");
+				d._cmd="resync";
+				db.settings(d).then(function(){
+					cw.note("Settings saved. DB is prepared to resync","warning");
+				}).fail(function(a){
+					cw.note(a,"error");
+				});
+			}
+		
+					},
+			"events": "click.my",
+			"css": {
+				"hide": function (d,v,$o) {
+						return !d.sync.length
+						}
+			}
+		},
+		"#btn-pic": {
+			"bind": function (d,v,$o) {
+
+			if (v!=null) {
+				//console.log($o, $o.data(), this)
+				$.my.modal({
+					manifest:"cw.Sys.Cropper.Square",
+					data:{data:"",filename:"", size:250}
+				}).then(function (crop) {
+					if (crop && crop.data) {
+						var I=new Image;
+						I.src="data:image/jpeg;base64,"+crop.data;
+						I.onload=function(){
+							var img=cw.lib.image(I);
+							try {
+								d.pic = img.resample(128).sharpen(0.2).jpeg(0.96, true);
+								d.ico = img.resample(50).sharpen(0.2).jpeg(0.96);
+								$o.my().root.trigger("change");
+							}catch(e){
+								console.log(e)
+							}								
+							crop.data="";
+							$o.my("find", "#pic").trigger("check");
+						}
+					}
+				});
+			}
+		
+					},
+			"events": "click.my"
+		},
+		"#btn-delete": {
+			"bind": function (d,v,$o) {
+
+			var that=this;
+			if (v!=null){
+				var db = cw.db("cw");
+				d._cmd="delete";
+				db.settings(d).then(function(){
+					cw.note("Settings saved. DB is being removed.","warning");
+				}).fail(function(a){
+					cw.note(a,"error");
+				});
+			}
+		
+					},
+			"events": "click.my"
+		},
+		"#btn-compact": {
+			"bind": function (d,v,$o) {
+
+			var dbid = this.db.name;
+			if (v!=null) {
+				$o.parent().find(".cw-busy").removeClass("hide");
+				cw.db(dbid)
+				.compact()
+				.then(function(){
+					if ($o && $o.is(":visible")) $o.parent().find(".cw-busy").addClass("hide"); 
+					cw.note("DB "+dbid+" sucessfully compacted.","ok")
+				});
+			}
+		
+					},
+			"events": "click.my"
+		},
+		"#btn-addapp": {
+			"bind": function (d,v) {
+
+			if (v!=null) {
+				d.apps.push(Object.merge({stamp:Date.now()},this.App.data, true));
+			}
+		
+					},
+			"events": "click.my"
+		},
+		"#btn-save": {
+			"bind": function (d,v,$o) {
+
+			var that=this;
+			if (v!=null){
+				if (!$o.my().root.my("valid")) {
+					cw.note(
+						"Save failed – some settings are invalid. Fix reds and try again.",
+						"error"
+					);
+					return;
+				}
+				var db = cw.db("cw");
+				d._cmd="";
+				db.settings(d).then(function(){
+					cw.note("Settings saved");
+					that.app.close(true);
+				}).fail(function(a){
+					cw.note(a,"error");
+				});
+			}
+		
+					},
+			"events": "click.my"
+		},
+		"#btn-close": {
+			"bind": function (d,v,$o) {
+
+			if (v!=null)this.app.close(true);
+		
+					},
+			"events": "click.my"
+		},
+		"#start": {
+			"bind": function (d,v) {
+
+			if (v!=null) {
+				var a = v.split("#").last().split("/").slice(0,4).compact(true);
+				if (a[0]==this.db.name) a=a.slice(1);
+				d.start=a.join("/");
+			}
+			return d.start;
+		
+					}
+		},
+		"#sync": {
+			"bind": "sync",
+			"manifest": "Sync",
+			"check": true,
+			"watch": "#btn-addsync"
+		},
+		"#apps": {
+			"bind": "apps",
+			"manifest": "App",
+			"check": true,
+			"watch": "#btn-addapp"
+		},
+		"#pic": {
+			"bind": function (d,v) {
+
+				if (!d.ico.length) d.ico=d.pic;
+				return d.pic;
+			
+					}
+		},
+		"#dbinfo": {
+			"bind": function (d,v,$o) {
+
+				var that=this;
+				that.db.info().then(function(res){
+					var h="", docs=0, users=1, useq=0;
+					docs=res.doc_count;
+					useq=res.update_seq;
+					h='Internal ID: '+that.db.name+'. ';
+					if (d.stamp) {
+						h+="Created "+cw.lib.date(d.stamp*1, "tiny")
+						+(d.creator?' by '+d.creator+'. ':". ");
+					}
+					if (docs) {
+						h+='Contains '+docs+' doc'+(docs>1?'s':'')+'. '
+					} else h+='DB is empty. ';
+					$o.html(h);
+				});
+			
+					}
+		},
+		"#desc": {
+			"bind": "desc",
+			"check": /^[\s\S]{0,300}$/,
+			"error": "300 chars maximum"
+		},
+		"#title": {
+			"bind": "title",
+			"check": function (d,v) {
+
+				if (v && v.length<3) return "At least 3 characters";
+				if (v && v.length>40) return "40 chars maximum";
+				return "";
+			
+					}
+		},
+		"#dbtitle": {
+			"bind": "title",
+			"watch": "#title"
+		}
+	},
+	"data": {
+		"ico": "",
+		"pic": "",
+		"name": "",
+		"title": "",
+		"desc": "",
+		"stamp": 0,
+		"start": "",
+		"creator": "",
+		"sync": [],
+		"apps": []
+	},
+	"params": {
+		"delay": 20
+	},
+	"app": {
+		"name": "DBSettings",
+		"version": "2",
+		"timeout": "5000",
+		"title": "DB Settings",
+		"author": "ermouth",
+		"ico": "data:image/jpeg;base64,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",
+		"nodetitle": "title",
+		"width": [800],
+		"maskstate": {
+			"name": true
+		}
+	}
 },	
 {
 	"id": "cw.Sys.Db.List",
@@ -1102,46 +1102,228 @@
 	function _run(url) {form.app.run(url);}
 		
 			},
-	"app": {
-		"name": "List",
-		"version": "2",
-		"timeout": "15000",
-		"title": "Doc List",
-		"author": "ermouth",
-		"ico": "data:image/jpeg;base64,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",
-		"nodetitle": "title",
-		"maskstate": {
-			"mode": true,
-			"search": true,
-			"sort": true
-		},
-		"width": [795,
-			1060,
-			1325]
+	"views": {
+		"info": {
+			"map": function (doc) {
+
+			var i, stamp=0,
+					type = doc.type,
+					tags = {}, mantype = "", 
+					obj, att, atts=[];
+			if (typeof type === "string" && type) {
+				stamp = doc.stamp || doc.created || stamp;
+				if (typeof doc.tags === "object") {
+					if (typeof doc.tags.slice === "function") {
+						for (i=0;i<doc.tags.length; i++) tags[doc.tags[i]] = 1;
+					} else {
+						for (i in doc.tags) tags[i] = 1;
+					}
+				}
+				if (doc.type ==="manifest"  && doc.manifest && doc.manifest.app && doc.manifest.app.name) {
+					mantype = typeof doc.manifest.app.types ==="object"?"editor":"app";
+				}
+				obj = {
+					rev: +doc._rev.split("-")[0],
+					type: type,
+					app: mantype,
+					crypto: doc.crypto || "",
+					title: doc.title || doc.name || (type.substr(0,1).toUpperCase +type.substr(1) +", ID "+doc._id),
+					stamp: stamp,
+					tags: tags,
+					creator: doc.creator || "",
+					pic: (typeof doc.pic === "string" && doc.pic.length<20*1024 && doc.pic.substr(0,10)==="data:image")?doc.pic:"",
+					owners: doc.owners ||[],
+					acl: doc.acl ||[],
+					parent:doc.parent || "",
+					files:[]
+				};
+				if (doc._attachments) {
+					for (i in doc._attachments) {
+						att = doc._attachments[i];
+						atts.push([i, att.content_type, att.length||att.size||0, att.revpos]);
+					}
+					obj.files = atts;
+				};
+				emit (doc._id, obj);
+			}
+		
+					}
+		}
 	},
-	"params": {
-		"delay": 50
+	"HTML": ["<div id=\"nav\" class=\"cw-List-nav fs90 pb20 mb15 bbs\">",
+		"<div id=\"xsearch\" class=\"fr ha w170 mr-2\">",
+		"<input type=\"text\" id=\"search\" class=\"ui-search w170 ml0 mr0 mt0 small\">",
+		"<img src=\"//s3-eu-west-1.amazonaws.com/cdn.cloudwall.me/0.9/ico/cross-small-gray.png\" class=\"ui-search-clear\" onclick=\"$(this).siblings('input:eq(0)').val('').blur()\">",
+		"</div>",
+		"<div class=\"hoverlink dib vat w275\" id=\"btn-start\" style=\"cursor:pointer\" title=\"Show/hide DB apps list\">",
+		"<img src=\"\" id=\"dbico\" class=\"br4 vat dib mt-2\" style=\"width:32px;height:32px;image-rendering:pixelated;image-rendering:-webkit-optimize-contrast;\"/>",
+		"<h2 class=\"dbname dib vat fs150 lh130 blue\"><span id=\"dbname\" class=\"pseudolink\"></span></h2>",
+		"</div>",
+		{
+			"label": "65px",
+			"row": "265px",
+			"labelCss": "fs90 lh110 gray",
+			"rowCss": "my-row dib vat mt2"
+		},
+		["",
+			"spn#mode.fs100.mr15",
+			" <span class=\"fi-shuffle fs90 gray\">&nbsp;</span>",
+			"spn#sort.fs95"],
+		"<span class=\"dib w150 vat fi-wrench mt2 gray ml5 hide\"> <span class=\"pseudolink\" id=\"btn-settings\">Settings</span></span>",
+		"</div>",
+		"<div id=\"xstart\" style=\"display:none\"><div id=\"start\" class=\"pb5 mb15 bbs\" style=\"width:100%\"></div></div>",
+		"<section id=\"brieflist\" class=\"mt10 dib vat cw-List-col\" style=\"width:100%\"></section>",
+		"<div id=\"xproxy\" class=\"hide\"></div>",
+		"<div id=\"xstatus\"></div>"],
+	"style": {
+		" .bitem": "transition:width 0.1s, padding:0.1s, margin:0.1s;width:245px;display:inline-block;vertical-align:top;",
+		" #bimg": "transition:width 0.1s, height 0.1s, margin 0.1s;margin-right:10px;display:inline-block;vertical-align:top;border-radius:3px;cursor:help;cursor:context-menu;",
+		" #binfo": "transition:width 0.1s, font-size 0.1s;display:inline-block;vertical-align:top;font-size:90%;line-height:1.2em;",
+		" .baux": "transition:height 0.1s, opacity 0.1s; overflow:hidden; font-size:80%; padding-top: 0.1em;",
+		" .pseudolink.btag": "border-bottom-style: dotted!important;",
+		" .trim": "white-space:nowrap;width:100%;overflow:hidden;text-overflow:ellipsis",
+		" .cw-List-nav .dbname": "margin:-4px 8px 0 10px;white-space:nowrap;width:220px;overflow:hidden;text-overflow:ellipsis",
+		" .xcol5": "overflow-y: visible!important;clear: both;height: auto!important;-webkit-column-count: 5!important;-webkit-column-gap: 25px; column-count: 5!important; column-gap: 25px;-moz-column-count: 5!important;-moz-column-gap: 25px;",
+		" .xcol4": "overflow-y: visible!important;clear: both;height: auto!important;-webkit-column-count: 4!important;-webkit-column-gap: 25px; column-count: 4!important; column-gap: 25px;-moz-column-count: 4!important;-moz-column-gap: 25px;",
+		" .xcol3": "overflow-y: visible!important;clear: both;height: auto!important;-webkit-column-count: 3!important;-webkit-column-gap: 25px; column-count: 3!important; column-gap: 25px;-moz-column-count: 3!important;-moz-column-gap: 25px;",
+		" .grid-medium": {
+			" .bitem": "padding:9px 0 11px 0;",
+			" #bimg": "width:25px;height:25px;border-radius:3px;margin:2px 18px 0 7px;",
+			" #bimg.bapp": "width:38px;height:38px;border-radius:3px;margin:3px 12px 0 0;",
+			" #binfo": "width:195px;font-size:90%;",
+			" .baux": "display:block;opacity:1;"
+		},
+		" .columns-brief": {
+			" .bitem": "padding:3px 0 5px 0;",
+			" #bimg": "width:20px;height:20px;border-radius:2px;",
+			" #binfo": "width:215px;font-size:85%;",
+			" .baux": "display:none;opacity:0;"
+		}
 	},
-	"Show": [],
-	"All": {
+	"Sorters": {
+		"Type": function (e) {
+
+		var t="";
+		if (e.type==="manifest" && e.app) t="0|"+e.title;
+		else if (e.type==="user") t="￣0|"+e.title;
+		else if (!Object.size(e.actions)) t="￣1|"+e.type+"|"+e.title;
+		else t="1|"+e.type+"|"+e.title;
+		return t;
+	
+				},
+		"AZ": function (e) {
+
+		return e.title;
+	
+				},
+		"Modified": function (e) {
+
+		return 1e16-e.stamp;
+	
+				}
 	},
-	"data": {
-		"search": "",
-		"reg": "",
-		"title": "List All DB Items",
-		"mode": ["columns-brief"],
-		"sort": ["Type"],
-		"items": {
-		},
-		"actions": {
-		},
-		"apps": {
-		},
-		"types": {
-		},
-		"bytype": {
-		},
-		"start": []
+	"ItemBrief": {
+		"id": "cw.Sys.Db.List2.ItemBrief",
+		"ui": {
+			"#bpicto": function (d) {
+
+			var css="";
+			if (d.crypto) {
+				css="fi-key "+(cw.crypto.keys().findIndex(function(e){return e.id==d.crypto})>-1?"green":"red");
+			}
+			//else if (d.type == "user") css="fi-torso fs90 o70";
+			if (css) return '<span class="'+css+'"></span> ';
+		
+					},
+			"#btype": function (d) {
+
+			var css="", h=[], 
+					t = d.type.capitalize();
+			
+			if (d.app) t = "App";
+			if (t==="Manifest") css="fi-widget";
+			else if (t==="App") css="fi-layout";
+			else if (t==="User") css="fi-torso";
+			h.push((css?'<span class="mr5 '+css+'"></span>':'')
+						 +'<span class="pseudolink btag" data-search="='+t+'">'+t+'</span>');
+			
+			if (d.stamp) h.push(
+				'<span class="pseudolink btag" data-search="'
+				+Date.create(d.stamp).format("{mon}{d}")
+				+'">'+cw.lib.date(+d.stamp, "short")
+				+'</span>'
+			);
+			
+			if (d.files.length) h.push('<span class="fi-paperclip"></span> '+d.files.length);
+			
+			return h.length?h.join(" · "):"";
+		
+					},
+			"#btags": {
+				"bind": function (d) {
+
+				var h="", t = Object.keys(d.tags);
+				if (t.length) {
+					h = '<b class="lgray">#</b>'
+						+t.map(function(e){
+							return '<i class="pseudolink btag ml4 mr1" data-search="#'+e+'">'+e+'</i>';
+						}).to(6).join(", ");
+				}
+				return h;
+			
+						},
+				"css": {
+					"hide": function (d) {
+							return !Object.size(d.tags)
+							}
+				}
+			},
+			"#binfo": {
+				"css": {
+					"blue": function (d) {
+							return d.read && !d.read.rev.startsWith(d.rev);
+							},
+					"skyblue": function (d) {
+							return !d.read && d.type!="user" && Object.size(d.actions)
+							},
+					"o90 trim lh110": function (d) {
+							return !Object.size(d.actions)
+							}
+				}
+			},
+			"#btxt": {
+				"bind": function (d, v, $o) {
+
+				var css = "", cmd="";
+				if (d.app) {
+					css+="fs110 lh120 bold ";
+					cmd="_run";
+				}
+				else if (d.actions && d.actions.edit) {
+					cmd="edit";
+				}
+				
+				if (!d.app && d.title.length>30 && Object.size(d.actions)) css+="lh130 fs95 ";
+				
+				if (cmd) $o.data("action", cmd);
+				return '<span class="'+css+'">'+d.title+'</span>';
+			
+						},
+				"css": {
+					"fs90": function (d) {
+							return d.type!="user" && !Object.size(d.actions)
+							}
+				}
+			},
+			"#bimg": {
+				"bind": "pic",
+				"css": {
+					"bapp": function (d) {
+							return !!d.app
+							}
+				}
+			}
+		}
 	},
 	"ui": {
 		"#dbname": function (d) {
@@ -1160,118 +1342,15 @@
 		return d.ico = (this.db.settings().ico || this.db.settings().pic);
 	
 				},
-		"#start": {
-			"init": function ($o, form) {
-
-		var that=this;
-		$o.list({
-			data:[],
-			chunk:100,
-			delay:1,
-			template:function(doc,idx){
-				var html="";
-				html+=
-					'<div class="dib vat w120 mr10 mb10 tac hoverlink blue '
-				+'fs80 lh120 cw-List-app" style="cursor:pointer" '
-				+'data-app="'+doc.name+'">'
-				+'<img src="'+doc.pic+'" class="w32">'
-				+'<div class="tac">'
-				+'<span class="pseudolink">'+doc.title+'</span>'
-				+'</div>'
-				+'</div>';
-				return html;
-			},
-			hash: function (e) {return e.title+e.name+e.pic.length},
-			id: function (e) {return e.id}
-		});
-		$o.on("click.my", ".cw-List-app", function(){
-			$o.my("find","#btn-start").click();
-			that.app.run(that.db.name+"/"+$(this).data("app"));
-		});
-		cw.event().progress(function(e){
-			if (/^app/.test(e)) $o.trigger("check");
-		});
-	
-					},
-			"bind": function (d,v,$o) {
-
-		var that=this;
-		if (null!=v) {
-			d.start = that.db.app().map(function(e){
-				return e==="List"?null:that.db.app(e)
-			}).compact().sortBy("title");
-			$o.list("data", d.start);
-		}
-	
-					}
-		},
-		"#sort": {
-			"bind": "sort",
-			"init": function ($o) {
-
-			$o.tags({
-				tags:[Object.keys(this.Sorters).slice(1)],
-				empty:(function(t){
-					var r={}, k=Object.keys(t.Sorters)[0];
-					r[k]=k;
-					return r;
-				})(this)
-			});
-		
-					}
-		},
-		"#mode": {
-			"bind": "mode",
-			"init": function ($o) {
-
-			$o.tags({
-				empty:{'<span class="fi-list-thumbnails pl2 pr2"></span>':"columns-brief"},
-				tags:[[{'<span class="fi-results"></span>':"grid-medium"}]],
-				groupshim:""
-			});
-		
-					}
-		},
-		"#search": {
+		"#btn-settings": {
 			"bind": function (d,v) {
 
 			if (v!=null) {
-				d.search=v.to(100);
-				if (v.length>0) d.reg = new RegExp(
-					"("
-					+d.search.toLowerCase()
-					.compact().split(/[\s,]/)
-					.compact(true)
-					.map(function(e){return RegExp.escape(e)})
-					.join("|")+")","i"
-				);
-				return v;
+				this.app.run(this.db.name+"/DBSettings");
 			}
-			return d.search;
 		
 					},
-			"css": {
-				"my-search": /^[^\s][^\s]+/
-			}
-		},
-		"#xproxy": {
-			"delay": 100,
-			"bind": function (d,v,$o) {
-
-			this.Filter();
-		
-					},
-			"watch": "#filter,#search,#sort,#mode"
-		},
-		"#xstatus": {
-			"delay": 100,
-			"bind": function (d,v,$o) {
-
-			if (!this.Show.length) return '<div class="p20 tac lh110 lgray">List is empty<br>— ※ —</div>';
-			else return "";
-		
-					},
-			"watch": "#xproxy,#brieflist"
+			"events": "click.my"
 		},
 		"#brieflist": {
 			"bind": "this.Show",
@@ -1358,243 +1437,165 @@
 						}
 			}
 		},
-		"#btn-settings": {
+		"#xstatus": {
+			"delay": 100,
+			"bind": function (d,v,$o) {
+
+			if (!this.Show.length) return '<div class="p20 tac lh110 lgray">List is empty<br>— ※ —</div>';
+			else return "";
+		
+					},
+			"watch": "#xproxy,#brieflist"
+		},
+		"#xproxy": {
+			"delay": 100,
+			"bind": function (d,v,$o) {
+
+			this.Filter();
+		
+					},
+			"watch": "#filter,#search,#sort,#mode"
+		},
+		"#search": {
 			"bind": function (d,v) {
 
 			if (v!=null) {
-				this.app.run(this.db.name+"/DBSettings");
+				d.search=v.to(100);
+				if (v.length>0) d.reg = new RegExp(
+					"("
+					+d.search.toLowerCase()
+					.compact().split(/[\s,]/)
+					.compact(true)
+					.map(function(e){return RegExp.escape(e)})
+					.join("|")+")","i"
+				);
+				return v;
 			}
+			return d.search;
 		
 					},
-			"events": "click.my"
-		}
-	},
-	"ItemBrief": {
-		"id": "cw.Sys.Db.List2.ItemBrief",
-		"ui": {
-			"#bpicto": function (d) {
-
-			var css="";
-			if (d.crypto) {
-				css="fi-key "+(cw.crypto.keys().findIndex(function(e){return e.id==d.crypto})>-1?"green":"red");
+			"css": {
+				"my-search": /^[^\s][^\s]+/
 			}
-			//else if (d.type == "user") css="fi-torso fs90 o70";
-			if (css) return '<span class="'+css+'"></span> ';
-		
-					},
-			"#btype": function (d) {
-
-			var css="", h=[], 
-					t = d.type.capitalize();
-			
-			if (d.app) t = "App";
-			if (t==="Manifest") css="fi-widget";
-			else if (t==="App") css="fi-layout";
-			else if (t==="User") css="fi-torso";
-			h.push((css?'<span class="mr5 '+css+'"></span>':'')
-						 +'<span class="pseudolink btag" data-search="='+t+'">'+t+'</span>');
-			
-			if (d.stamp) h.push(
-				'<span class="pseudolink btag" data-search="'
-				+Date.create(d.stamp).format("{mon}{d}")
-				+'">'+cw.lib.date(+d.stamp, "short")
-				+'</span>'
-			);
-			
-			if (d.files.length) h.push('<span class="fi-paperclip"></span> '+d.files.length);
-			
-			return h.length?h.join(" · "):"";
-		
-					},
-			"#bimg": {
-				"bind": "pic",
-				"css": {
-					"bapp": function (d) {
-							return !!d.app
-							}
-				}
-			},
-			"#btxt": {
-				"bind": function (d, v, $o) {
-
-				var css = "", cmd="";
-				if (d.app) {
-					css+="fs110 lh120 bold ";
-					cmd="_run";
-				}
-				else if (d.actions && d.actions.edit) {
-					cmd="edit";
-				}
-				
-				if (!d.app && d.title.length>30 && Object.size(d.actions)) css+="lh130 fs95 ";
-				
-				if (cmd) $o.data("action", cmd);
-				return '<span class="'+css+'">'+d.title+'</span>';
-			
-						},
-				"css": {
-					"fs90": function (d) {
-							return d.type!="user" && !Object.size(d.actions)
-							}
-				}
-			},
-			"#binfo": {
-				"css": {
-					"blue": function (d) {
-							return d.read && !d.read.rev.startsWith(d.rev);
-							},
-					"skyblue": function (d) {
-							return !d.read && d.type!="user" && Object.size(d.actions)
-							},
-					"o90 trim lh110": function (d) {
-							return !Object.size(d.actions)
-							}
-				}
-			},
-			"#btags": {
-				"bind": function (d) {
-
-				var h="", t = Object.keys(d.tags);
-				if (t.length) {
-					h = '<b class="lgray">#</b>'
-						+t.map(function(e){
-							return '<i class="pseudolink btag ml4 mr1" data-search="#'+e+'">'+e+'</i>';
-						}).to(6).join(", ");
-				}
-				return h;
-			
-						},
-				"css": {
-					"hide": function (d) {
-							return !Object.size(d.tags)
-							}
-				}
-			}
-		}
-	},
-	"Sorters": {
-		"Type": function (e) {
-
-		var t="";
-		if (e.type==="manifest" && e.app) t="0|"+e.title;
-		else if (e.type==="user") t="￣0|"+e.title;
-		else if (!Object.size(e.actions)) t="￣1|"+e.type+"|"+e.title;
-		else t="1|"+e.type+"|"+e.title;
-		return t;
-	
-				},
-		"AZ": function (e) {
-
-		return e.title;
-	
-				},
-		"Modified": function (e) {
-
-		return 1e16-e.stamp;
-	
-				}
-	},
-	"style": {
-		" .bitem": "transition:width 0.1s, padding:0.1s, margin:0.1s;width:245px;display:inline-block;vertical-align:top;",
-		" #bimg": "transition:width 0.1s, height 0.1s, margin 0.1s;margin-right:10px;display:inline-block;vertical-align:top;border-radius:3px;cursor:help;cursor:context-menu;",
-		" #binfo": "transition:width 0.1s, font-size 0.1s;display:inline-block;vertical-align:top;font-size:90%;line-height:1.2em;",
-		" .baux": "transition:height 0.1s, opacity 0.1s; overflow:hidden; font-size:80%; padding-top: 0.1em;",
-		" .pseudolink.btag": "border-bottom-style: dotted!important;",
-		" .trim": "white-space:nowrap;width:100%;overflow:hidden;text-overflow:ellipsis",
-		" .cw-List-nav .dbname": "margin:-4px 8px 0 10px;white-space:nowrap;width:220px;overflow:hidden;text-overflow:ellipsis",
-		" .xcol5": "overflow-y: visible!important;clear: both;height: auto!important;-webkit-column-count: 5!important;-webkit-column-gap: 25px; column-count: 5!important; column-gap: 25px;-moz-column-count: 5!important;-moz-column-gap: 25px;",
-		" .xcol4": "overflow-y: visible!important;clear: both;height: auto!important;-webkit-column-count: 4!important;-webkit-column-gap: 25px; column-count: 4!important; column-gap: 25px;-moz-column-count: 4!important;-moz-column-gap: 25px;",
-		" .xcol3": "overflow-y: visible!important;clear: both;height: auto!important;-webkit-column-count: 3!important;-webkit-column-gap: 25px; column-count: 3!important; column-gap: 25px;-moz-column-count: 3!important;-moz-column-gap: 25px;",
-		" .columns-brief": {
-			" .bitem": "padding:3px 0 5px 0;",
-			" #bimg": "width:20px;height:20px;border-radius:2px;",
-			" #binfo": "width:215px;font-size:85%;",
-			" .baux": "display:none;opacity:0;"
 		},
-		" .grid-medium": {
-			" .bitem": "padding:9px 0 11px 0;",
-			" #bimg": "width:25px;height:25px;border-radius:3px;margin:2px 18px 0 7px;",
-			" #bimg.bapp": "width:38px;height:38px;border-radius:3px;margin:3px 12px 0 0;",
-			" #binfo": "width:195px;font-size:90%;",
-			" .baux": "display:block;opacity:1;"
-		}
-	},
-	"HTML": ["<div id=\"nav\" class=\"cw-List-nav fs90 pb20 mb15 bbs\">",
-		"<div id=\"xsearch\" class=\"fr ha w170 mr-2\">",
-		"<input type=\"text\" id=\"search\" class=\"ui-search w170 ml0 mr0 mt0 small\">",
-		"<img src=\"//s3-eu-west-1.amazonaws.com/cdn.cloudwall.me/0.9/ico/cross-small-gray.png\" class=\"ui-search-clear\" onclick=\"$(this).siblings('input:eq(0)').val('').blur()\">",
-		"</div>",
-		"<div class=\"hoverlink dib vat w275\" id=\"btn-start\" style=\"cursor:pointer\" title=\"Show/hide DB apps list\">",
-		"<img src=\"\" id=\"dbico\" class=\"br4 vat dib mt-2\" style=\"width:32px;height:32px;image-rendering:pixelated;image-rendering:-webkit-optimize-contrast;\"/>",
-		"<h2 class=\"dbname dib vat fs150 lh130 blue\"><span id=\"dbname\" class=\"pseudolink\"></span></h2>",
-		"</div>",
-		{
-			"label": "65px",
-			"row": "265px",
-			"labelCss": "fs90 lh110 gray",
-			"rowCss": "my-row dib vat mt2"
-		},
-		["",
-			"spn#mode.fs100.mr15",
-			" <span class=\"fi-shuffle fs90 gray\">&nbsp;</span>",
-			"spn#sort.fs95"],
-		"<span class=\"dib w150 vat fi-wrench mt2 gray ml5 hide\"> <span class=\"pseudolink\" id=\"btn-settings\">Settings</span></span>",
-		"</div>",
-		"<div id=\"xstart\" style=\"display:none\"><div id=\"start\" class=\"pb5 mb15 bbs\" style=\"width:100%\"></div></div>",
-		"<section id=\"brieflist\" class=\"mt10 dib vat cw-List-col\" style=\"width:100%\"></section>",
-		"<div id=\"xproxy\" class=\"hide\"></div>",
-		"<div id=\"xstatus\"></div>"],
-	"views": {
-		"info": {
-			"map": function (doc) {
+		"#mode": {
+			"bind": "mode",
+			"init": function ($o) {
 
-			var i, stamp=0,
-					type = doc.type,
-					tags = {}, mantype = "", 
-					obj, att, atts=[];
-			if (typeof type === "string" && type) {
-				stamp = doc.stamp || doc.created || stamp;
-				if (typeof doc.tags === "object") {
-					if (typeof doc.tags.slice === "function") {
-						for (i=0;i<doc.tags.length; i++) tags[doc.tags[i]] = 1;
-					} else {
-						for (i in doc.tags) tags[i] = 1;
-					}
-				}
-				if (doc.type ==="manifest"  && doc.manifest && doc.manifest.app && doc.manifest.app.name) {
-					mantype = typeof doc.manifest.app.types ==="object"?"editor":"app";
-				}
-				obj = {
-					rev: +doc._rev.split("-")[0],
-					type: type,
-					app: mantype,
-					crypto: doc.crypto || "",
-					title: doc.title || doc.name || (type.substr(0,1).toUpperCase +type.substr(1) +", ID "+doc._id),
-					stamp: stamp,
-					tags: tags,
-					creator: doc.creator || "",
-					pic: (typeof doc.pic === "string" && doc.pic.length<20*1024 && doc.pic.substr(0,10)==="data:image")?doc.pic:"",
-					owners: doc.owners ||[],
-					acl: doc.acl ||[],
-					parent:doc.parent || "",
-					files:[]
-				};
-				if (doc._attachments) {
-					for (i in doc._attachments) {
-						att = doc._attachments[i];
-						atts.push([i, att.content_type, att.length||att.size||0, att.revpos]);
-					}
-					obj.files = atts;
-				};
-				emit (doc._id, obj);
-			}
+			$o.tags({
+				empty:{'<span class="fi-list-thumbnails pl2 pr2"></span>':"columns-brief"},
+				tags:[[{'<span class="fi-results"></span>':"grid-medium"}]],
+				groupshim:""
+			});
 		
 					}
+		},
+		"#sort": {
+			"bind": "sort",
+			"init": function ($o) {
+
+			$o.tags({
+				tags:[Object.keys(this.Sorters).slice(1)],
+				empty:(function(t){
+					var r={}, k=Object.keys(t.Sorters)[0];
+					r[k]=k;
+					return r;
+				})(this)
+			});
+		
+					}
+		},
+		"#start": {
+			"init": function ($o, form) {
+
+		var that=this;
+		$o.list({
+			data:[],
+			chunk:100,
+			delay:1,
+			template:function(doc,idx){
+				var html="";
+				html+=
+					'<div class="dib vat w120 mr10 mb10 tac hoverlink blue '
+				+'fs80 lh120 cw-List-app" style="cursor:pointer" '
+				+'data-app="'+doc.name+'">'
+				+'<img src="'+doc.pic+'" class="w32">'
+				+'<div class="tac">'
+				+'<span class="pseudolink">'+doc.title+'</span>'
+				+'</div>'
+				+'</div>';
+				return html;
+			},
+			hash: function (e) {return e.title+e.name+e.pic.length},
+			id: function (e) {return e.id}
+		});
+		$o.on("click.my", ".cw-List-app", function(){
+			$o.my("find","#btn-start").click();
+			that.app.run(that.db.name+"/"+$(this).data("app"));
+		});
+		cw.event().progress(function(e){
+			if (/^app/.test(e)) $o.trigger("check");
+		});
+	
+					},
+			"bind": function (d,v,$o) {
+
+		var that=this;
+		if (null!=v) {
+			d.start = that.db.app().map(function(e){
+				return e==="List"?null:that.db.app(e)
+			}).compact().sortBy("title");
+			$o.list("data", d.start);
+		}
+	
+					}
+		}
+	},
+	"data": {
+		"search": "",
+		"reg": "",
+		"title": "List All DB Items",
+		"start": [],
+		"bytype": {
+		},
+		"types": {
+		},
+		"apps": {
+		},
+		"actions": {
+		},
+		"items": {
+		},
+		"sort": ["Type"],
+		"mode": ["columns-brief"]
+	},
+	"All": {
+	},
+	"Show": [],
+	"params": {
+		"delay": 50
+	},
+	"app": {
+		"name": "List",
+		"version": "2",
+		"timeout": "15000",
+		"title": "Doc List",
+		"author": "ermouth",
+		"ico": "data:image/jpeg;base64,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",
+		"nodetitle": "title",
+		"width": [795,
+			1060,
+			1325],
+		"maskstate": {
+			"mode": true,
+			"search": true,
+			"sort": true
 		}
 	},
 	"files": {
 		"unknown.png": {
 			"content_type": "image/png",
+			"revpos": 0,
 			"digest": "md5-M6nwyK6OobaFbftCi9/raQ==",
 			"data": "iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABJQTFRF////tre99fX219fa5eboy8zPIEyigwAAAL5JREFUeNqM1VEOxCAIBFAd4P5X3trdbgQGy3w2L1M12I6xBSGjiMwQq1ysMOs5LpljkrssKxdl7bw8uV0Gl476kc5BbEU0S+fUnkiU4M7MdV4I021/vVUlVSaI7+Lu5iPcliANeG9d36GmJXJIHIVIZ1NAJY5CMTLXVSM6cIii1UhDIZqN6O46DcT4zWJ8SiCmkKu7JkKZy53hbv1d9THK7iidO8jgSplcIYmjkjoiC3fJ+LGX8igOv4+PAAMAOM0EMf5JMSUAAAAASUVORK5CYII="
 		}
@@ -1628,20 +1629,8 @@
 		return pi.promise();
 	
 		},
-	"app": {
-		"name": "Sys.Db.Ddocs",
-		"version": "2",
-		"timeout": "3000",
-		"title": "Ddoc List",
-		"author": "ermouth",
-		"ico": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQECAgMCAgICAgQDAwIDBQQFBQUEBAQFBgcGBQUHBgQEBgkGBwgICAgIBQYJCgkICgcICAj/2wBDAQEBAQICAgQCAgQIBQQFCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAj/wAARCAAyADIDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD+/jNfNPiv9qDwn4f8Va14Q0Pwb8R/iLqOmsseoS+H9NF1DZynP7p33j5xtIPGAQRnIYDgfGWmeIvjF+0L4j+GV18QPGvgrwfoeiW98kOhXYtpLqeQrlpHwcgB8YIIG0YwSSfo74YfC7wt8JfC8XhbwtFdNB5jT3N1csrXF7Mx5kmdQoZsYHQAAAV1+zhBXnq30OT2k5u0NEuv/APFP+GrYT/zQb9oX/wnx/8AHK9s+GPxQ8LfFnw2nibwrLdLAJWt7m1uUCXFlMvWOZASFbBB4JBBBBr0TA9/zr5o8Wfst+D/ABL4s1rxfpXi/wCI/wAP7/Uisl/D4f1JbWG6mGf3rqY2O87jnnBOTjLMTKdKSs1b8RtVY6p834H0xQTivkr/AIZI0v8A6Lf+0L/4UKf/ABqvM/id8P8AXf2dbPwp8RPB/wAW/irr8w1y0sbvT9c1MXVteQSE7kKBVAPy4yckZyMHBpxoQk+WMtfQUsROKvKOnqfoDRRRXKdZ8l+D/wDk8P4u/wDYs2H/ALSr60r5L8H/APJ4fxd/7Fmw/wDaVfWldGJ+Jei/JHPhtn6v8zkfHXjzwf8ADTwxqfjPx34h07wv4ZswpuLy6YhELMFVQACWYkgBVBJJAANfGugftj6D8Tv2j/g94A+D3ivwp4w+GmtaVqdxqsq2syXttdQRO6JiQo0QIVDh4/mGcGpf+CgfgbxV4t+Gfw81zw94N1D4jaX4a8Y6fr+taBaoZJNT0+NZFkRY1yX/ANYFIAJCuzYwprx/w74p/wCFvftsfAb4leEfgz8T/BHgy18O6rY3Gpaz4cawS4k8ibaNwyNq7wiliAWLBc4Nd2Fw1N03OWrtL0Vlp53POxmLqKqqcdFePe7u9fK3c/VOvkv9sv8A5JboH/Yzad/N6+tK+S/2y/8Aklugf9jNp383rhwn8WPqeji/4UvQ+tKKKK5zoPjrRNX0vQv2w/icdb1Kw0dLrwxZG2N1MsQuMGPOwsQGxtbp/dPoa1PF37On7HfjzxLrHjDxh4F+FniDxNqEvnXl7cXKmS4faF3MQ45woH4V7R48+EHw1+Jz2Uvjnwjpuv3FsCsMzl45Y1Jzt8xGVtuedpOM84rzz/hkv9nr/om2n/8AgZdf/Ha7o14q0k2na2n/AA5wTw8neLipK99f+GZa+GHwy/Zt+C9xrN38LNH+Hvgi51BIo717K7RTcrGWKBsuehd8fU16/wD8Jj4R/wChp8Of+B0X/wAVXi3/AAyX+z10/wCFbaf/AOBl1/8AHaP+GS/2ev8Aom2n/wDgZdf/AB2onKnJ3lJt+n/BNIRqRXLGKS9f+Ae0/wDCY+Ef+hp8Of8AgdF/8VXyr+134j8Pat8P/CmjaVruj6nq1x4n08QW1vcpJLLgtnaikk9QPqR6ivQf+GS/2ev+ibaf/wCBl1/8drofCv7OvwW8F63aeIvDnw/0iw1m3O6Cd5JZjC395RI7AMOzAZHY0U5UoSUk27eX/BFUjVnFxaSv5v8AyPa6KKK5DsCiiigAooooAKKKKACiiigD/9k=",
-		"maskstate": "",
-		"nodetitle": "dbname",
-		"width": [1000]
-	},
-	"data": {
-		"ddocs": []
-	},
+	"HTML": ["<h3>Ddocs in <i id=\"dbname\"></i> DB</h3>",
+		"<div id=\"dlist\"></div>"],
 	"ui": {
 		"#dbname": "this.dbname",
 		"#dlist": {
@@ -1654,8 +1643,20 @@
 			}
 		}
 	},
-	"HTML": ["<h3>Ddocs in <i id=\"dbname\"></i> DB</h3>",
-		"<div id=\"dlist\"></div>"]
+	"data": {
+		"ddocs": []
+	},
+	"app": {
+		"name": "Sys.Db.Ddocs",
+		"version": "2",
+		"timeout": "3000",
+		"title": "Ddoc List",
+		"author": "ermouth",
+		"ico": "data:image/jpeg;base64,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",
+		"maskstate": "",
+		"nodetitle": "dbname",
+		"width": [1000]
+	}
 },
 	
 {
@@ -1734,29 +1735,228 @@
 	});
 		
 		},
-	"params": {
-		"delay": 50
-	},
-	"data": {
+	"HTML": ["<div id=\"sidelogo\" class=\"pb30 pt5 mb20 bbs hide\">",
+		"<img src=\"i/logo.png\" id=\"sidelogoimg\"/>",
+		"</div>",
+		"<div id=\"list\" class=\"oh fs80\"></div>",
+		"<div class=\"mt25 pt15 pb15 bts lgray fs80 mr10 lh170\">",
+		"<div id=\"btn-sysdb\" class=\"fs100 fi-folder-lock hoverlink\">",
+		"<span class=\"pseudolink fs95 ml6 \">System DB</span>",
+		"</div>",
+		"<div id=\"btn-newdb\" class=\"fs80 fi-plus hoverlink ml2\">",
+		"<span class=\"pseudolink fs120 ml7\">Add new DB...</span>",
+		"</div>",
+		"<div id=\"btn-update\" class=\"fs100 fi-lightbulb hoverlink\">",
+		"<span class=\"pseudolink fs95 ml5 \">Check updates...</span>",
+		"</div>",
+		"<div id=\"btn-profile\" class=\"fs100 fi-torso hoverlink ml2\">",
+		"<a class=\"pseudolink fs95 ml7 \" href=\"profile.html\" target=\"_blank\">Profile...</a>",
+		"</div>",
+		"</div>"],
+	"DB": {
+		"ico": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABMpJREFUeNrsWU1oG1cQHoWndlWksoI1rEACGVSQWsV2wAEbkpC4bUhTVGhoc3GLDz34UHLN3efSY2kg+JASX0JTigI+tNQOpCWGBKK2KhHUJaIVREVLd4k2eEEPnJmVLK1Wq5/VjysHjVi93ff/vTfzzbxdz/7+PrwMcgxeEpkAmQCZAOksjP48Hk9Plde/24oKDF5z0fvz5YtLf+PdyKjxgHU9dNMNyI30D9OMCd/j7UwfY/3GDX5p5dLSX6ME0lW1NjY2X2eMbfYJgmSGCXD7y1u3fCNXrQ7igaD/JqZxAr+YjHkkUey5c0XT4H52l4aZlf3Sdbz5ZFRAWlSrZgdvIkQvPr6Nk7hC+cdjUTj+RsT1AI8eP4HH+UL1gfMvsN9fBpjvM02HB59fXtLb2sh6Oh0QmLiOeR/bW0dkCU6fSPQ9+vaD3+Gpog1r8cu4IFeXP1i65mgjCOKmE4igX4CFZGKgkU/NxSGA/QxJAsDY1xvprY9aVOubO9szaNC/UkYiGoZkLAxer3fsfEW5vAc/Z7Kg6obJhssXz8w27QiCmKWUpn4iMT2WIMytCPggjrZak+Ta2toxm2fnr/TEYePgwZklKkkk2CTWGutYaxCpVCpQRGqlS9GI3jn4/X6QJdG8Aj7f+AMpqWXI5HahhCC4NR8BPSkUTeqei8cgEppqAm4Sy5AJpW8gKlLhw2zOnHTbOkiT9zI5eA8BYeAImd08GJjST8Jdi4blJpD/C5B8sQii6DevXsTgpHICXo28Au6kbhgQC0dg0A3qC0h5bw9kW/AoYICG/gj0qrNqEo4gqDwqyw50ykwHVqn5sUMFks3lG4FgTU4mYyDicv+4k3Hn5HCXLpyaR5UzYCoYPFwgxE60ys2r3lAha6fcMgh3GLBSa1coKocLZA/VqoyrxzvU4R2eeZvausEPx0ZIhwtPS6DhbiSirbouodELggB4+HI9BbITEVWspKqYBvsyfNarcZMOh9HBMcdVrakV1hEdTpBEtaRyxFBOQs6UnCjtCueqmReaCg4fSBb5/898ET48uwDbD7OglXVXg6TOLVSPvY9yvU3KyyCFBODGx3QFQp6YQFiptNnOeZuubGbOwdaufXsagxZvqEDIE5PKMIHVh+UW5WpMldefeT3lNgvnLWrZrj1FDG58S1cgBGBxLtm4T8Y7WImziDUieHdxruc2VN+NzXcN431IIVItDNmtqxhrueg1UViSHMsKRQ00XXcsownH8HhNqTVfdHnG75l+7+NZWVF1cNAfMz13MmmCuXNvx9lsuG3UWjsx4IdPL5yF7R3qXzPz5KAIKSSWoR+siApT7yxANCJXbYRDS2r18Bws5dyWZ29Xaba7aEhGEPPo5QOj2ZEQhg9Ev0VFMX2CYfPEBw4xdXretScTWJVuia1kWTLVeaQhis/nhelIqGMdtytZfwnoG+xcMnn5MK5Ajs43aotpyqq63wQEy/49OBvQWXycRWm8I1BXV1crzcZe4ndhChR8lO7iCS+MzMHG8K0jRcf/FBXaBQ8u/7fWsvpnhRubW+/j3G8jmFePgH79Yej8zGeXz//n+A1xI71FH3iuIJi3sPIYvslmz9DZ/MRV/tXKyvnnpnFbgUzodwJkAmQC5MjICwEGAN+u7O9LPns7AAAAAElFTkSuQmCC",
+		"pic": "data:image/png;base64,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",
 		"title": "",
-		"list": [],
-		"collapsed": {
+		"desc": "",
+		"stamp": "",
+		"start": "List/!eyJtb2RlIjogWyJjb2x1bW5zLWJyaWVmIl0sInNlYXJjaCI6ICIiLCJzb3J0IjogWyJUeXBlIl19",
+		"creator": "",
+		"sync": [],
+		"apps": []
+	},
+	"style": {
+		" .green": "color:#BEEA00!important",
+		" #sidelogo": "cursor:pointer;",
+		" #sidelogo img": "width:180px; opacity:0.8; transition:opacity 0.3s; display:block;",
+		" #sidelogo:hover img": "opacity:1;"
+	},
+	"List": {
+		"init": function ($o, form) {
+
+			$o.html('<div id="cont" class="xgray ov '
+				+(form.data.shift?"pl25":"")
+				+'" style="white-space:nowrap;"'
+				+'><img id="ico" class="w16 h16 mt3 mb-3 '+(form.data.shift?"mr0":"mr5")+'" src=""/>'
+				+'<div class="'+(form.data.shift?"w130":"w150")+' oh dib vat pl5" '
+					+'style="text-overflow:ellipsis;white-space:nowrap;">'
+					+(form.data.sync===2?'<span class="fr pt8 salmon pl3 fs90 lh90 fi-minus-circle" title="Replication failed"></span>':"")
+					+(form.data.sync===1?'<span class="fr pt8 green pl3 fs90 lh90 fi-flag" title="Replication started"></span>':"")
+					+(form.data.sync>3?'<span class="fr pt8 sky pl3 fs90 lh90 fi-clock" '
+							+'title="Replication sheduled to '
+							+cw.lib.date(form.data.sync,"tiny")+'"></span>':""
+					)
+					+'<span id="appname" class="pseudolink" data-url="'
+					+form.data.url+'"></span>'
+				+'</div>'
+				+'<span id="bubble"class="hide oh fs80" style="max-width:25px;position:absolute;top:0;right:0;"></span>'
+				+'</div>'
+			);
+		
+			},
+		"ui": {
+			"#appname": "title",
+			"#ico": "ico",
+			"#bubble": {
+				"bind": function (d,v,$o) {
+
+					
+				
+					}
+			},
+			"#cont": {
+				"bind": function () {
+
+					},
+				"css": {
+					"blue": function (d) {
+						return d.active
+						},
+					"xgray o50": function (d) {
+						return !d.active
+						}
+				}
+			}
+		},
+		"data": {
 		}
 	},
 	"ui": {
-		"#list": {
-			"bind": "list",
-			"check": true,
-			"list": "<div class=\"hoverlink blue cw-dock-item\"></div>",
-			"manifest": "List"
-		},
-		"#sidelogo": {
+		"#btn-sysdb": {
 			"bind": function (d,v,$o) {
 
-				if (v!=null) {
-					cw.lib.note("Here must be introducing app, not yet implemented.")
+		if(v!=null) {
+			$("#cw-header").slideDown(200);
+			cw.state.set("cw/List");
+		}
+	
+				},
+			"events": "click.my"
+		},
+		"#btn-newdb": {
+			"bind": function (d,v,$o) {
+
+		var that=this;
+		if (v!=null) $.my.modal({
+			manifest:Object.merge(
+				cw.form("cw.Sys.Confirm"),{
+					ui:{
+						"#name":{
+							bind:function (d,v) {
+								if (v!=null) {
+									d.name=v.compact();
+								}
+								return d.name;
+							},
+							check:function (d,v){
+								if (v.length<2) return "2+ latins and nums";
+								if (/^http[s]?:\/\//.test(v)) {
+									//check url
+									if (v.has("•")) return "Impossible password in URL";
+									if (!/^http[s]?:\/\/([^\/]{2,100}\/){1,5}[a-z0-9_$\(\)+\-]{1,200}[\/]?$/.test(v))
+										return "Invalid CouchDB URL";
+								} else {
+									if (!/^[a-z0-9\s\-]{2,30}$/i.test(v)) return "2-30 latins and nums";
+									else if (d.dbs.indexOf(v.replace(/\s/g,'-').toLowerCase())!==-1) return "This name already exist";
+								}
+								return "";
+							}
+						},
+						"#btn-ok":{
+							bind: function(d,v,$o){
+								if (v!=null) {
+									if ($o.my().root.my("valid")) $o.trigger("commit");
+									else cw.note("Correct name fist!","error");
+								}
+							}
+						},
+						'#syncdir':{
+							bind:"dir",
+							init: function($o){
+								$o.tags({tags:[{"From":"from"},{"To":"to"}]});
+							}
+						},
+						'#interval':"interval",
+						'#sync':{
+							watch:'#name',
+							css:{
+								hide: function(d,v,$o){ return !/^http[s]?:\/\/.+/.test(d.name) || $o.my("errors")['#name'] }
+							}
+						}
+					}
+				}, true),
+			data:{
+				text:([
+					'<span class="fi-list gray fs90"></span> New DB title or URL ',
+					'<div class="mt10 mb10">',
+					'<textarea id="name" class="w350 fs110 lh120" style="word-wrap:break-all;" placeholder="Latins and nums"></textarea>',
+						'<div class="my-error-tip"></div>',
+					'</div>',
+					'<section id="sync" class="hide mt-5">',
+						$.my.formgen([['','spn#syncdir.dib.mt1.vat.fs80',
+						'<div class="w250 dib vat">',
+						'<span class="fs80 gray ml2"> in </span>',
+						'num#interval.fs80.w70.pt2.pb2',{min:0, max:7220},
+						'<span class="fs80 gray"> minute intervals</span>']]),
+					'</section>'
+				]).join(""),
+				ok:"Create DB",
+				name:"",
+				dir:["from"],
+				interval:"5",
+				dbs:Object.keys(cw.dbs()).map(function(e){return e.toLowerCase()})
+			}
+		}).then(function(res){
+			var s, name;
+			if (Object.isObject(res)) {
+
+				if (/^http[s]?:\/\//.test(res.name)){
+					//url
+					name = res.name.split("/").compact(true).last();
+					s = cw.lib.fuse({}, that.DB, {
+						title:name.to(50).capitalize(), 
+						name:rename(name), 
+						stamp:Date.now(), 
+						creator:cw.me(),
+						sync:[{
+							url:res.name,
+							dir:res.dir.slice(0),
+							interval:res.interval
+						}]
+					});
 				}
-			
+				else if (false) {
+					//share code
+
+				} 
+				else {
+
+					s = cw.lib.fuse({}, that.DB, {
+						title:res.name.to(50), 
+						name:rename(res.name), 
+						stamp:Date.now(), 
+						creator:cw.me()
+					});
+				}
+				console.log(s);
+				if (s) cw.db("cw").settings(s)
+				.then(function(){
+					cw.note("DB created","ok");
+				})
+				.fail(function(msg){
+					cw.note("DB creation failed during settings update. "+msg,"error");
+				})
+					}
+
+			function rename(newname) {
+				var name = newname;
+				if ( name.replace(/[^a-z0-9\-]/ig,"").to(30) !== name ) {
+					name = name.replace(/[^a-z0-9]/ig,"-").to(30);
+					if (name.length<2 || cw.dbs()[name]) name = cw.lib.hash8(name+Number.random(1e12));
+				}
+				return name;
+			}
+		});
+	
 				},
 			"events": "click.my"
 		},
@@ -1900,231 +2100,32 @@
 				},
 			"events": "click.my"
 		},
-		"#btn-newdb": {
+		"#sidelogo": {
 			"bind": function (d,v,$o) {
 
-		var that=this;
-		if (v!=null) $.my.modal({
-			manifest:Object.merge(
-				cw.form("cw.Sys.Confirm"),{
-					ui:{
-						"#name":{
-							bind:function (d,v) {
-								if (v!=null) {
-									d.name=v.compact();
-								}
-								return d.name;
-							},
-							check:function (d,v){
-								if (v.length<2) return "2+ latins and nums";
-								if (/^http[s]?:\/\//.test(v)) {
-									//check url
-									if (v.has("•")) return "Impossible password in URL";
-									if (!/^http[s]?:\/\/([^\/]{2,100}\/){1,5}[a-z0-9_$\(\)+\-]{1,200}[\/]?$/.test(v))
-										return "Invalid CouchDB URL";
-								} else {
-									if (!/^[a-z0-9\s\-]{2,30}$/i.test(v)) return "2-30 latins and nums";
-									else if (d.dbs.indexOf(v.replace(/\s/g,'-').toLowerCase())!==-1) return "This name already exist";
-								}
-								return "";
-							}
-						},
-						"#btn-ok":{
-							bind: function(d,v,$o){
-								if (v!=null) {
-									if ($o.my().root.my("valid")) $o.trigger("commit");
-									else cw.note("Correct name fist!","error");
-								}
-							}
-						},
-						'#syncdir':{
-							bind:"dir",
-							init: function($o){
-								$o.tags({tags:[{"From":"from"},{"To":"to"}]});
-							}
-						},
-						'#interval':"interval",
-						'#sync':{
-							watch:'#name',
-							css:{
-								hide: function(d,v,$o){ return !/^http[s]?:\/\/.+/.test(d.name) || $o.my("errors")['#name'] }
-							}
-						}
-					}
-				}, true),
-			data:{
-				text:([
-					'<span class="fi-list gray fs90"></span> New DB title or URL ',
-					'<div class="mt10 mb10">',
-					'<textarea id="name" class="w350 fs110 lh120" style="word-wrap:break-all;" placeholder="Latins and nums"></textarea>',
-						'<div class="my-error-tip"></div>',
-					'</div>',
-					'<section id="sync" class="hide mt-5">',
-						$.my.formgen([['','spn#syncdir.dib.mt1.vat.fs80',
-						'<div class="w250 dib vat">',
-						'<span class="fs80 gray ml2"> in </span>',
-						'num#interval.fs80.w70.pt2.pb2',{min:0, max:7220},
-						'<span class="fs80 gray"> minute intervals</span>']]),
-					'</section>'
-				]).join(""),
-				ok:"Create DB",
-				name:"",
-				dir:["from"],
-				interval:"5",
-				dbs:Object.keys(cw.dbs()).map(function(e){return e.toLowerCase()})
-			}
-		}).then(function(res){
-			var s, name;
-			if (Object.isObject(res)) {
-
-				if (/^http[s]?:\/\//.test(res.name)){
-					//url
-					name = res.name.split("/").compact(true).last();
-					s = cw.lib.fuse({}, that.DB, {
-						title:name.to(50).capitalize(), 
-						name:rename(name), 
-						stamp:Date.now(), 
-						creator:cw.me(),
-						sync:[{
-							url:res.name,
-							dir:res.dir.slice(0),
-							interval:res.interval
-						}]
-					});
+				if (v!=null) {
+					cw.lib.note("Here must be introducing app, not yet implemented.")
 				}
-				else if (false) {
-					//share code
-
-				} 
-				else {
-
-					s = cw.lib.fuse({}, that.DB, {
-						title:res.name.to(50), 
-						name:rename(res.name), 
-						stamp:Date.now(), 
-						creator:cw.me()
-					});
-				}
-				console.log(s);
-				if (s) cw.db("cw").settings(s)
-				.then(function(){
-					cw.note("DB created","ok");
-				})
-				.fail(function(msg){
-					cw.note("DB creation failed during settings update. "+msg,"error");
-				})
-					}
-
-			function rename(newname) {
-				var name = newname;
-				if ( name.replace(/[^a-z0-9\-]/ig,"").to(30) !== name ) {
-					name = name.replace(/[^a-z0-9]/ig,"-").to(30);
-					if (name.length<2 || cw.dbs()[name]) name = cw.lib.hash8(name+Number.random(1e12));
-				}
-				return name;
-			}
-		});
-	
+			
 				},
 			"events": "click.my"
 		},
-		"#btn-sysdb": {
-			"bind": function (d,v,$o) {
-
-		if(v!=null) {
-			$("#cw-header").slideDown(200);
-			cw.state.set("cw/List");
-		}
-	
-				},
-			"events": "click.my"
+		"#list": {
+			"bind": "list",
+			"check": true,
+			"list": "<div class=\"hoverlink blue cw-dock-item\"></div>",
+			"manifest": "List"
 		}
 	},
-	"List": {
-		"init": function ($o, form) {
-
-			$o.html('<div id="cont" class="xgray ov '
-				+(form.data.shift?"pl25":"")
-				+'" style="white-space:nowrap;"'
-				+'><img id="ico" class="w16 h16 mt3 mb-3 '+(form.data.shift?"mr0":"mr5")+'" src=""/>'
-				+'<div class="'+(form.data.shift?"w130":"w150")+' oh dib vat pl5" '
-					+'style="text-overflow:ellipsis;white-space:nowrap;">'
-					+(form.data.sync===2?'<span class="fr pt8 salmon pl3 fs90 lh90 fi-minus-circle" title="Replication failed"></span>':"")
-					+(form.data.sync===1?'<span class="fr pt8 green pl3 fs90 lh90 fi-flag" title="Replication started"></span>':"")
-					+(form.data.sync>3?'<span class="fr pt8 sky pl3 fs90 lh90 fi-clock" '
-							+'title="Replication sheduled to '
-							+cw.lib.date(form.data.sync,"tiny")+'"></span>':""
-					)
-					+'<span id="appname" class="pseudolink" data-url="'
-					+form.data.url+'"></span>'
-				+'</div>'
-				+'<span id="bubble"class="hide oh fs80" style="max-width:25px;position:absolute;top:0;right:0;"></span>'
-				+'</div>'
-			);
-		
-			},
-		"data": {
-		},
-		"ui": {
-			"#appname": "title",
-			"#ico": "ico",
-			"#cont": {
-				"bind": function () {
-
-					},
-				"css": {
-					"blue": function (d) {
-						return d.active
-						},
-					"xgray o50": function (d) {
-						return !d.active
-						}
-				}
-			},
-			"#bubble": {
-				"bind": function (d,v,$o) {
-
-					
-				
-					}
-			}
-		}
-	},
-	"style": {
-		" .green": "color:#BEEA00!important",
-		" #sidelogo": "cursor:pointer;",
-		" #sidelogo img": "width:180px; opacity:0.8; transition:opacity 0.3s; display:block;",
-		" #sidelogo:hover img": "opacity:1;"
-	},
-	"DB": {
-		"ico": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABMpJREFUeNrsWU1oG1cQHoWndlWksoI1rEACGVSQWsV2wAEbkpC4bUhTVGhoc3GLDz34UHLN3efSY2kg+JASX0JTigI+tNQOpCWGBKK2KhHUJaIVREVLd4k2eEEPnJmVLK1Wq5/VjysHjVi93ff/vTfzzbxdz/7+PrwMcgxeEpkAmQCZAOksjP48Hk9Plde/24oKDF5z0fvz5YtLf+PdyKjxgHU9dNMNyI30D9OMCd/j7UwfY/3GDX5p5dLSX6ME0lW1NjY2X2eMbfYJgmSGCXD7y1u3fCNXrQ7igaD/JqZxAr+YjHkkUey5c0XT4H52l4aZlf3Sdbz5ZFRAWlSrZgdvIkQvPr6Nk7hC+cdjUTj+RsT1AI8eP4HH+UL1gfMvsN9fBpjvM02HB59fXtLb2sh6Oh0QmLiOeR/bW0dkCU6fSPQ9+vaD3+Gpog1r8cu4IFeXP1i65mgjCOKmE4igX4CFZGKgkU/NxSGA/QxJAsDY1xvprY9aVOubO9szaNC/UkYiGoZkLAxer3fsfEW5vAc/Z7Kg6obJhssXz8w27QiCmKWUpn4iMT2WIMytCPggjrZak+Ta2toxm2fnr/TEYePgwZklKkkk2CTWGutYaxCpVCpQRGqlS9GI3jn4/X6QJdG8Aj7f+AMpqWXI5HahhCC4NR8BPSkUTeqei8cgEppqAm4Sy5AJpW8gKlLhw2zOnHTbOkiT9zI5eA8BYeAImd08GJjST8Jdi4blJpD/C5B8sQii6DevXsTgpHICXo28Au6kbhgQC0dg0A3qC0h5bw9kW/AoYICG/gj0qrNqEo4gqDwqyw50ykwHVqn5sUMFks3lG4FgTU4mYyDicv+4k3Hn5HCXLpyaR5UzYCoYPFwgxE60ys2r3lAha6fcMgh3GLBSa1coKocLZA/VqoyrxzvU4R2eeZvausEPx0ZIhwtPS6DhbiSirbouodELggB4+HI9BbITEVWspKqYBvsyfNarcZMOh9HBMcdVrakV1hEdTpBEtaRyxFBOQs6UnCjtCueqmReaCg4fSBb5/898ET48uwDbD7OglXVXg6TOLVSPvY9yvU3KyyCFBODGx3QFQp6YQFiptNnOeZuubGbOwdaufXsagxZvqEDIE5PKMIHVh+UW5WpMldefeT3lNgvnLWrZrj1FDG58S1cgBGBxLtm4T8Y7WImziDUieHdxruc2VN+NzXcN431IIVItDNmtqxhrueg1UViSHMsKRQ00XXcsownH8HhNqTVfdHnG75l+7+NZWVF1cNAfMz13MmmCuXNvx9lsuG3UWjsx4IdPL5yF7R3qXzPz5KAIKSSWoR+siApT7yxANCJXbYRDS2r18Bws5dyWZ29Xaba7aEhGEPPo5QOj2ZEQhg9Ev0VFMX2CYfPEBw4xdXretScTWJVuia1kWTLVeaQhis/nhelIqGMdtytZfwnoG+xcMnn5MK5Ajs43aotpyqq63wQEy/49OBvQWXycRWm8I1BXV1crzcZe4ndhChR8lO7iCS+MzMHG8K0jRcf/FBXaBQ8u/7fWsvpnhRubW+/j3G8jmFePgH79Yej8zGeXz//n+A1xI71FH3iuIJi3sPIYvslmz9DZ/MRV/tXKyvnnpnFbgUzodwJkAmQC5MjICwEGAN+u7O9LPns7AAAAAElFTkSuQmCC",
-		"pic": "data:image/png;base64,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",
+	"data": {
 		"title": "",
-		"desc": "",
-		"stamp": "",
-		"start": "List/!eyJtb2RlIjogWyJjb2x1bW5zLWJyaWVmIl0sInNlYXJjaCI6ICIiLCJzb3J0IjogWyJUeXBlIl19",
-		"creator": "",
-		"apps": [],
-		"sync": []
+		"collapsed": {
+		},
+		"list": []
 	},
-	"HTML": ["<div id=\"sidelogo\" class=\"pb30 pt5 mb20 bbs hide\">",
-		"<img src=\"i/logo.png\" id=\"sidelogoimg\"/>",
-		"</div>",
-		"<div id=\"list\" class=\"oh fs80\"></div>",
-		"<div class=\"mt25 pt15 pb15 bts lgray fs80 mr10 lh170\">",
-		"<div id=\"btn-sysdb\" class=\"fs100 fi-folder-lock hoverlink\">",
-		"<span class=\"pseudolink fs95 ml6 \">System DB</span>",
-		"</div>",
-		"<div id=\"btn-newdb\" class=\"fs80 fi-plus hoverlink ml2\">",
-		"<span class=\"pseudolink fs120 ml7\">Add new DB...</span>",
-		"</div>",
-		"<div id=\"btn-update\" class=\"fs100 fi-lightbulb hoverlink\">",
-		"<span class=\"pseudolink fs95 ml5 \">Check updates...</span>",
-		"</div>",
-		"<div id=\"btn-profile\" class=\"fs100 fi-torso hoverlink ml2\">",
-		"<a class=\"pseudolink fs95 ml7 \" href=\"profile.html\" target=\"_blank\">Profile...</a>",
-		"</div>",
-		"</div>"]
+	"params": {
+		"delay": 50
+	}
 },
 {
 	"id": "cw.Sys.Dock",
@@ -2161,20 +2162,6 @@
 		});
 	
 		},
-	"params": {
-		"delay": 50
-	},
-	"data": {
-		"list": []
-	},
-	"ui": {
-		"#list": {
-			"manifest": "AppList",
-			"bind": "list",
-			"check": true,
-			"list": "<div class=\"hoverlink blue cw-dock-item\"></div>"
-		}
-	},
 	"AppList": {
 		"init": function ($o, form) {
 
@@ -2190,8 +2177,6 @@
 		);
 	
 			},
-		"data": {
-		},
 		"ui": {
 			"#appname": function (d,v) {
 
@@ -2199,6 +2184,18 @@
 		
 				},
 			"#ico": "ico",
+			"#btn-closeapp": {
+				"bind": function (d,v,$o) {
+
+				if(v!=null) {
+					cw.state.slots(d.initurl).app.close().then(function(){
+						if ($o.my()) $o.my().root.slideUp(150);
+					});
+				}
+			
+					},
+				"events": "click.my"
+			},
 			"#cont": {
 				"bind": function () {
 
@@ -2211,20 +2208,24 @@
 						return !d.active
 						}
 				}
-			},
-			"#btn-closeapp": {
-				"bind": function (d,v,$o) {
-
-				if(v!=null) {
-					cw.state.slots(d.initurl).app.close().then(function(){
-						if ($o.my()) $o.my().root.slideUp(150);
-					});
-				}
-			
-					},
-				"events": "click.my"
 			}
+		},
+		"data": {
 		}
+	},
+	"ui": {
+		"#list": {
+			"manifest": "AppList",
+			"bind": "list",
+			"check": true,
+			"list": "<div class=\"hoverlink blue cw-dock-item\"></div>"
+		}
+	},
+	"data": {
+		"list": []
+	},
+	"params": {
+		"delay": 50
 	}
 },
 	
@@ -2245,13 +2246,6 @@
 		]);
 	
 		},
-	"params": {
-		"delay": 5,
-		"width": 350
-	},
-	"data": {
-		"trust": []
-	},
 	"ui": {
 		"#list": function (d) {
 
@@ -2262,10 +2256,11 @@
 			return html; 
 		
 			},
-		"#btn-ok": {
+		"#btn-all": {
 			"bind": function (d,v,$o) {
 
 				if (v!=null) {
+					for (var i=0;i<d.trust.length;i++) d.trust[i]._rev="*";
 					$o.trigger("commit");
 				}
 			
@@ -2282,17 +2277,23 @@
 				},
 			"events": "click"
 		},
-		"#btn-all": {
+		"#btn-ok": {
 			"bind": function (d,v,$o) {
 
 				if (v!=null) {
-					for (var i=0;i<d.trust.length;i++) d.trust[i]._rev="*";
 					$o.trigger("commit");
 				}
 			
 				},
 			"events": "click"
 		}
+	},
+	"data": {
+		"trust": []
+	},
+	"params": {
+		"delay": 5,
+		"width": 350
 	}
 },
 {
@@ -2308,29 +2309,7 @@
 		]);
 	
 		},
-	"params": {
-		"delay": 5,
-		"width": 350
-	},
-	"data": {
-		"text": "",
-		"css": "xgray",
-		"ok": "Ok",
-		"cancel": "Cancel",
-		"cmd": ""
-	},
 	"ui": {
-		"#btn-ok": {
-			"bind": function (d,v,$o) {
-
-				if (v!=null) {
-					d.cmd="commit";
-					$o.trigger("commit");
-				}
-			
-				},
-			"events": "click.my"
-		},
 		"#btn-cancel": {
 			"bind": function (d,v,$o) {
 
@@ -2341,7 +2320,29 @@
 			
 				},
 			"events": "click.my"
+		},
+		"#btn-ok": {
+			"bind": function (d,v,$o) {
+
+				if (v!=null) {
+					d.cmd="commit";
+					$o.trigger("commit");
+				}
+			
+				},
+			"events": "click.my"
 		}
+	},
+	"data": {
+		"text": "",
+		"css": "xgray",
+		"ok": "Ok",
+		"cancel": "Cancel",
+		"cmd": ""
+	},
+	"params": {
+		"delay": 5,
+		"width": 350
 	}
 },
 {
@@ -2358,25 +2359,13 @@
 		]);
 	
 		},
-	"params": {
-		"delay": 5,
-		"width": 450
-	},
-	"data": {
-		"text": "",
-		"css": "xgray",
-		"yes": "Yes",
-		"no": "No",
-		"cancel": "Cancel",
-		"cmd": ""
-	},
 	"ui": {
-		"#btn-yes": {
+		"#btn-cancel": {
 			"bind": function (d,v,$o) {
 
 				if (v!=null) {
-					d.cmd="yes";
-					$o.trigger("commit");
+					d.cmd="cancel";
+					$o.trigger("cancel");
 				}
 			
 				},
@@ -2393,17 +2382,29 @@
 				},
 			"events": "click.my"
 		},
-		"#btn-cancel": {
+		"#btn-yes": {
 			"bind": function (d,v,$o) {
 
 				if (v!=null) {
-					d.cmd="cancel";
-					$o.trigger("cancel");
+					d.cmd="yes";
+					$o.trigger("commit");
 				}
 			
 				},
 			"events": "click.my"
 		}
+	},
+	"data": {
+		"text": "",
+		"css": "xgray",
+		"yes": "Yes",
+		"no": "No",
+		"cancel": "Cancel",
+		"cmd": ""
+	},
+	"params": {
+		"delay": 5,
+		"width": 450
 	}
 },
 {
@@ -2436,19 +2437,26 @@
 		$o.html(html);
 	
 		},
-	"params": {
-		"width": 820
-	},
-	"data": {
-		"filename": "",
-		"data": "",
-		"cropped": false,
-		"size": 200
-	},
-	"style": {
-		" .jcrop-holder": "display:inline-block;vertical-align:middle"
-	},
 	"ui": {
+		"#btn-close": {
+			"bind": function (d,v,$o) {
+				if (v!=null) $o.my().root.trigger("cancel");
+				},
+			"events": "click.my"
+		},
+		"#btn-apply": {
+			"bind": function (d,v,$o) {
+
+				if (v!=null && d.cropped) {
+					d.data = $o.my().root.find("#preview")[0]
+						.toDataURL('image/jpeg',0.95)
+						.substr(23);
+					$o.my().root.trigger("commit");
+				}
+			
+				},
+			"events": "click.my"
+		},
 		"#file": {
 			"bind": function (d, v, $o) {
 
@@ -2526,26 +2534,19 @@
 		}
 	
 				}
-		},
-		"#btn-apply": {
-			"bind": function (d,v,$o) {
-
-				if (v!=null && d.cropped) {
-					d.data = $o.my().root.find("#preview")[0]
-						.toDataURL('image/jpeg',0.95)
-						.substr(23);
-					$o.my().root.trigger("commit");
-				}
-			
-				},
-			"events": "click.my"
-		},
-		"#btn-close": {
-			"bind": function (d,v,$o) {
-				if (v!=null) $o.my().root.trigger("cancel");
-				},
-			"events": "click.my"
 		}
+	},
+	"style": {
+		" .jcrop-holder": "display:inline-block;vertical-align:middle"
+	},
+	"data": {
+		"filename": "",
+		"data": "",
+		"cropped": false,
+		"size": 200
+	},
+	"params": {
+		"width": 820
 	}
 },
 {
@@ -2619,144 +2620,9 @@
 		return r;
 	
 		},
-	"params": {
-		"width": 400
-	},
-	"data": {
-		"sort": function (fobj, fname, doc) {
-			 return fname; 
-			},
-		"width": 200,
-		"truncate": 200,
-		"limit": 10000000,
-		"ico": function (fobj, fname) {
-
-		var css="fi-paperclip",
-				types={
-					"fi-photo":/\.(png|jp[e]?g|gif|tif[f]?|bmp)$/i,
-					"fi-social-adobe":/\.(pdf|ai|psd)$/i,
-					"fi-page-doc":/\.(doc[x]?|txt|rtf)$/i,
-					"fi-graph-pie":/\.(xls[x]?|csv)$/i,
-					"fi-archive":/\.(zip|rar|7z|7zip)$/i,
-					"fi-html5 pl2":/\.(htm[l]|php)$/i,
-					"fi-css3 pl2":/\.css$/i,
-					"fi-widget":/\.(js[on]?|php|asp|jar|c|erl)$/i,
-					"fi-sound":/\.(wav|aiff|mp3|ogg|mpeg3)$/i
-				};
-		if (!fobj.digest) css="orange fi-burst-new";
-		else Object.each(types, function(key, re){
-			if (re.test(fname)) css=key;
-		});
-		return '<span class="'+css+' dib vam o80 lh110" style="width:1.3em;"></span>';
-	
-			},
-		"aux": function (fobj, fname, doc) {
-
-		return "";
-	
-			},
-		"css": "cw-att-files",
-		"itemCss": "cw-att-item hoverlink",
-		"download": function (fobj, fname, doc) {
-			 return "Manage "+fname; 
-			},
-		"upload": "<span class=\"pseudolink\">Upload file...</span>",
-		"accept": "",
-		"doc": {
-		},
-		"files": []
-	},
-	"Attachment": {
-		"init": function ($o, form) {
-
-		var d = form.data;
-		$o.html(
-			d.ico
-			+'<div class="dib vat oh">'
-			+'<div class="oh" style="white-space:nowrap">'
-			+(d.dl?'<span class="pseudolink cw-att-dl" title="'
-				+d.dl+'" data-fname="'+d.name+'">':"")
-			+'<span class="cw-att-fname"></span>'
-			+'<span class="cw-att-ext"></span>'
-			+(d.dl?'</span>':"")
-			+'</div>'
-			+(d.aux?'<div class="cw-att-aux">'+d.aux+'</div>':"")
-			+'</div>'
-		);
-	
-			},
-		"data": {
-			"name": "",
-			"title": "",
-			"ext": "",
-			"ico": "",
-			"aux": "",
-			"dl": ""
-		},
-		"ui": {
-			".cw-att-fname": "title",
-			".cw-att-ext": "ext"
-		}
-	},
-	"ModalManageAtt": {
-		"init": function ($o, form) {
-
-		var html="", d=form.data, size = +(d.size || d.length || 0);
-		if (/^image/.test(d.mime)) {
-			html+='<div class="w800 tac">'
-			+'<img src="'+d.url+'" class="dib mb15" style="max-width:800px; max-height:600px;" />'
-			+'</div>';
-		}
-		html+= '<div class="lh110 fs130 xgray" style="word-break: break-all;">'+d.name+'</div>';
-		html+= '<div class="lh110 fs90 gray mt5">'
-		+size.format(0,' ')+' byte'+(/(^1|[02-9]1)$/.test(size+"")?'':'s')
-		+(!d.digest?", not yet saved to DB":"")
-		+'</div>';
-		html+= '<div class="my-row pt15 mt20 btd fs85 mb-5">'
-		+'<a class="button tdn green mr5" href="'
-		+d.url+'" target="_blank" download="'
-		+d.name+'"><span class="fi-download fs90"></span> Download</a>'
-		+(/.+\.(jp[e]?g|png|tif[f]?|pdf|txt|js|css|htm[l])$/i.test(d.name)?
-			'<a class="button tdn green mr5" href="'
-			+d.url+'" target="_blank"><span class="fi-eye fs90"></span> Open</a>':"")
-
-		+ '<span class="button red" id="btn-del"><span class="fi-trash fs90"></span> Delete</span>'
-		+ '<div class="fr"><span class="button" id="btn-cancel">Cancel</span></div>'
-
-		+'</div>';
-
-		$o.html(html);
-		$o.on("click","a", function (){
-			(function(){$o.trigger("cancel");}).delay(100);
-		})
-	
-			},
-		"data": {
-			"name": "",
-			"size": "",
-			"url": "",
-			"mime": "",
-			"cmd": ""
-		},
-		"ui": {
-			"#btn-cancel": {
-				"bind": function (d,v,$o) {
-					if (v!=null) $o.trigger("cancel")
-					},
-				"events": "click.my"
-			},
-			"#btn-del": {
-				"bind": function (d,v,$o) {
-
-				if (v!=null) {
-					d.cmd="delete";
-					$o.trigger("commit");
-				}
-			
-					},
-				"events": "click.my"
-			}
-		}
+	"style": {
+		" .cw-att-item": "white-space:nowrap; overflow:hidden; padding:0.2em 0 0.2em 0; line-height:1.4em;",
+		" input[type=file]": "width:100%;cursor:pointer;opacity:0; position:absolute;top:0;left:0;height:1.5em"
 	},
 	"ui": {
 		"#att-fpanel": function (d, v, $o) {
@@ -2807,12 +2673,6 @@
 	
 			},
 		".cw-att-upload": "upload",
-		"#att-flist": {
-			"bind": "files",
-			"check": true,
-			"manifest": "Attachment",
-			"list": "<div class=\"cw-att-item hoverlink\"></div>"
-		},
 		"#upload": {
 			"bind": function (d,v,$o) {
 
@@ -2847,11 +2707,152 @@
 					return !d.upload
 					}
 			}
+		},
+		"#att-flist": {
+			"bind": "files",
+			"check": true,
+			"manifest": "Attachment",
+			"list": "<div class=\"cw-att-item hoverlink\"></div>"
 		}
 	},
-	"style": {
-		" .cw-att-item": "white-space:nowrap; overflow:hidden; padding:0.2em 0 0.2em 0; line-height:1.4em;",
-		" input[type=file]": "width:100%;cursor:pointer;opacity:0; position:absolute;top:0;left:0;height:1.5em"
+	"ModalManageAtt": {
+		"init": function ($o, form) {
+
+		var html="", d=form.data, size = +(d.size || d.length || 0);
+		if (/^image/.test(d.mime)) {
+			html+='<div class="w800 tac">'
+			+'<img src="'+d.url+'" class="dib mb15" style="max-width:800px; max-height:600px;" />'
+			+'</div>';
+		}
+		html+= '<div class="lh110 fs130 xgray" style="word-break: break-all;">'+d.name+'</div>';
+		html+= '<div class="lh110 fs90 gray mt5">'
+		+size.format(0,' ')+' byte'+(/(^1|[02-9]1)$/.test(size+"")?'':'s')
+		+(!d.digest?", not yet saved to DB":"")
+		+'</div>';
+		html+= '<div class="my-row pt15 mt20 btd fs85 mb-5">'
+		+'<a class="button tdn green mr5" href="'
+		+d.url+'" target="_blank" download="'
+		+d.name+'"><span class="fi-download fs90"></span> Download</a>'
+		+(/.+\.(jp[e]?g|png|tif[f]?|pdf|txt|js|css|htm[l])$/i.test(d.name)?
+			'<a class="button tdn green mr5" href="'
+			+d.url+'" target="_blank"><span class="fi-eye fs90"></span> Open</a>':"")
+
+		+ '<span class="button red" id="btn-del"><span class="fi-trash fs90"></span> Delete</span>'
+		+ '<div class="fr"><span class="button" id="btn-cancel">Cancel</span></div>'
+
+		+'</div>';
+
+		$o.html(html);
+		$o.on("click","a", function (){
+			(function(){$o.trigger("cancel");}).delay(100);
+		})
+	
+			},
+		"ui": {
+			"#btn-del": {
+				"bind": function (d,v,$o) {
+
+				if (v!=null) {
+					d.cmd="delete";
+					$o.trigger("commit");
+				}
+			
+					},
+				"events": "click.my"
+			},
+			"#btn-cancel": {
+				"bind": function (d,v,$o) {
+					if (v!=null) $o.trigger("cancel")
+					},
+				"events": "click.my"
+			}
+		},
+		"data": {
+			"name": "",
+			"size": "",
+			"url": "",
+			"mime": "",
+			"cmd": ""
+		}
+	},
+	"Attachment": {
+		"init": function ($o, form) {
+
+		var d = form.data;
+		$o.html(
+			d.ico
+			+'<div class="dib vat oh">'
+			+'<div class="oh" style="white-space:nowrap">'
+			+(d.dl?'<span class="pseudolink cw-att-dl" title="'
+				+d.dl+'" data-fname="'+d.name+'">':"")
+			+'<span class="cw-att-fname"></span>'
+			+'<span class="cw-att-ext"></span>'
+			+(d.dl?'</span>':"")
+			+'</div>'
+			+(d.aux?'<div class="cw-att-aux">'+d.aux+'</div>':"")
+			+'</div>'
+		);
+	
+			},
+		"ui": {
+			".cw-att-fname": "title",
+			".cw-att-ext": "ext"
+		},
+		"data": {
+			"name": "",
+			"title": "",
+			"ext": "",
+			"ico": "",
+			"aux": "",
+			"dl": ""
+		}
+	},
+	"data": {
+		"sort": function (fobj, fname, doc) {
+			 return fname; 
+			},
+		"width": 200,
+		"truncate": 200,
+		"limit": 10000000,
+		"ico": function (fobj, fname) {
+
+		var css="fi-paperclip",
+				types={
+					"fi-photo":/\.(png|jp[e]?g|gif|tif[f]?|bmp)$/i,
+					"fi-social-adobe":/\.(pdf|ai|psd)$/i,
+					"fi-page-doc":/\.(doc[x]?|txt|rtf)$/i,
+					"fi-graph-pie":/\.(xls[x]?|csv)$/i,
+					"fi-archive":/\.(zip|rar|7z|7zip)$/i,
+					"fi-html5 pl2":/\.(htm[l]|php)$/i,
+					"fi-css3 pl2":/\.css$/i,
+					"fi-widget":/\.(js[on]?|php|asp|jar|c|erl)$/i,
+					"fi-sound":/\.(wav|aiff|mp3|ogg|mpeg3)$/i
+				};
+		if (!fobj.digest) css="orange fi-burst-new";
+		else Object.each(types, function(key, re){
+			if (re.test(fname)) css=key;
+		});
+		return '<span class="'+css+' dib vam o80 lh110" style="width:1.3em;"></span>';
+	
+			},
+		"aux": function (fobj, fname, doc) {
+
+		return "";
+	
+			},
+		"css": "cw-att-files",
+		"itemCss": "cw-att-item hoverlink",
+		"download": function (fobj, fname, doc) {
+			 return "Manage "+fname; 
+			},
+		"upload": "<span class=\"pseudolink\">Upload file...</span>",
+		"accept": "",
+		"files": [],
+		"doc": {
+		}
+	},
+	"params": {
+		"width": 400
 	}
 },
 	
@@ -2951,61 +2952,478 @@
 	}
 		
 			},
-	"app": {
-		"name": "Manifest",
-		"version": "2",
-		"timeout": "15000",
-		"title": "App Editor",
-		"author": "ermouth",
-		"ico": "data:image/jpeg;base64,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",
-		"nodetitle": "editor.title",
-		"nodedoc": "editor",
-		"nodecmd": "cmd",
-		"maskstate": ["cmd",
-			"editor._id"],
-		"width": [1320,
-			1170],
-		"types": {
-			"manifest": ["edit",
-				"create"]
-		}
+	"style": {
+		" #cmcont .CodeMirror": "height:auto;line-height:1.4em;",
+		" #xmanifesto .CodeMirror": "height:auto;line-height:1.4em;",
+		" .maned": function ($o) {
+
+			return "width:"+($o.width()<1300?"950":"1100")+"px!important;"
+		
+				}
 	},
-	"params": {
-		"delay": 50
-	},
-	"data": {
-		"cmd": "",
-		"editor": {
-			"_id": "",
-			"name": "",
-			"title": "",
-			"type": "manifest",
-			"desc": "",
-			"beta": false,
-			"manifest": {
-				"app": {
+	"Side": {
+		"IsApp": function (d) {
+				 return !(d._type.indexOf("app")<0 && d._type.indexOf("editor")<0);
+				},
+		"IsEd": function (d) {
+				 return !(d._type.indexOf("editor")<0);
+				},
+		"init": function ($o) {
+
+		
+		$o.formgen(this.HTML);
+	
+				},
+		"HTML": [{
+				"row": "200px",
+				"label": "75px",
+				"rowCss": "my-row pt0 pb10",
+				"labelCss": "fs85 gray"
+			},
+			["",
+				"inp#title.fs120",
+				{
+					"plc": "Component title"
+				},
+				"msg"],
+			["",
+				"<div class=\"dib vat mr5 w150\">",
+				"inp#name.w150",
+				{
+					"plc": "IdName"
+				},
+				"msg",
+				"</div>",
+				"<div class=\"ml5 dib vat w40\">",
+				"inp#ver.w40",
+				{
+					"plc": "Ver"
+				},
+				"</div>"],
+			["",
+				"txt#desc",
+				{
+					"plc": "Short description"
+				},
+				"msg"],
+			["",
+				"spn#type.fs80"],
+			"<div id=\"isapp\">",
+			{
+				"rowCss": "my-row mt-2"
+			},
+			["",
+				"<span class=\"fs85 gray\">State mask:</span>",
+				"txt#maskstate",
+				{
+					"plc": "String reference or JSON obj/array mask"
+				},
+				"msg"],
+			{
+				"rowCss": "my-row pt10"
+			},
+			["Title node",
+				"inp#nodetitle.fs90",
+				{
+					"plc": "Like item.title"
+				},
+				"msg"],
+			["Widths",
+				"inp#width.fs90",
+				{
+					"plc": "Like 800,1200"
+				},
+				"msg"],
+			["Timeout",
+				"inp#timeout.fs90.w70",
+				{
+					"plc": "Start in"
+				},
+				"<span class=\"gray fs90\"> ms</span>"],
+			"<div id=\"iseditor\">",
+			["Doc node",
+				"inp#nodedoc.fs90",
+				"msg"],
+			["Cmd node",
+				"inp#nodecmd.fs90",
+				"msg"],
+			{
+				"rowCss": "my-row pt7"
+			},
+			["",
+				"spn#btn-addcmd.pseudolink.fs85",
+				{
+					"txt": "Add type/command..."
+				}],
+			["",
+				"<div id=\"cmd\"></div>"],
+			"</div>",
+			"</div>",
+			"<div id=\"xpreview\" class=\"w200 oh ha mt10 mb10\" style=\"max-height:125px\">",
+			"<img id=\"ico\" src=\"\" class=\"fr hide br2 ml8\" style=\"max-width:32px;max-height:32px\"/>",
+			"<img id=\"pic\" src=\"\" class=\"fr hide br2\" style=\"max-width:85px;max-height:85px\"/>",
+			"<span id=\"btn-addpic\" class=\"fs85 pseudolink dib vat lh120\">Add component image...</span>",
+			"</div>"],
+		"TypeLine": {
+			"ui": {
+				"#actions": {
+					"bind": "actions",
+					"init": function ($o) {
+
+				$o.select2({tags:["create","edit","view","comment","hide","copy","move","delete"]});
+			
+							}
+				},
+				"#type": {
+					"bind": function (d,v) {
+
+				if (v!=null) d.type=(v+"").replace(/[^a-z0-9\*]/ig,"");
+				return d.type;
+			
+							}
 				}
 			},
-			"raw": {
-				"_src": "",
-				"_new": false
-			},
-			"log": []
+			"init": [{
+					"row": "200px",
+					"rowCss": "my-row pb7"
+				},
+				["",
+					"<div class=\"w75 dib vat\">",
+					"inp#type.w70.fs90.vat.dib.pt3.pb5",
+					{
+						"plc": "Type"
+					},
+					"</div><div class=\"w125 dib vat\">",
+					"inp#actions.w125.fs95",
+					{
+						"plc": "Actions"
+					},
+					"</div>"]],
+			"data": {
+				"type": "",
+				"actions": []
+			}
 		},
-		"err": []
+		"ui": {
+			"#btn-addcmd": {
+				"bind": function (d,v) {
+
+			if (v!=null) {
+				d._cmd.push(Object.clone(this.TypeLine.data,true));
+			}
+		
+						},
+				"events": "click.my"
+			},
+			"#cmd": {
+				"bind": "_cmd",
+				"manifest": "TypeLine",
+				"check": true,
+				"watch": "#btn-addcmd"
+			},
+			"#nodecmd": {
+				"bind": "nodecmd",
+				"check": function (d,v) {
+
+			if (!this.IsEd(d)) return "";
+			var t=v.compact();
+			if (!t.length) return "Field to map editor command";
+			if (t.length>150) return "Too long";
+			if (/^["']|["']$/.test(t)) return "No quots for single string";
+			return "";
+		
+						},
+				"watch": "#type"
+			},
+			"#ico": {
+				"bind": "ico",
+				"css": {
+					"hide": function (d) {
+							return !d.ico.length
+							}
+				}
+			},
+			"#pic": {
+				"bind": "pic",
+				"css": {
+					"hide": function (d) {
+							return !d.pic.length
+							}
+				}
+			},
+			"#btn-addpic": {
+				"bind": function (d,v,$o) {
+
+			if (v!=null) {
+				//console.log($o, $o.data(), this)
+				$.my.modal({
+					manifest:"cw.Sys.Cropper.Square",
+					data:{data:"",filename:"", size:250}
+				}).then(function (crop) {
+					if (crop && crop.data) {	
+						var I=new Image();
+						I.src="data:image/jpeg;base64,"+crop.data;
+						I.onload=function(){
+							var img=cw.lib.image(I);
+							try {
+								d.pic = img.resample(128).sharpen(0.2).jpeg(0.95, true);
+								d.ico = img.resample(50).brightness(1.05).contrast(1.05).sharpen(0.5).jpeg(0.96);
+								$o.my("find","#pic,#ico").trigger("recalc");
+							}catch(e){
+								console.log(e)
+							}								
+							crop.data="";
+							$o.html("Change image...").addClass("w75");
+						}
+					}
+				});
+			}
+			if (d.pic) $o.html("Change image...").addClass("w75");
+		
+						},
+				"events": "click.my"
+			},
+			"#nodedoc": {
+				"bind": "nodedoc",
+				"check": function (d,v) {
+
+			if (!this.IsEd(d)) return "";
+			var t=v.compact();
+			if (!t.length) return "Field to map doc object to edit";
+			if (t.length>150) return "Too long";
+			if (/^["']|["']$/.test(t)) return "No quots for single string";
+			return "";
+		
+						},
+				"watch": "#type"
+			},
+			"#iseditor": {
+				"bind": function () {
+
+						},
+				"watch": "#type",
+				"css": {
+					"hide": function (d) {
+							return !this.IsEd(d);
+							}
+				}
+			},
+			"#width": {
+				"bind": function (d,v,$o) {
+
+			if (v!=null) {
+				d.width=v.split(/[\s,]/).map(function(e){return parseInt(e)}).compact(true);
+				return v;
+			}
+			return d.width.join(" ");
+		
+						},
+				"check": function (d,v) {
+
+			if (!this.IsApp(d)) return "";
+			var t=v.compact();
+			if (!/^(\d{3,4}([\s,]\d{3,4})*[\s,]?)$/.test(t)) return "Num list";
+			return "";
+		
+						},
+				"watch": "#type"
+			},
+			"#timeout": {
+				"bind": "timeout",
+				"check": function (d,v) {
+
+			if (!this.IsApp(d)) return "";
+			if (!/^\d{1,5}$/.test(v)) return "Num, 0 to 99K";
+			return "";
+		
+						},
+				"watch": "#type"
+			},
+			"#nodetitle": {
+				"bind": "nodetitle",
+				"check": function (d,v) {
+
+			if (!this.IsApp(d)) return "";
+			var t=v.compact();
+			if (!t.length && this.IsEd(d)) return "Data field to map as app title";
+			if (t.length>150) return "Too long";
+			if (/^["']|["']$/.test(t)) return "No quots for single string";
+			return "";
+		
+						},
+				"watch": "#type"
+			},
+			"#maskstate": {
+				"delay": 50,
+				"bind": "maskstate",
+				"check": function (d,v) {
+
+			//v must be ref or json array or obj
+			var t=v.compact(), obj;
+			if (!this.IsApp(d) || this.IsEd(d)) return "";
+			if (t.length>150) return "Too long";
+			if (/^["']|["']$/.test(t)) return "No quots for single string";
+			if (/^[\[\{]|[\}\]]$/.test(t)){
+				try{
+					obj=JSON.parse(t);
+				} catch(e) {}
+				if (!obj) return "Invalid JSON";
+				if (Object.isArray(obj)) {
+					if (!obj.length) return "At least one elt";
+					for (var i=0;i<obj.length;i++) if (!Object.isString(obj[i])) return "Only strings in array";
+					if (obj.length!==obj.unique().length) return "Array has dupes";
+				} else if (Object.isObject(obj)) {
+					if (!Object.keys(obj).length) return "Mask is empty"
+						} else return "Invalid JSON type";
+			} 
+			return "";
+		
+						},
+				"watch": "#type",
+				"css": {
+					"hide": function (d) {
+							return this.IsEd(d)
+							}
+				}
+			},
+			"#isapp": {
+				"bind": function () {
+
+						},
+				"watch": "#type",
+				"css": {
+					"hide": function (d) {
+							return !this.IsApp(d)
+							}
+				}
+			},
+			"#desc": {
+				"bind": "_desc",
+				"check": /^.{0,140}$/,
+				"error": "<i>Short</i> desc, please"
+			},
+			"#ver": {
+				"bind": "version",
+				"check": /^(|[0-9][a-z0-9\.]{0,5})$/,
+				"error": "Like 12 or 5.6.8"
+			},
+			"#name": {
+				"bind": function (d,v) {
+
+			if (v!=null) d.name=v.to(1).toUpperCase()+v.from(1);
+			return d.name;
+		
+						},
+				"check": function (d,v) {
+
+			if (!/^[A-Z][A-Za-z0-9]{2,24}(\.[A-Za-z0-9]{1,25}){0,4}$/.test(v)) return "Like App.Some.Ext";
+			if (v.to(1).toUpperCase() !== v.to(1)) return "First – cap";
+			if (v.length>129) return "Too long";
+			return "";
+		
+						}
+			},
+			"#title": {
+				"bind": "title",
+				"check": function (d,v) {
+
+			var t=v.compact();
+			if (t.length<3) return "Enter title";
+			if (t.length>50) return "Too long!";
+			return "";
+		
+						}
+			},
+			"#type": {
+				"bind": "_type",
+				"init": function ($o) {
+
+			$o.tags({tags:[[{"App":"app"},{"Editor":"editor"}],{"<i>&beta;eta</i>":"beta"}], empty:{"Manifest":"manifest"}});
+		
+						}
+			}
+		},
+		"data": {
+			"_src": "",
+			"_desc": "",
+			"name": "",
+			"version": "1",
+			"timeout": "3000",
+			"title": "",
+			"author": "",
+			"pic": "",
+			"ico": "",
+			"maskstate": "",
+			"nodetitle": "",
+			"nodedoc": "",
+			"nodecmd": "",
+			"types": "",
+			"width": [],
+			"_cmd": [],
+			"_type": ["manifest"]
+		}
+	},
+	"Subs": {
+	},
+	"Postfix": {
 	},
 	"ui": {
-		"#pane": {
-			"manifest": "Side",
-			"check": true,
-			"bind": "editor.raw"
+		"#atts": {
+			"init": function ($o, form) {
+
+			$o.my("cw.Sys.Attachments", {
+				doc:form.data.editor,
+				truncate:18
+			});
+		
+					},
+			"bind": function () {
+
+					}
 		},
-		"#manifesto": {
-			"bind": "editor.raw",
-			"manifest": "Editor",
-			"check": true,
-			"delay": 20,
-			"events": "change.my"
+		"#btn-close": {
+			"bind": function (d,v,$o) {
+
+			if (v!=null) $o.trigger("cancel");
+		
+					},
+			"events": "click.my"
+		},
+		"#btn-save": {
+			"bind": function (d,v,$o) {
+
+			var dbid=this.db.name, that=this; 
+			if (v!=null) {
+				d.editor.stamp=Date.now();
+				cw.read[dbid].trust[d.editor._id]="*";
+				this.db.save(d.editor)
+				.then(
+					function (res){
+
+						// mark manifest as trusted
+						cw.read[dbid].trust[res._id]=res._rev;
+						cw.read[dbid]._dirty=true;
+
+						//push to app
+						Object.merge(
+							d.editor,
+							Object.select(res,[/^_/, "stamp", "log"])
+						);
+
+						//redraw file list
+						$o.my("find","#atts").trigger("redraw");
+
+						//rebuild 
+						that.MakePostfix(d.editor._id);
+
+					}, function (e,msg) {
+						console.log(msg, e);
+					}
+				);
+			}
+		
+					},
+			"events": "click.my"
 		},
 		"#warn": {
 			"delay": 200,
@@ -3121,478 +3539,61 @@
 					},
 			"watch": "#pane,#manifesto"
 		},
-		"#btn-save": {
-			"bind": function (d,v,$o) {
-
-			var dbid=this.db.name, that=this; 
-			if (v!=null) {
-				d.editor.stamp=Date.now();
-				cw.read[dbid].trust[d.editor._id]="*";
-				this.db.save(d.editor)
-				.then(
-					function (res){
-
-						// mark manifest as trusted
-						cw.read[dbid].trust[res._id]=res._rev;
-						cw.read[dbid]._dirty=true;
-
-						//push to app
-						Object.merge(
-							d.editor,
-							Object.select(res,[/^_/, "stamp", "log"])
-						);
-
-						//redraw file list
-						$o.my("find","#atts").trigger("redraw");
-
-						//rebuild 
-						that.MakePostfix(d.editor._id);
-
-					}, function (e,msg) {
-						console.log(msg, e);
-					}
-				);
-			}
-		
-					},
-			"events": "click.my"
+		"#manifesto": {
+			"bind": "editor.raw",
+			"manifest": "Editor",
+			"check": true,
+			"delay": 20,
+			"events": "change.my"
 		},
-		"#btn-close": {
-			"bind": function (d,v,$o) {
-
-			if (v!=null) $o.trigger("cancel");
-		
-					},
-			"events": "click.my"
-		},
-		"#atts": {
-			"init": function ($o, form) {
-
-			$o.my("cw.Sys.Attachments", {
-				doc:form.data.editor,
-				truncate:18
-			});
-		
-					},
-			"bind": function () {
-
-					}
+		"#pane": {
+			"manifest": "Side",
+			"check": true,
+			"bind": "editor.raw"
 		}
 	},
-	"Postfix": {
-	},
-	"Subs": {
-	},
-	"Side": {
-		"IsApp": function (d) {
-				 return !(d._type.indexOf("app")<0 && d._type.indexOf("editor")<0);
-				},
-		"IsEd": function (d) {
-				 return !(d._type.indexOf("editor")<0);
-				},
-		"init": function ($o) {
-
-		
-		$o.formgen(this.HTML);
-	
-				},
-		"data": {
-			"_src": "",
-			"_desc": "",
+	"data": {
+		"cmd": "",
+		"err": [],
+		"editor": {
+			"_id": "",
 			"name": "",
-			"version": "1",
-			"timeout": "3000",
 			"title": "",
-			"author": "",
-			"pic": "",
-			"ico": "",
-			"maskstate": "",
-			"nodetitle": "",
-			"nodedoc": "",
-			"nodecmd": "",
-			"types": "",
-			"_type": ["manifest"],
-			"_cmd": [],
-			"width": []
-		},
-		"ui": {
-			"#type": {
-				"bind": "_type",
-				"init": function ($o) {
-
-			$o.tags({tags:[[{"App":"app"},{"Editor":"editor"}],{"<i>&beta;eta</i>":"beta"}], empty:{"Manifest":"manifest"}});
-		
-						}
+			"type": "manifest",
+			"desc": "",
+			"beta": false,
+			"log": [],
+			"raw": {
+				"_src": "",
+				"_new": false
 			},
-			"#title": {
-				"bind": "title",
-				"check": function (d,v) {
-
-			var t=v.compact();
-			if (t.length<3) return "Enter title";
-			if (t.length>50) return "Too long!";
-			return "";
-		
-						}
-			},
-			"#name": {
-				"bind": function (d,v) {
-
-			if (v!=null) d.name=v.to(1).toUpperCase()+v.from(1);
-			return d.name;
-		
-						},
-				"check": function (d,v) {
-
-			if (!/^[A-Z][A-Za-z0-9]{2,24}(\.[A-Za-z0-9]{1,25}){0,4}$/.test(v)) return "Like App.Some.Ext";
-			if (v.to(1).toUpperCase() !== v.to(1)) return "First – cap";
-			if (v.length>129) return "Too long";
-			return "";
-		
-						}
-			},
-			"#ver": {
-				"bind": "version",
-				"check": /^(|[0-9][a-z0-9\.]{0,5})$/,
-				"error": "Like 12 or 5.6.8"
-			},
-			"#desc": {
-				"bind": "_desc",
-				"check": /^.{0,140}$/,
-				"error": "<i>Short</i> desc, please"
-			},
-			"#isapp": {
-				"bind": function () {
-
-						},
-				"watch": "#type",
-				"css": {
-					"hide": function (d) {
-							return !this.IsApp(d)
-							}
-				}
-			},
-			"#maskstate": {
-				"delay": 50,
-				"bind": "maskstate",
-				"check": function (d,v) {
-
-			//v must be ref or json array or obj
-			var t=v.compact(), obj;
-			if (!this.IsApp(d) || this.IsEd(d)) return "";
-			if (t.length>150) return "Too long";
-			if (/^["']|["']$/.test(t)) return "No quots for single string";
-			if (/^[\[\{]|[\}\]]$/.test(t)){
-				try{
-					obj=JSON.parse(t);
-				} catch(e) {}
-				if (!obj) return "Invalid JSON";
-				if (Object.isArray(obj)) {
-					if (!obj.length) return "At least one elt";
-					for (var i=0;i<obj.length;i++) if (!Object.isString(obj[i])) return "Only strings in array";
-					if (obj.length!==obj.unique().length) return "Array has dupes";
-				} else if (Object.isObject(obj)) {
-					if (!Object.keys(obj).length) return "Mask is empty"
-						} else return "Invalid JSON type";
-			} 
-			return "";
-		
-						},
-				"watch": "#type",
-				"css": {
-					"hide": function (d) {
-							return this.IsEd(d)
-							}
-				}
-			},
-			"#nodetitle": {
-				"bind": "nodetitle",
-				"check": function (d,v) {
-
-			if (!this.IsApp(d)) return "";
-			var t=v.compact();
-			if (!t.length && this.IsEd(d)) return "Data field to map as app title";
-			if (t.length>150) return "Too long";
-			if (/^["']|["']$/.test(t)) return "No quots for single string";
-			return "";
-		
-						},
-				"watch": "#type"
-			},
-			"#timeout": {
-				"bind": "timeout",
-				"check": function (d,v) {
-
-			if (!this.IsApp(d)) return "";
-			if (!/^\d{1,5}$/.test(v)) return "Num, 0 to 99K";
-			return "";
-		
-						},
-				"watch": "#type"
-			},
-			"#width": {
-				"bind": function (d,v,$o) {
-
-			if (v!=null) {
-				d.width=v.split(/[\s,]/).map(function(e){return parseInt(e)}).compact(true);
-				return v;
-			}
-			return d.width.join(" ");
-		
-						},
-				"check": function (d,v) {
-
-			if (!this.IsApp(d)) return "";
-			var t=v.compact();
-			if (!/^(\d{3,4}([\s,]\d{3,4})*[\s,]?)$/.test(t)) return "Num list";
-			return "";
-		
-						},
-				"watch": "#type"
-			},
-			"#iseditor": {
-				"bind": function () {
-
-						},
-				"watch": "#type",
-				"css": {
-					"hide": function (d) {
-							return !this.IsEd(d);
-							}
-				}
-			},
-			"#nodedoc": {
-				"bind": "nodedoc",
-				"check": function (d,v) {
-
-			if (!this.IsEd(d)) return "";
-			var t=v.compact();
-			if (!t.length) return "Field to map doc object to edit";
-			if (t.length>150) return "Too long";
-			if (/^["']|["']$/.test(t)) return "No quots for single string";
-			return "";
-		
-						},
-				"watch": "#type"
-			},
-			"#btn-addpic": {
-				"bind": function (d,v,$o) {
-
-			if (v!=null) {
-				//console.log($o, $o.data(), this)
-				$.my.modal({
-					manifest:"cw.Sys.Cropper.Square",
-					data:{data:"",filename:"", size:250}
-				}).then(function (crop) {
-					if (crop && crop.data) {	
-						var I=new Image();
-						I.src="data:image/jpeg;base64,"+crop.data;
-						I.onload=function(){
-							var img=cw.lib.image(I);
-							try {
-								d.pic = img.resample(128).sharpen(0.2).jpeg(0.95, true);
-								d.ico = img.resample(50).brightness(1.05).contrast(1.05).sharpen(0.5).jpeg(0.96);
-								$o.my("find","#pic,#ico").trigger("recalc");
-							}catch(e){
-								console.log(e)
-							}								
-							crop.data="";
-							$o.html("Change image...").addClass("w75");
-						}
-					}
-				});
-			}
-			if (d.pic) $o.html("Change image...").addClass("w75");
-		
-						},
-				"events": "click.my"
-			},
-			"#pic": {
-				"bind": "pic",
-				"css": {
-					"hide": function (d) {
-							return !d.pic.length
-							}
-				}
-			},
-			"#ico": {
-				"bind": "ico",
-				"css": {
-					"hide": function (d) {
-							return !d.ico.length
-							}
-				}
-			},
-			"#nodecmd": {
-				"bind": "nodecmd",
-				"check": function (d,v) {
-
-			if (!this.IsEd(d)) return "";
-			var t=v.compact();
-			if (!t.length) return "Field to map editor command";
-			if (t.length>150) return "Too long";
-			if (/^["']|["']$/.test(t)) return "No quots for single string";
-			return "";
-		
-						},
-				"watch": "#type"
-			},
-			"#cmd": {
-				"bind": "_cmd",
-				"manifest": "TypeLine",
-				"check": true,
-				"watch": "#btn-addcmd"
-			},
-			"#btn-addcmd": {
-				"bind": function (d,v) {
-
-			if (v!=null) {
-				d._cmd.push(Object.clone(this.TypeLine.data,true));
-			}
-		
-						},
-				"events": "click.my"
-			}
-		},
-		"TypeLine": {
-			"data": {
-				"type": "",
-				"actions": []
-			},
-			"init": [{
-					"row": "200px",
-					"rowCss": "my-row pb7"
-				},
-				["",
-					"<div class=\"w75 dib vat\">",
-					"inp#type.w70.fs90.vat.dib.pt3.pb5",
-					{
-						"plc": "Type"
-					},
-					"</div><div class=\"w125 dib vat\">",
-					"inp#actions.w125.fs95",
-					{
-						"plc": "Actions"
-					},
-					"</div>"]],
-			"ui": {
-				"#type": {
-					"bind": function (d,v) {
-
-				if (v!=null) d.type=(v+"").replace(/[^a-z0-9\*]/ig,"");
-				return d.type;
-			
-							}
-				},
-				"#actions": {
-					"bind": "actions",
-					"init": function ($o) {
-
-				$o.select2({tags:["create","edit","view","comment","hide","copy","move","delete"]});
-			
-							}
+			"manifest": {
+				"app": {
 				}
 			}
-		},
-		"HTML": [{
-				"row": "200px",
-				"label": "75px",
-				"rowCss": "my-row pt0 pb10",
-				"labelCss": "fs85 gray"
-			},
-			["",
-				"inp#title.fs120",
-				{
-					"plc": "Component title"
-				},
-				"msg"],
-			["",
-				"<div class=\"dib vat mr5 w150\">",
-				"inp#name.w150",
-				{
-					"plc": "IdName"
-				},
-				"msg",
-				"</div>",
-				"<div class=\"ml5 dib vat w40\">",
-				"inp#ver.w40",
-				{
-					"plc": "Ver"
-				},
-				"</div>"],
-			["",
-				"txt#desc",
-				{
-					"plc": "Short description"
-				},
-				"msg"],
-			["",
-				"spn#type.fs80"],
-			"<div id=\"isapp\">",
-			{
-				"rowCss": "my-row mt-2"
-			},
-			["",
-				"<span class=\"fs85 gray\">State mask:</span>",
-				"txt#maskstate",
-				{
-					"plc": "String reference or JSON obj/array mask"
-				},
-				"msg"],
-			{
-				"rowCss": "my-row pt10"
-			},
-			["Title node",
-				"inp#nodetitle.fs90",
-				{
-					"plc": "Like item.title"
-				},
-				"msg"],
-			["Widths",
-				"inp#width.fs90",
-				{
-					"plc": "Like 800,1200"
-				},
-				"msg"],
-			["Timeout",
-				"inp#timeout.fs90.w70",
-				{
-					"plc": "Start in"
-				},
-				"<span class=\"gray fs90\"> ms</span>"],
-			"<div id=\"iseditor\">",
-			["Doc node",
-				"inp#nodedoc.fs90",
-				"msg"],
-			["Cmd node",
-				"inp#nodecmd.fs90",
-				"msg"],
-			{
-				"rowCss": "my-row pt7"
-			},
-			["",
-				"spn#btn-addcmd.pseudolink.fs85",
-				{
-					"txt": "Add type/command..."
-				}],
-			["",
-				"<div id=\"cmd\"></div>"],
-			"</div>",
-			"</div>",
-			"<div id=\"xpreview\" class=\"w200 oh ha mt10 mb10\" style=\"max-height:125px\">",
-			"<img id=\"ico\" src=\"\" class=\"fr hide br2 ml8\" style=\"max-width:32px;max-height:32px\"/>",
-			"<img id=\"pic\" src=\"\" class=\"fr hide br2\" style=\"max-width:85px;max-height:85px\"/>",
-			"<span id=\"btn-addpic\" class=\"fs85 pseudolink dib vat lh120\">Add component image...</span>",
-			"</div>"]
+		}
 	},
-	"style": {
-		" #cmcont .CodeMirror": "height:auto;line-height:1.4em;",
-		" #xmanifesto .CodeMirror": "height:auto;line-height:1.4em;",
-		" .maned": function ($o) {
-
-			return "width:"+($o.width()<1300?"950":"1100")+"px!important;"
-		
-				}
+	"params": {
+		"delay": 50
+	},
+	"app": {
+		"name": "Manifest",
+		"version": "2",
+		"timeout": "15000",
+		"title": "App Editor",
+		"author": "ermouth",
+		"ico": "data:image/jpeg;base64,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",
+		"nodetitle": "editor.title",
+		"nodedoc": "editor",
+		"nodecmd": "cmd",
+		"types": {
+			"manifest": ["edit",
+				"create"]
+		},
+		"width": [1320,
+			1170],
+		"maskstate": ["cmd",
+			"editor._id"]
 	}
 },
 {
@@ -3666,669 +3667,163 @@
 		},
 	"HTML": "<!-- btns -->\n<div id=\"cmd\" class=\"buttons fr fs85\">\n\t<button  id=\"btn-opts\" class=\"button btnl\"><span \n\t\tclass=\"fi-wrench\"></span></button><button \n\t\tid=\"btn-compile\" class=\"button validate\"><span \n\t\tclass=\"fi-shopping-bag\"></span></button><button \n\t\tid=\"btn-run\" class=\"button btnr green pl10 pr10 validate\"><span \n\t\tclass=\"fi-play\"></span></button>\n</div>\n<!-- tabs -->\n<div id=\"coms\" class=\"gray\">\n\t<div class=\"tab dib vat\">\n\t\t\t<span id=\"xtitle\">\n\t\t\t\t<span id=\"title\" class=\"\"></span>\n\t\t\t</span>\n\t\t\t<span class=\"ctype\"></span>\n\t</div>\n</div>\n<span class=\"fi-plus fs90 p5 pseudolink tdn\" id=\"btn-add\"></span>\n<!-- editors -->\n<div id=\"eds\" class=\"cb\"></div>\n<!-- hidden -->\n<div id=\"warnM\" class=\"hide\"></div>",
 	"NewAppSrc": "// More detailed manifest structure description \n// read at http://jquerymy.com/api/\n({\n\tparams:{},\n\tdata:{\n\t\t// Data to bind with controls,\n\t\t// freeform like \n\t\t// { type:\"box\", size:{x:\"7\", y:\"5\"}, count:\"6\" }\n\t},\n\tinit: function ($form, form) {\n\t\t// Init function, executed before controls init.\n\t\t// Renders ui skeleton and prepares data if needed.\n\t\t// Any init function can return promise to become async.\n\t},\n\tui:{\n\t\t/*\n\t\t\"#someControl\":{\n\t\t\tbind:\"size.x\",\n\t\t\tcheck:/someRegexp/\n\t\t}, ...\n\t\t*/\n\t},\n\tstyle:{\n\t\t/*\n\t\t// Creates runtime stylesheet with rules\n\t\t// selective for manifest, like\n\t\t\t\" .red\":\"color:red\",\n\t\t\t\" .item\":{\n\t\t\t\t\" .red\":\"color:#c02\"\n\t\t\t}\n\t\t*/\n\t}\n})",
-	"require": [{
-			"_": "lib/underscore.js",
-			"UglifyJS": "lib/uglify.js"
+	"style": {
+		"": "width:100%; margin-top:3px",
+		" .CodeMirror": "font:13px 'PT Mono',Monaco,monospace;line-height:1.4em;",
+		" button:focus": "outline:none;",
+		" .itl": "font-style:italic;",
+		" .itl:after": "content:\"*\";font-style:normal;margin-left:1px;",
+		" #cmd": {
+			" .button": "margin:0 0 0 2px; border-radius:0; padding: 5px 8px;",
+			" .btnl": "border-radius: 4px 0 0 4px;",
+			" .btnr": "border-radius: 0 4px 4px 0;"
 		},
-		{
-			"JSHINT": "lib/jshint.js"
-		}],
-	"inherit": ["db"],
-	"data": {
-		"_src": "",
-		"com": [],
-		"_err": [],
-		"_opts": {
-			"runWidth": "800",
-			"runCss": "",
-			"runId": "manifest-preview",
-			"compileTo": ["js"],
-			"runMode": ["modal"]
+		" #eds": {
+			"": "border:1px solid #ddd; margin-top:10px;border-radius:2px",
+			">xdiv": "height:0;overflow:hidden;",
+			">xdiv:first-child": "height:auto;",
+			" .CodeMirror-linenumbers": "transition: background-color 0.3s",
+			" .ed-error .CodeMirror-linenumbers": "background-color:rgba(255, 200, 200, 0.75)"
+		},
+		" #coms": {
+			"": "float: left;margin-bottom: 15px;max-width: 85%;",
+			" .tab": "margin-right:2px;",
+			" #xtitle": "padding:4px 7px; cursor:move;",
+			" #title": "cursor:pointer;",
+			" .active": "background-color:rgba(142, 211, 255, 0.25);color:#3C5168;",
+			" .active.red": "background-color:rgba(255, 200, 200, 0.75);",
+			" .ctype": "font-size:80%; opacity:0.7; display:block;position:absolute;top:-8px;right:-5px;"
 		}
 	},
-	"Item": {
-		"stamp": 0,
-		"id": "Root",
-		"type": "js",
-		"data": "({})",
-		"active": true,
-		"opts": []
-	},
-	"Mode": {
-		"saveToLs": false,
-		"previewParent": "#cw-body",
-		"fullscreenStyle": "padding:50px; min-width:150px;"
-	},
-	"Editors": [],
-	"ui": {
-		"#btn-opts": function (d,v,$o) {
+	"Types": {
+		"css": {
+			"css": "fi-css3",
+			"compile": function (css) {
 
-		if (v!=null) {
-			$o.modal({
-				manifest: this.Settings,
-				data:Object.clone(d._opts,true),
-				width:500,
-				esc:true,
-				enter:true,
-				global:true,
-				screen:true
-				//align:"top:-3px;right:-3px"
-			}).then(function(r){
-				Object.merge(d._opts,r,true)
-			})
-		}
-	
-			},
-		"#btn-run": function (d,v,$o) {
-
-	var $r, $e, $p, dui, ref, doc, parentapp, _prefix, that=this, runnow=true;
-	if (v!=null) {
-		if (d._err.length) cw.lib.note(d._err.join("<br>"),"error");
-		else {
-			$r = $o.my().root;
-			if ($r) dui = $r.my().dui;
-			
-			if (dui) {
-				ref = dui.bind.split(".").to(-1).join(".");
-				doc = $.my.f.getref($r.my().ddata, ref);
-				if (doc && Object.isObject(doc._attachments) && Object.size(doc._attachments)) {
-					// try read attaches
-					parentapp = $r.my().root.data("app");
-					if (parentapp && parentapp.db && parentapp.db.load) {
-						runnow = false;
-						parentapp.db.load(doc._id, true)
-						.then(function(res){
-							if (res._attachments) _prefix = {files:res._attachments};
-							_runPreview();
-						})
-					} 
-				}	
-			} 
-			if (runnow) _runPreview();
-		}
-	}
-	
-	function _runPreview(){ 
-		// Preview in modal
-		if (d._opts.runMode=="modal") {
-			var $r = $o.parents("#manedframe").eq(0);
-			$r.modal({
-				root:$r.parent(),
-				manifest: that.Preview,
-				data:{
-					_opts:d._opts,
-					_src:that._preview,
-					_prefix:_prefix,
-					_subs:that.Subs,
-					_db:that.db
-				},
-				width:d._opts.runWidth||1000,
-				esc:true,
-				global:false,
-				screen:'rgba(255,255,255,0.5)',
-				drag:true
-			}).then(function(r){
-				//Object.merge(d._opts,r,true)
-			})
-			/*.fail(function(res){
-				cw.lib.note("Preview failed to init. "
-					+"See console for details", "error");
-			});*/
-		}
-
-		// Preview fullscreen
-		else if (d._opts.runMode=="fullscreen") {
-			$p = $(that.Mode.previewParent||"body");
-			$p.find(">*:visible")
-			.addClass("hide my-manifesto-preview-hide");
-			$e = $(
-				'<div class="my-manifesto-preview-run db" '
-				+'style="'+that.Mode.fullscreenStyle
-				+';"></div>'
-			);
-
-			$e.appendTo($p)
-			.my(that.Preview, {
-				_opts:d._opts,
-				_src:that._preview,
-				_prefix:_prefix,
-				_subs:that.Subs,
-				_db:that.db
-			}).fail(function(){
-				cw.lib.note("Preview failed to init. "
-										+"See console for details", "error");
-				_kill();
-			}.debounce(50));
-			$e.on("cancel.my", _kill.debounce(50));
-
-		}
-	}
-	
-	function _kill (){
-		try {
-			$e.my("remove");
-		} catch (e) {}
-		$e.unbind(".my");
-		$e.remove();
-		$p.find(".my-manifesto-preview-hide")
-		.removeClass("hide my-manifesto-preview-hide");
-	}
-			
-			},
-		"#coms": {
-			"bind": "com",
-			"check": true,
-			"init": function ($o , form) {
-
-			var d = form.data,
-					that = this;
-
-			$o.sortable({handle:"#xtitle"});
-
-			$o.on("switch.my", function(evt, data){	
-				var $f = $(this).my().root,  e = that.Editors, i = 0;			
-				for (;i<d.com.length;i++) d.com[i].active=!1;
-				data.active = !0;	
-				if (e.indexOf(data)===-1) e.unshift(data);
-				return false;
-			});
-		
-				},
-			"manifest": "Tab",
-			"hash": "GetTabHash",
-			"id": "GetTabId",
-			"list": ">div",
-			"delay": 20,
-			"css": {
-				"fs90 lh160 mb10": function (d) {
-
-				return d.com.length>25;
-			
-					}
-			}
-		},
-		"#eds": {
-			"bind": "this.Editors",
-			"watch": "#coms",
-			"recalc": "#coms",
-			"recalcDepth": 1,
-			"manifest": "Ed",
-			"hash": "GetTabHash",
-			"id": "GetTabId",
-			"list": "<section></section>",
-			"delay": 100
-		},
-		"#btn-add": {
-			"bind": function (d,v,$o) {
-
-			var that=this;
-			if (v!=null) {
-				if (!$o.data("modal")) $o.modal({
-					manifest:this.NewTab,
-					data:{},
-					esc: true,
-					enter:true,
-					root:$o.parent(),
-					align:"top:100%",
-					bound:0,
-					css:"mt10", 
-					nose:"top",
-					screen:'rgba(255,255,255,0.5)'
-				}, function (e){ 
-					return !!(e && Object.size(e)) 
-				}).then(function(r){
-					$o.my("find","#coms").trigger("insert", {
-						where:1e6,
-						what:r.result
-					})
-				});
-				else $o.modal(true);
-			}
-		
-				},
-			"events": "click.my"
-		},
-		"#btn-compile": {
-			"bind": function (d,v,$o) {
-
-		var that = this;
-		if (v!=null) {
-			if (d._err.length) cw.lib.note(d._err.join("<br>"),"error");
-			else {
-				$o.modal({
-					manifest: this.Compiler,
-					data:{
-						_src:that._src,
-						opts:d._opts.compileTo,
-						Subs:that.Subs
-					},
-					width:$o.my().root.width(),
-					esc:true,
-					enter:true,
-					global:true,
-					screen:true
-				}).then(function(r){
-					d._opts.compileTo=r.opts.slice(0);
-				})
-
-			}
-		}
-	
-				}
-		},
-		"#warnM": {
-			"bind": function (d,v,$o) {
-
-		var opts = this.Types, that=this,
-				err=[], r={}, p={}, 
-				row, ext, conv, a;
-		if (Object.isFunction(that.Prefix)) $.extend(true, r, that.Prefix());
-		$.extend(true, p, r);
-
-		for (var i=0;i<d.com.length;i++) {
-			row = d.com[i];
-			ext = {};
-			
-			conv = opts[row.type].compile || function(s){return [[], s||""];};
-			a = conv(row.data);
-			
-			if (a[0].length) err.push("Invalid ‘"+row.id+"’. "+a[0].join("; ")+".");
-			if (a[1]!==undefined) {
-				if (row.id.to(1)===".") {
-					ext=cw.lib.unmask(a[1], row.id.from(1));
+			var err=[], res="";
+			res = ((css+"")
+			.replace(/\/\*[\s\S]+?\*\//gm,"")
+			.replace(/@charset[^;]+?;/gim,'')
+			.replace(/[\n\t\s]+/g,' ')
+			.replace(/\}/g,'}⊻')
+			.replace(/^\n+/g,"").replace(/[\n\s]+$/g,"")
+			.split('⊻')
+			.compact(true)
+			.reduce(function(a,b){
+				var t = b.trim(), p, k, v;
+				if (/^[^{]+\{[^\}]+\}$/.test(t)) {
+					p = t.to(-1).split("{");
+					k = " "+p[0].trim();
+					v = p[1].trim();
+					if (v.last()!=";") v+=";";
+					if (!a[k]) a[k]="";
+					a[k]+=v;
 				} else {
-					ext = a[1];
+					err.push("Invalid rule "+t.truncate(40));
 				}
-			}
-			
-			Object.merge(p, ext, true);
-			if (!row.opts || row.opts.indexOf("nocompile")===-1) Object.merge(r, ext, true);
-		}
+				return a;
+			},{}));
+			return [err, res];
 		
-		if (Object.isFunction(that.Postfix)) {
-			var tmp = that.Postfix()||{}
-			$.extend(true, p, tmp);
-			$.extend(true, r, tmp);
-		}
-		
-		d._err = err;
-		
-		that._src = "("+this.js2txt(r,'\t')+")";;
-		//d._src = "("+this.js2txt(r,'\t')+")";
-		//d._src = this.js2txt(r,'\t');
-				
-		that._preview = "("+this.js2txt(p,'\t')+")";
-		
-		if (err.length) $o.my("find",".validate").addClass("red");
-		else $o.my("find",".validate").removeClass("red");
-		
-		$o.trigger("change");
-	
 				},
-			"watch": "#coms",
-			"delay": 300
-		}
-	},
-	"Tab": {
-		"ui": {
-			"#xtitle": {
-				"watch": "#title",
-				"css": {
-					"active": function (d) {
-						 return d.active 
-						},
-					"bold fs105": function (d) {
-						 return (d.id||"").to(1)!=="."
-						},
-					"itl": function (d) {
-						 return (d.opts||[]).indexOf("nocompile")>-1
-						},
-					"red": function (d) {
-						return d.err && d.err.length
-						}
-				}
-			},
-			"#title": {
-				"bind": function (d,v,$o) {
+			"CM": {
+				"mode": "css",
+				"theme": "base16-light"
+			}
+		},
+		"js": {
+			"compile": function (s) {
 
-				if (null != v && !d.active) $o.trigger("switch", d);
-				return d.id;
-			
-					},
-				"events": "click.my",
-				"init": function ($o, form) {
+			var err=[], res = null;
+			try {
+				// Eval is unsafe and resource-consuming
+				//res = eval(s);
+				
+				// More safe way
+				res = (new Function ("", "return ("+s+");"))();
 
-				var d = form.data;
-				$o.on("dblclick.my", function(){	
-					if (d.err && d.err.length && d.active) {
-						cw.lib.note("Tab errors:<br>"+d.err.join("<br>"), "error");
-					} 
-				})
-				.parent().parent().find(".ctype")
-				.addClass(this.Types[d.type].css||"hide");
-			
-					}
+			} catch (e) {
+				err.push(e.message+".");
+			}
+			return err.length?[err, undefined]:[err,res];
+		
+				},
+			"CM": {
+				"mode": "javascript"
+			}
+		},
+		"text": {
+			"compile": null,
+			"CM": {
+				"mode": ""
+			}
+		},
+		"html": {
+			"css": "fi-html5",
+			"compile": null,
+			"CM": {
+				"mode": "htmlmixed",
+				"theme": "base16-light"
 			}
 		}
 	},
-	"Ed": {
-		"id": "cw.Manifesto.CM",
+	"Preview": {
+		"id": "cw.Manifesto.Preview",
 		"init": function ($o, form) {
 
-		$o.html([
-			'<div style="position:absolute;top:7px;right:7px;z-index:+5">',
-			'<button  id="btn-opts" class="button fs90"><span '
-				+'class="fi-widget"></span></button>',
-			'</div>',
-			'<div>',
-			'<textarea id="cm"></textarea>',
-			'</div>',
-			'<div class="warn hide"></div>'
-		].join(""))
-		//console.log(form)
+		var d=form.data, 
+				p = d._opts, 
+				m = d._src,
+				pi = $.Deferred();
+		
+		try {
+			this.Manifest = $.extend({db:d._db},(d._prefix||{}),eval(d._src));
+			$.extend(!0, this.Manifest, d._subs());
+		} catch (err){
+			console.log(err, err.stack)
+			pi.reject(err);
+		}
+
+		
+		$o.html(
+			'<div id="btn-close" class="'
+			+(p.runMode=="modal"?"hide":"")
+			+'">×</div>'
+			+'<div id="'+p.runId+'" class="'
+			+p.runCss+'" style="margin:0 auto;width:'
+			+d._opts.runWidth+'px"></div>'
+		);
+		pi.resolve();
+		
+		return pi.promise();
 	
 			},
-		"ui": {
-			"#cm": {
-				"bind": "data",
-				"init": function ($o, form) {
-
-			var opts = this.Types[form.data.type];
-			CodeMirror.fromTextArea($o[0], {
-				mode:opts.CM.mode,
-				lineNumbers:true,
-				indentWithTabs:!0,
-				indentUnit:2,
-				tabSize:2,
-				theme: opts.CM.theme||"default"
-			});
-		
-					},
-				"delay": 50,
-				"css": {
-					"hide": function (d) {
-						return !d.active
-						}
-				}
-			},
-			"#btn-opts": {
-				"bind": function (d,v,$o) {
-
-			if (null!=v) {
-				$o.modal({
-					manifest: Object.merge(
-						this.NewTab,
-						{
-							Opts:{apply:"Save", title:"Tab settings", del:"Del tab"},
-							style:{" #xtype":"display:none;"}
-						}
-					),
-					data:{result:Object.clone(d,true)},
-					width:400,
-					align:"top:0px,right:0px", css:"fs90", xnose:"top"
-				}).then(function(r){
-					if (r.op === "Del") {
-						$o.trigger("removetab", d);
-						//$o.trigger("remove");	
-					} else if (r.op === "Save") {
-						Object.merge(d, Object.reject(r.result, ["data","stamp","type"]));
-						$o./*my("find",".warn").*/trigger("change");
-					}
-				}.debounce(50));
-			}
-			if (d.id.to(1)!==".") $o.addClass("hide");
-		
-					}
-			},
-			".warn": {
-				"bind": function (d,v,$o) {
-
-			var  row = d, ext = {}, ins={}, err=[];
-
-			var $r, cmp = this.Types[d.type].compile,
-					a = cmp?cmp(d.data):[[], d.data],
-					err=a[0].slice(0);
-
-			if ((d.err||[]).length!=err.length) {
-				d.err = err;
-				$o.trigger("change");
-			}
-			else d.err = err;
-			$r = $o.my().root;
-			$r.toggleClass("hide", !d.active);
-			$r.toggleClass("ed-error", !!err.length);
-			
-		
-					},
-				"watch": "#cm",
-				"delay": 100
-			}
-		},
 		"style": {
-			" #btn-opts": "border-radius:100px;padding:5px 7px;transition: opacity 0.3s;opacity:0.5;margin:0px!important;line-height:0.95em;",
-			" #btn-opts:hover": "opacity:1;",
-			" .CodeMirror ": function ($o) {
-
-			var ofs = $("#cw-header").is(":visible")?$("#cw-header").outerHeight(true):0,
-					pad = parseInt($("#cw-space").css("paddingTop")) || 0,
-					tab = $o.parents(".my-manifest-1a9u4bgu").find("#coms").outerHeight(true),
-					css = "height:"+($(window).height()-(pad+ofs+tab+15))+"px;";
-			return css;
-		
-				}
-		}
-	},
-	"NewTab": {
-		"init": function ($o , form) {
-
-		$o.formgen(this.HTML);
-		form.data.result.stamp = form.data.result.stamp || (Date.now()+"");
-	
-			},
-		"params": {
-			"width": 400
+			">#btn-close": "position:absolute;top:0;right:0;cursor:pointer;z-index:+100;font-size:50px;line-height:1em; padding:0 10px;transition:color 0.3s; color:rgba(0,0,0,0.2);",
+			">#btn-close:hover": "color:#c02"
 		},
-		"Opts": {
-			"apply": "Create",
-			"title": "New tab"
+		"ui": {
+			">div:eq(1)": {
+				"bind": "_runtime",
+				"manifest": "Manifest"
+			},
+			"#btn-close": {
+				"bind": function (d,v,$o) {
+
+				if (null!=v) {					
+					if (/^(full|modal)/.test(d._opts.runMode+"")) {
+						$o.trigger("cancel");
+					} 
+				}
+			
+					},
+				"events": "click.my"
+			}
 		},
 		"data": {
-			"op": "Save",
-			"root": {
-			},
-			"result": {
-				"stamp": 0,
-				"id": "",
-				"type": "js",
-				"data": "",
-				"active": false,
-				"err": [],
-				"opts": []
+			"_runtime": {
 			}
-		},
-		"ui": {
-			"input[name=\"opts\"]": "result.opts",
-			"#btn-cancel": function (d,v,$o) {
-
-			if (v!=null) $o.trigger("cancel");
-		
-				},
-			"#btn-apply": function (d,v,$o) {
-
-			if (v!=null) $o.trigger("commit");
-			return this.Opts.apply;
-		
-				},
-			"#title": "this.Opts.title",
-			"#id": {
-				"bind": function (d,v,$o) {
-
-				if (v!=null) {
-					if (d.result.type=="js") d.result.data = "({\n\n})";
-					if (d.result.type=="html") d.result.data = "<div>\n\n</div>";
-					d.result.id=v;
-
-				}
-				return d.result.id;
-			
-					},
-				"check": /^(\.[^\.\s\t\r\n]+)+\.?$/i,
-				"error": "Branch name like .Branch or .Branch.Leaf",
-				"delay": 100
-			},
-			"#type": {
-				"bind": "result.type",
-				"init": function ($o) {
-
-				$o.select2();
-			
-					},
-				"watch": "#id"
-			},
-			"#btn-del": {
-				"bind": function (d,v,$o) {
-
-				if (v!=null) {
-					d.op = "Del";
-					$o.trigger("commit");
-				}
-				return this.Opts.del||"";
-			
-					},
-				"css": {
-					"hide": function () {
-						return !this.Opts.del
-						}
-				}
-			}
-		},
-		"HTML": ["<h3 id=\"title\"></h3>",
-			{
-				"row": "400px",
-				"label": "0px",
-				"rowCss": "my-row pt10 pb2"
-			},
-			["",
-				"inp#id.fs120",
-				{
-					"plc": "Property name"
-				},
-				"msg"],
-			["",
-				"<span id=\"xtype\" class=\"mr20\">",
-				"sel#type.w140",
-				{
-					"vals": ["js",
-						"html",
-						"text",
-						"css"]
-				},
-				"</span><span>",
-				"<label class=\"fs80 xgray dib\">",
-				"<input type=\"checkbox\" value=\"nocompile\" name=\"opts\"/>",
-				" Preview only</label>"],
-			{
-				"rowCss": "my-row mt15 pt15 btd"
-			},
-			["",
-				"btn#btn-apply.green.mr5",
-				{
-					"val": "Create tab"
-				},
-				"<span class=\"fr\">",
-				"btn#btn-del.red.mr0",
-				{
-					"val": "Delete"
-				},
-				"</span>",
-				"btn#btn-cancel",
-				{
-					"val": "Cancel"
-				}]],
-		"style": {
 		}
-	},
-	"Settings": {
-		"init": function ($o) {
-			 $o.formgen(this.HTML); 
-			},
-		"data": {
-			"runWidth": "500",
-			"runCss": "",
-			"runId": "manifest-preview",
-			"compileTo": ["js"],
-			"runMode": ["modal"]
-		},
-		"params": {
-			"width": 500
-		},
-		"ui": {
-			"#runwidth": "runWidth",
-			"#runcss": "runCss",
-			"#runid": "runId",
-			"#btn-apply": function (d,v,$o) {
-				if (null!=v) $o.trigger("commit");
-				},
-			"#btn-cancel": function (d,v,$o) {
-				if (null!=v) $o.trigger("cancel");
-				},
-			"#runmode": {
-				"bind": "runMode",
-				"init": function ($o) {
-
-				$o.tags({
-					tags:[[
-						//{"Inline":"inline"},
-						{"Fullscreen":"fullscreen"}
-					]], 
-					empty:{"Modal":"modal"}
-				})
-			
-					}
-			},
-			"#compileto": {
-				"bind": "compileTo",
-				"init": function ($o, form) {
-
-				$o.tags({tags:[[
-					{"JS min":"jsmin"},
-					{"JSON":"json"},
-					{"JSON min":"cjson"}
-					//{"Apply over...":"selector"}
-				]], empty:{"JS object":"js"}})
-			
-					}
-			}
-		},
-		"HTML": [{
-				"row": "500px",
-				"label": "120px",
-				"rowCss": "my-row pt15 fs90"
-			},
-			"<h3>Form’s settings</h3>",
-			["Compile mode",
-				"spn#compileto.fs90"],
-			["Preview mode",
-				"spn#runmode.fs90"],
-			["Preview CSS",
-				"inp#runcss.fs90"],
-			["Preview id",
-				"inp#runid.fs90.w150"],
-			["Preview width",
-				"inp#runwidth.fs90.w100",
-				"<small> px</small>"],
-			{
-				"rowCss": "my-row pt15 mt25 btd fs90"
-			},
-			["",
-				"btn#btn-apply.green.mr5",
-				{
-					"val": "Save"
-				},
-				"btn#btn-cancel",
-				{
-					"val": "Cancel"
-				}]]
 	},
 	"Compiler": {
 		"init": function ($o) {
@@ -4460,7 +3955,27 @@
 
 			
 			},
-		"About": {
+		"HTML": ["<div id=\"stats\" class=\"fs80 gray fr mt3\"></div>",
+			"<h3 class=\"dib vat mt0 mb15\">Manifest compiler</h3>",
+			"<div class=\"fs85 ml20 dib vat mt3\">",
+			"<span id=\"opts\"></span>",
+			"</div>",
+			"<div><textarea id=\"src\"></textarea></div>",
+			{
+				"rowCss": "my-row pt15 fs90 fr"
+			},
+			["",
+				"btn#btn-apply.green.mr5",
+				{
+					"val": "Remember mode"
+				},
+				"btn#btn-cancel",
+				{
+					"val": "Cancel"
+				}],
+			"<div id=\"critic\" class=\"fs80 lh130 dib vat mt15 xgray\"></div>"],
+		"style": {
+			" .CodeMirror": "font:13px 'PT Mono',Monaco,monospace;overflow:scroll; height:300px;line-height:1.3em;border:1px solid #cde;"
 		},
 		"ui": {
 			"#btn-apply": function (d,v,$o) {
@@ -4469,6 +3984,45 @@
 			"#btn-cancel": function (d,v,$o) {
 				if (null!=v) $o.trigger("cancel");
 				},
+			"#stats": {
+				"bind": function () {
+
+				return "Code is "+(this.Stats||0).bytes(2)+" long."
+			
+					},
+				"watch": "#opts"
+			},
+			"#src": {
+				"init": function ($o) {
+
+				CodeMirror.fromTextArea($o[0], {
+					mode:"javascript",
+					lineNumbers:false,
+					indentWithTabs:!0,
+					indentUnit:2,
+					tabSize:2,
+					theme:"default",
+					readOnly:true,
+					lineWrapping:true
+				});
+			
+					},
+				"bind": "src",
+				"watch": "#opts"
+			},
+			"#critic": {
+				"bind": function (d,v,$o) {
+
+				var a=[];
+				a.push( '<span class="gray fs90 w90 dib">Globals</span> '+((this.About.realGlobals||[]).join(", ")||"—") );
+				
+				a.push( '<span class="gray fs90 w90 dib">Ok for IE8</span> '+(this.About.hasIEIncompat?"No (orphan commas or getters)":"Yes") );
+				
+				return a.join("<br>");
+			
+					},
+				"watch": "#opts"
+			},
 			"#opts": {
 				"bind": function (d,v,$o) {
 
@@ -4527,228 +4081,675 @@
 				})
 			
 					}
-			},
-			"#critic": {
-				"bind": function (d,v,$o) {
-
-				var a=[];
-				a.push( '<span class="gray fs90 w90 dib">Globals</span> '+((this.About.realGlobals||[]).join(", ")||"—") );
-				
-				a.push( '<span class="gray fs90 w90 dib">Ok for IE8</span> '+(this.About.hasIEIncompat?"No (orphan commas or getters)":"Yes") );
-				
-				return a.join("<br>");
-			
-					},
-				"watch": "#opts"
-			},
-			"#src": {
-				"init": function ($o) {
-
-				CodeMirror.fromTextArea($o[0], {
-					mode:"javascript",
-					lineNumbers:false,
-					indentWithTabs:!0,
-					indentUnit:2,
-					tabSize:2,
-					theme:"default",
-					readOnly:true,
-					lineWrapping:true
-				});
-			
-					},
-				"bind": "src",
-				"watch": "#opts"
-			},
-			"#stats": {
-				"bind": function () {
-
-				return "Code is "+(this.Stats||0).bytes(2)+" long."
-			
-					},
-				"watch": "#opts"
 			}
 		},
-		"style": {
-			" .CodeMirror": "font:13px 'PT Mono',Monaco,monospace;overflow:scroll; height:300px;line-height:1.3em;border:1px solid #cde;"
-		},
-		"HTML": ["<div id=\"stats\" class=\"fs80 gray fr mt3\"></div>",
-			"<h3 class=\"dib vat mt0 mb15\">Manifest compiler</h3>",
-			"<div class=\"fs85 ml20 dib vat mt3\">",
-			"<span id=\"opts\"></span>",
-			"</div>",
-			"<div><textarea id=\"src\"></textarea></div>",
+		"About": {
+		}
+	},
+	"Settings": {
+		"init": function ($o) {
+			 $o.formgen(this.HTML); 
+			},
+		"HTML": [{
+				"row": "500px",
+				"label": "120px",
+				"rowCss": "my-row pt15 fs90"
+			},
+			"<h3>Form’s settings</h3>",
+			["Compile mode",
+				"spn#compileto.fs90"],
+			["Preview mode",
+				"spn#runmode.fs90"],
+			["Preview CSS",
+				"inp#runcss.fs90"],
+			["Preview id",
+				"inp#runid.fs90.w150"],
+			["Preview width",
+				"inp#runwidth.fs90.w100",
+				"<small> px</small>"],
 			{
-				"rowCss": "my-row pt15 fs90 fr"
+				"rowCss": "my-row pt15 mt25 btd fs90"
 			},
 			["",
 				"btn#btn-apply.green.mr5",
 				{
-					"val": "Remember mode"
+					"val": "Save"
 				},
 				"btn#btn-cancel",
 				{
 					"val": "Cancel"
-				}],
-			"<div id=\"critic\" class=\"fs80 lh130 dib vat mt15 xgray\"></div>"]
-	},
-	"Preview": {
-		"id": "cw.Manifesto.Preview",
-		"init": function ($o, form) {
+				}]],
+		"ui": {
+			"#runwidth": "runWidth",
+			"#runcss": "runCss",
+			"#runid": "runId",
+			"#btn-apply": function (d,v,$o) {
+				if (null!=v) $o.trigger("commit");
+				},
+			"#btn-cancel": function (d,v,$o) {
+				if (null!=v) $o.trigger("cancel");
+				},
+			"#compileto": {
+				"bind": "compileTo",
+				"init": function ($o, form) {
 
-		var d=form.data, 
-				p = d._opts, 
-				m = d._src,
-				pi = $.Deferred();
-		
-		try {
-			this.Manifest = $.extend({db:d._db},(d._prefix||{}),eval(d._src));
-			$.extend(!0, this.Manifest, d._subs());
-		} catch (err){
-			console.log(err, err.stack)
-			pi.reject(err);
+				$o.tags({tags:[[
+					{"JS min":"jsmin"},
+					{"JSON":"json"},
+					{"JSON min":"cjson"}
+					//{"Apply over...":"selector"}
+				]], empty:{"JS object":"js"}})
+			
+					}
+			},
+			"#runmode": {
+				"bind": "runMode",
+				"init": function ($o) {
+
+				$o.tags({
+					tags:[[
+						//{"Inline":"inline"},
+						{"Fullscreen":"fullscreen"}
+					]], 
+					empty:{"Modal":"modal"}
+				})
+			
+					}
+			}
+		},
+		"params": {
+			"width": 500
+		},
+		"data": {
+			"runWidth": "500",
+			"runCss": "",
+			"runId": "manifest-preview",
+			"runMode": ["modal"],
+			"compileTo": ["js"]
 		}
+	},
+	"NewTab": {
+		"init": function ($o , form) {
 
-		
-		$o.html(
-			'<div id="btn-close" class="'
-			+(p.runMode=="modal"?"hide":"")
-			+'">×</div>'
-			+'<div id="'+p.runId+'" class="'
-			+p.runCss+'" style="margin:0 auto;width:'
-			+d._opts.runWidth+'px"></div>'
-		);
-		pi.resolve();
-		
-		return pi.promise();
+		$o.formgen(this.HTML);
+		form.data.result.stamp = form.data.result.stamp || (Date.now()+"");
 	
 			},
-		"data": {
-			"_runtime": {
-			}
+		"style": {
 		},
+		"HTML": ["<h3 id=\"title\"></h3>",
+			{
+				"row": "400px",
+				"label": "0px",
+				"rowCss": "my-row pt10 pb2"
+			},
+			["",
+				"inp#id.fs120",
+				{
+					"plc": "Property name"
+				},
+				"msg"],
+			["",
+				"<span id=\"xtype\" class=\"mr20\">",
+				"sel#type.w140",
+				{
+					"vals": ["js",
+						"html",
+						"text",
+						"css"]
+				},
+				"</span><span>",
+				"<label class=\"fs80 xgray dib\">",
+				"<input type=\"checkbox\" value=\"nocompile\" name=\"opts\"/>",
+				" Preview only</label>"],
+			{
+				"rowCss": "my-row mt15 pt15 btd"
+			},
+			["",
+				"btn#btn-apply.green.mr5",
+				{
+					"val": "Create tab"
+				},
+				"<span class=\"fr\">",
+				"btn#btn-del.red.mr0",
+				{
+					"val": "Delete"
+				},
+				"</span>",
+				"btn#btn-cancel",
+				{
+					"val": "Cancel"
+				}]],
 		"ui": {
-			"#btn-close": {
+			"input[name=\"opts\"]": "result.opts",
+			"#btn-cancel": function (d,v,$o) {
+
+			if (v!=null) $o.trigger("cancel");
+		
+				},
+			"#btn-apply": function (d,v,$o) {
+
+			if (v!=null) $o.trigger("commit");
+			return this.Opts.apply;
+		
+				},
+			"#title": "this.Opts.title",
+			"#btn-del": {
 				"bind": function (d,v,$o) {
 
-				if (null!=v) {					
-					if (/^(full|modal)/.test(d._opts.runMode+"")) {
-						$o.trigger("cancel");
-					} 
+				if (v!=null) {
+					d.op = "Del";
+					$o.trigger("commit");
 				}
+				return this.Opts.del||"";
 			
 					},
-				"events": "click.my"
-			},
-			">div:eq(1)": {
-				"bind": "_runtime",
-				"manifest": "Manifest"
-			}
-		},
-		"style": {
-			">#btn-close": "position:absolute;top:0;right:0;cursor:pointer;z-index:+100;font-size:50px;line-height:1em; padding:0 10px;transition:color 0.3s; color:rgba(0,0,0,0.2);",
-			">#btn-close:hover": "color:#c02"
-		}
-	},
-	"Types": {
-		"html": {
-			"css": "fi-html5",
-			"compile": null,
-			"CM": {
-				"mode": "htmlmixed",
-				"theme": "base16-light"
-			}
-		},
-		"text": {
-			"compile": null,
-			"CM": {
-				"mode": ""
-			}
-		},
-		"js": {
-			"compile": function (s) {
-
-			var err=[], res = null;
-			try {
-				// Eval is unsafe and resource-consuming
-				//res = eval(s);
-				
-				// More safe way
-				res = (new Function ("", "return ("+s+");"))();
-
-			} catch (e) {
-				err.push(e.message+".");
-			}
-			return err.length?[err, undefined]:[err,res];
-		
-				},
-			"CM": {
-				"mode": "javascript"
-			}
-		},
-		"css": {
-			"css": "fi-css3",
-			"compile": function (css) {
-
-			var err=[], res="";
-			res = ((css+"")
-			.replace(/\/\*[\s\S]+?\*\//gm,"")
-			.replace(/@charset[^;]+?;/gim,'')
-			.replace(/[\n\t\s]+/g,' ')
-			.replace(/\}/g,'}⊻')
-			.replace(/^\n+/g,"").replace(/[\n\s]+$/g,"")
-			.split('⊻')
-			.compact(true)
-			.reduce(function(a,b){
-				var t = b.trim(), p, k, v;
-				if (/^[^{]+\{[^\}]+\}$/.test(t)) {
-					p = t.to(-1).split("{");
-					k = " "+p[0].trim();
-					v = p[1].trim();
-					if (v.last()!=";") v+=";";
-					if (!a[k]) a[k]="";
-					a[k]+=v;
-				} else {
-					err.push("Invalid rule "+t.truncate(40));
+				"css": {
+					"hide": function () {
+						return !this.Opts.del
+						}
 				}
-				return a;
-			},{}));
-			return [err, res];
+			},
+			"#type": {
+				"bind": "result.type",
+				"init": function ($o) {
+
+				$o.select2();
+			
+					},
+				"watch": "#id"
+			},
+			"#id": {
+				"bind": function (d,v,$o) {
+
+				if (v!=null) {
+					if (d.result.type=="js") d.result.data = "({\n\n})";
+					if (d.result.type=="html") d.result.data = "<div>\n\n</div>";
+					d.result.id=v;
+
+				}
+				return d.result.id;
+			
+					},
+				"check": /^(\.[^\.\s\t\r\n]+)+\.?$/i,
+				"error": "Branch name like .Branch or .Branch.Leaf",
+				"delay": 100
+			}
+		},
+		"data": {
+			"op": "Save",
+			"result": {
+				"stamp": 0,
+				"id": "",
+				"type": "js",
+				"data": "",
+				"active": false,
+				"opts": [],
+				"err": []
+			},
+			"root": {
+			}
+		},
+		"Opts": {
+			"apply": "Create",
+			"title": "New tab"
+		},
+		"params": {
+			"width": 400
+		}
+	},
+	"Ed": {
+		"id": "cw.Manifesto.CM",
+		"init": function ($o, form) {
+
+		$o.html([
+			'<div style="position:absolute;top:7px;right:7px;z-index:+5">',
+			'<button  id="btn-opts" class="button fs90"><span '
+				+'class="fi-widget"></span></button>',
+			'</div>',
+			'<div>',
+			'<textarea id="cm"></textarea>',
+			'</div>',
+			'<div class="warn hide"></div>'
+		].join(""))
+		//console.log(form)
+	
+			},
+		"style": {
+			" #btn-opts": "border-radius:100px;padding:5px 7px;transition: opacity 0.3s;opacity:0.5;margin:0px!important;line-height:0.95em;",
+			" #btn-opts:hover": "opacity:1;",
+			" .CodeMirror ": function ($o) {
+
+			var ofs = $("#cw-header").is(":visible")?$("#cw-header").outerHeight(true):0,
+					pad = parseInt($("#cw-space").css("paddingTop")) || 0,
+					tab = $o.parents(".my-manifest-1a9u4bgu").find("#coms").outerHeight(true),
+					css = "height:"+($(window).height()-(pad+ofs+tab+15))+"px;";
+			return css;
 		
-				},
-			"CM": {
-				"mode": "css",
-				"theme": "base16-light"
+				}
+		},
+		"ui": {
+			".warn": {
+				"bind": function (d,v,$o) {
+
+			var  row = d, ext = {}, ins={}, err=[];
+
+			var $r, cmp = this.Types[d.type].compile,
+					a = cmp?cmp(d.data):[[], d.data],
+					err=a[0].slice(0);
+
+			if ((d.err||[]).length!=err.length) {
+				d.err = err;
+				$o.trigger("change");
+			}
+			else d.err = err;
+			$r = $o.my().root;
+			$r.toggleClass("hide", !d.active);
+			$r.toggleClass("ed-error", !!err.length);
+			
+		
+					},
+				"watch": "#cm",
+				"delay": 100
+			},
+			"#btn-opts": {
+				"bind": function (d,v,$o) {
+
+			if (null!=v) {
+				$o.modal({
+					manifest: Object.merge(
+						this.NewTab,
+						{
+							Opts:{apply:"Save", title:"Tab settings", del:"Del tab"},
+							style:{" #xtype":"display:none;"}
+						}
+					),
+					data:{result:Object.clone(d,true)},
+					width:400,
+					align:"top:0px,right:0px", css:"fs90", xnose:"top"
+				}).then(function(r){
+					if (r.op === "Del") {
+						$o.trigger("removetab", d);
+						//$o.trigger("remove");	
+					} else if (r.op === "Save") {
+						Object.merge(d, Object.reject(r.result, ["data","stamp","type"]));
+						$o./*my("find",".warn").*/trigger("change");
+					}
+				}.debounce(50));
+			}
+			if (d.id.to(1)!==".") $o.addClass("hide");
+		
+					}
+			},
+			"#cm": {
+				"bind": "data",
+				"init": function ($o, form) {
+
+			var opts = this.Types[form.data.type];
+			CodeMirror.fromTextArea($o[0], {
+				mode:opts.CM.mode,
+				lineNumbers:true,
+				indentWithTabs:!0,
+				indentUnit:2,
+				tabSize:2,
+				theme: opts.CM.theme||"default"
+			});
+		
+					},
+				"delay": 50,
+				"css": {
+					"hide": function (d) {
+						return !d.active
+						}
+				}
 			}
 		}
 	},
-	"style": {
-		"": "width:100%; margin-top:3px",
-		" .CodeMirror": "font:13px 'PT Mono',Monaco,monospace;line-height:1.4em;",
-		" button:focus": "outline:none;",
-		" .itl": "font-style:italic;",
-		" .itl:after": "content:\"*\";font-style:normal;margin-left:1px;",
-		" #coms": {
-			"": "float: left;margin-bottom: 15px;max-width: 85%;",
-			" .tab": "margin-right:2px;",
-			" #xtitle": "padding:4px 7px; cursor:move;",
-			" #title": "cursor:pointer;",
-			" .active": "background-color:rgba(142, 211, 255, 0.25);color:#3C5168;",
-			" .active.red": "background-color:rgba(255, 200, 200, 0.75);",
-			" .ctype": "font-size:80%; opacity:0.7; display:block;position:absolute;top:-8px;right:-5px;"
-		},
-		" #eds": {
-			"": "border:1px solid #ddd; margin-top:10px;border-radius:2px",
-			">xdiv": "height:0;overflow:hidden;",
-			">xdiv:first-child": "height:auto;",
-			" .CodeMirror-linenumbers": "transition: background-color 0.3s",
-			" .ed-error .CodeMirror-linenumbers": "background-color:rgba(255, 200, 200, 0.75)"
-		},
-		" #cmd": {
-			" .button": "margin:0 0 0 2px; border-radius:0; padding: 5px 8px;",
-			" .btnl": "border-radius: 4px 0 0 4px;",
-			" .btnr": "border-radius: 0 4px 4px 0;"
+	"Tab": {
+		"ui": {
+			"#title": {
+				"bind": function (d,v,$o) {
+
+				if (null != v && !d.active) $o.trigger("switch", d);
+				return d.id;
+			
+					},
+				"events": "click.my",
+				"init": function ($o, form) {
+
+				var d = form.data;
+				$o.on("dblclick.my", function(){	
+					if (d.err && d.err.length && d.active) {
+						cw.lib.note("Tab errors:<br>"+d.err.join("<br>"), "error");
+					} 
+				})
+				.parent().parent().find(".ctype")
+				.addClass(this.Types[d.type].css||"hide");
+			
+					}
+			},
+			"#xtitle": {
+				"watch": "#title",
+				"css": {
+					"active": function (d) {
+						 return d.active 
+						},
+					"bold fs105": function (d) {
+						 return (d.id||"").to(1)!=="."
+						},
+					"itl": function (d) {
+						 return (d.opts||[]).indexOf("nocompile")>-1
+						},
+					"red": function (d) {
+						return d.err && d.err.length
+						}
+				}
+			}
+		}
+	},
+	"ui": {
+		"#btn-opts": function (d,v,$o) {
+
+		if (v!=null) {
+			$o.modal({
+				manifest: this.Settings,
+				data:Object.clone(d._opts,true),
+				width:500,
+				esc:true,
+				enter:true,
+				global:true,
+				screen:true
+				//align:"top:-3px;right:-3px"
+			}).then(function(r){
+				Object.merge(d._opts,r,true)
+			})
+		}
+	
+			},
+		"#btn-run": function (d,v,$o) {
+
+	var $r, $e, $p, dui, ref, doc, parentapp, _prefix, that=this, runnow=true;
+	if (v!=null) {
+		if (d._err.length) cw.lib.note(d._err.join("<br>"),"error");
+		else {
+			$r = $o.my().root;
+			if ($r) dui = $r.my().dui;
+			
+			if (dui) {
+				ref = dui.bind.split(".").to(-1).join(".");
+				doc = $.my.f.getref($r.my().ddata, ref);
+				if (doc && Object.isObject(doc._attachments) && Object.size(doc._attachments)) {
+					// try read attaches
+					parentapp = $r.my().root.data("app");
+					if (parentapp && parentapp.db && parentapp.db.load) {
+						runnow = false;
+						parentapp.db.load(doc._id, true)
+						.then(function(res){
+							if (res._attachments) _prefix = {files:res._attachments};
+							_runPreview();
+						})
+					} 
+				}	
+			} 
+			if (runnow) _runPreview();
 		}
 	}
+	
+	function _runPreview(){ 
+		// Preview in modal
+		if (d._opts.runMode=="modal") {
+			var $r = $o.parents("#manedframe").eq(0);
+			$r.modal({
+				root:$r.parent(),
+				manifest: that.Preview,
+				data:{
+					_opts:d._opts,
+					_src:that._preview,
+					_prefix:_prefix,
+					_subs:that.Subs,
+					_db:that.db
+				},
+				width:d._opts.runWidth||1000,
+				esc:true,
+				global:false,
+				screen:'rgba(255,255,255,0.5)',
+				drag:true
+			}).then(function(r){
+				//Object.merge(d._opts,r,true)
+			})
+			/*.fail(function(res){
+				cw.lib.note("Preview failed to init. "
+					+"See console for details", "error");
+			});*/
+		}
+
+		// Preview fullscreen
+		else if (d._opts.runMode=="fullscreen") {
+			$p = $(that.Mode.previewParent||"body");
+			$p.find(">*:visible")
+			.addClass("hide my-manifesto-preview-hide");
+			$e = $(
+				'<div class="my-manifesto-preview-run db" '
+				+'style="'+that.Mode.fullscreenStyle
+				+';"></div>'
+			);
+
+			$e.appendTo($p)
+			.my(that.Preview, {
+				_opts:d._opts,
+				_src:that._preview,
+				_prefix:_prefix,
+				_subs:that.Subs,
+				_db:that.db
+			}).fail(function(){
+				cw.lib.note("Preview failed to init. "
+										+"See console for details", "error");
+				_kill();
+			}.debounce(50));
+			$e.on("cancel.my", _kill.debounce(50));
+
+		}
+	}
+	
+	function _kill (){
+		try {
+			$e.my("remove");
+		} catch (e) {}
+		$e.unbind(".my");
+		$e.remove();
+		$p.find(".my-manifesto-preview-hide")
+		.removeClass("hide my-manifesto-preview-hide");
+	}
+			
+			},
+		"#warnM": {
+			"bind": function (d,v,$o) {
+
+		var opts = this.Types, that=this,
+				err=[], r={}, p={}, 
+				row, ext, conv, a;
+		if (Object.isFunction(that.Prefix)) $.extend(true, r, that.Prefix());
+		$.extend(true, p, r);
+
+		for (var i=0;i<d.com.length;i++) {
+			row = d.com[i];
+			ext = {};
+			
+			conv = opts[row.type].compile || function(s){return [[], s||""];};
+			a = conv(row.data);
+			
+			if (a[0].length) err.push("Invalid ‘"+row.id+"’. "+a[0].join("; ")+".");
+			if (a[1]!==undefined) {
+				if (row.id.to(1)===".") {
+					ext=cw.lib.unmask(a[1], row.id.from(1));
+				} else {
+					ext = a[1];
+				}
+			}
+			
+			Object.merge(p, ext, true);
+			if (!row.opts || row.opts.indexOf("nocompile")===-1) Object.merge(r, ext, true);
+		}
+		
+		if (Object.isFunction(that.Postfix)) {
+			var tmp = that.Postfix()||{}
+			$.extend(true, p, tmp);
+			$.extend(true, r, tmp);
+		}
+		
+		d._err = err;
+		
+		that._src = "("+this.js2txt(r,'\t')+")";;
+		//d._src = "("+this.js2txt(r,'\t')+")";
+		//d._src = this.js2txt(r,'\t');
+				
+		that._preview = "("+this.js2txt(p,'\t')+")";
+		
+		if (err.length) $o.my("find",".validate").addClass("red");
+		else $o.my("find",".validate").removeClass("red");
+		
+		$o.trigger("change");
+	
+				},
+			"watch": "#coms",
+			"delay": 300
+		},
+		"#btn-compile": {
+			"bind": function (d,v,$o) {
+
+		var that = this;
+		if (v!=null) {
+			if (d._err.length) cw.lib.note(d._err.join("<br>"),"error");
+			else {
+				$o.modal({
+					manifest: this.Compiler,
+					data:{
+						_src:that._src,
+						opts:d._opts.compileTo,
+						Subs:that.Subs
+					},
+					width:$o.my().root.width(),
+					esc:true,
+					enter:true,
+					global:true,
+					screen:true
+				}).then(function(r){
+					d._opts.compileTo=r.opts.slice(0);
+				})
+
+			}
+		}
+	
+				}
+		},
+		"#btn-add": {
+			"bind": function (d,v,$o) {
+
+			var that=this;
+			if (v!=null) {
+				if (!$o.data("modal")) $o.modal({
+					manifest:this.NewTab,
+					data:{},
+					esc: true,
+					enter:true,
+					root:$o.parent(),
+					align:"top:100%",
+					bound:0,
+					css:"mt10", 
+					nose:"top",
+					screen:'rgba(255,255,255,0.5)'
+				}, function (e){ 
+					return !!(e && Object.size(e)) 
+				}).then(function(r){
+					$o.my("find","#coms").trigger("insert", {
+						where:1e6,
+						what:r.result
+					})
+				});
+				else $o.modal(true);
+			}
+		
+				},
+			"events": "click.my"
+		},
+		"#eds": {
+			"bind": "this.Editors",
+			"watch": "#coms",
+			"recalc": "#coms",
+			"recalcDepth": 1,
+			"manifest": "Ed",
+			"hash": "GetTabHash",
+			"id": "GetTabId",
+			"list": "<section></section>",
+			"delay": 100
+		},
+		"#coms": {
+			"bind": "com",
+			"check": true,
+			"init": function ($o , form) {
+
+			var d = form.data,
+					that = this;
+
+			$o.sortable({handle:"#xtitle"});
+
+			$o.on("switch.my", function(evt, data){	
+				var $f = $(this).my().root,  e = that.Editors, i = 0;			
+				for (;i<d.com.length;i++) d.com[i].active=!1;
+				data.active = !0;	
+				if (e.indexOf(data)===-1) e.unshift(data);
+				return false;
+			});
+		
+				},
+			"manifest": "Tab",
+			"hash": "GetTabHash",
+			"id": "GetTabId",
+			"list": ">div",
+			"delay": 20,
+			"css": {
+				"fs90 lh160 mb10": function (d) {
+
+				return d.com.length>25;
+			
+					}
+			}
+		}
+	},
+	"Editors": [],
+	"Mode": {
+		"saveToLs": false,
+		"previewParent": "#cw-body",
+		"fullscreenStyle": "padding:50px; min-width:150px;"
+	},
+	"Item": {
+		"stamp": 0,
+		"id": "Root",
+		"type": "js",
+		"data": "({})",
+		"active": true,
+		"opts": []
+	},
+	"data": {
+		"_src": "",
+		"_opts": {
+			"runWidth": "800",
+			"runCss": "",
+			"runId": "manifest-preview",
+			"runMode": ["modal"],
+			"compileTo": ["js"]
+		},
+		"_err": [],
+		"com": []
+	},
+	"inherit": ["db"],
+	"require": [{
+			"_": "lib/underscore.js",
+			"UglifyJS": "lib/uglify.js"
+		},
+		{
+			"JSHINT": "lib/jshint.js"
+		}]
 },
 	
 
