@@ -1,9 +1,11 @@
 /**
- * CloudWall 2 Main 
- * Created by ermouth 2015-04-01
+ * CloudWall 1.7.0 Main 
+ * Created by ermouth 2015-06-27
  */
 
 (function(){
+	
+	var VERSION = "1.7.0";
 	
 	// Some shortcuts and constants
 	var $E = $.extend, 
@@ -18,18 +20,17 @@
 		
 	var Pouch = window.PouchDB,
 		lib = cw.lib,
-			
-			
+		Session = lib.hash4 (Date.now()+" "+Number.random(1e5,1e6)),
 		CW = ({												
 	
 	// CONSTANTS AND SYSSETTINGS
 	
 	"$body":"#cw-body"								// body, real $ obj will be mounted here
-	,"$header":"#cw-header"							// header, will came $ obj
+	,"$header":"#cw-header"						// header, will came $ obj
 	,"$upic":"#cw-upic"
 	,"$notes":"#cw-notes"							// sys msg container
 	,minBodyWidth:1200								// min body width, px
-	,margins:100									// desired outer margins around body
+	,margins:100											// desired outer margins around body
 
 	,"$space":"#cw-space"							// slots and panes container
 	,maxSpaceWidth:$(window).width()-100			
@@ -38,11 +39,11 @@
 	,"$slots":"#cw-slots"							// app slots container
 	,"$left":"#cw-side"								// db list app container
 	,"$right":"#cw-dock"							// dock app container
-	,leftWidth:180									// db list app width
-	,rightWidth:200									// dock width
-	,appLeft:"cw.Sys.Side"							// manifest id of db list
-	,appRight:"cw.Sys.Dock"							// manifest id of dock app
-	,appTrust:"cw.Sys.Trust"						//trust modal app
+	,leftWidth:180										// db list app width
+	,rightWidth:200										// dock width
+	,appLeft:"cw.Sys.Side"						// manifest id of db list
+	,appRight:"cw.Sys.Dock"						// manifest id of dock app
+	,appTrust:"cw.Sys.Trust"					//trust modal app
 
 	,slot:'<div class="cw-app"></div>'
 	,pane:'<div class="cw-pane"></div>'
@@ -67,8 +68,8 @@
 	,syncRestart:21000								// restart interval of replication
 	,dbConnTimeout:30000
 
-	,gcAttsInterval:600000							// ttl of freed attachments in cache
-	,i20n:{}										// internationalization dict
+	,gcAttsInterval:600000						// ttl of freed attachments in cache
+	,i20n:{}													// internationalization dict
 })
 	
 	
@@ -111,22 +112,35 @@
 		,_getDbSettings
 		,_getSettings
 		,_initCrypto
-		,_att;
+		,_att
+		,_logger;
 	
-	if (!cw.lib) cw.lib={};
 	if (!cw.TMP) cw.TMP={};
+	
+	if (isF(cw.session)) Session = cw.session();
+	else cw.session = function(){return Session};
+	
+	_logger=isF(cw.log)?cw.log:console.log.bind(console);
+	
+	con ("~~~ Started session "+Session+" ~~~");
 	
 	// -------- Includes -------------
 	
 	/******* LOCK *****/
+
 function _lock(s) {
-	if (undefined!==s) Lock.state=!!s, Lock.pi.notify(Lock.state);
+	if (undefined!==s) {
+		cw.log(!!s?"Lock":"Unlock");
+		Lock.state=!!s; 
+		Lock.pi.notify(Lock.state);
+	}
 	return Lock.pi.promise();
 }
 function _locked () {return Lock.state;}
 
 
 /******* PROMISE BUILDER *****/
+
 function _pi(silent){
 	var pi=$.Deferred();
 	pi.then(function(data){
@@ -139,6 +153,7 @@ function _pi(silent){
 
 
 /******* MAIN EVENTS QUEUE *****/
+
 _Events=_pi();
 cw.event = function(A1,A2,A3) {
 	if (isF(A1)) return _Events.promise().progress(A1), _Events.promise();
@@ -147,12 +162,14 @@ cw.event = function(A1,A2,A3) {
 };
 
 /******* CONSOLE *****/
+
 function con () {
+	_logger.apply(null, arguments);
 	if (cw.debug) console.log.apply(console, arguments);
 }
 
 
-/*******  Shows note  *******/
+/******* NOTE *******/
 
 function _note (msg, type, delay){
 	// Shows fading notes on right side of screen
@@ -217,6 +234,7 @@ function _qchanged (doc, watchers, notifier) {
 
 
 /**** INTERNATIONALIZATION ****/
+
 function i20n (s) {
 	if (s in CW.i20n) return CW.i20n[s];
 	return s;
@@ -224,6 +242,7 @@ function i20n (s) {
 
 
 /******* MOUNT CRYPTO *******/
+
 function _encrypt (obj) { return cw.crypto.enc(lib.dry(obj)); }
 function _decrypt (obj) { return cw.crypto.dec(obj);  }
 
@@ -419,7 +438,7 @@ function _urlObserver () {
 	if ((!slot || (chash!==stateurl && chash!==slot.initurl))
 			&& (chash !=="undefined" && chash !=="null" && chash!=="")) {
 
-		con("#### URL changed ", stateurl, chash);
+		con("URL changed from tab bar: ", chash);
 
 		cw.state.set(chash).fail(function(a,b){
 			con("Switch fail",a,b);
@@ -514,7 +533,7 @@ function _ReadHideListDoc(dbid){
 
 function _cache (doc0) {
 	var doc=doc0, keys;
-	if (!isO(doc) || !doc.type || !doc._db || !doc._id || !doc._rev) return null;
+	if (!isO(doc) /*|| !doc.type*/ || !doc._db || !doc._id || !doc._rev) return null;
 
 	//if no read doc -- create (its shim)
 
@@ -667,6 +686,9 @@ function _processSettings() {
 			finlist=[];
 
 	Object.merge(me, cw.crypto.me());
+	
+	con("User for session "+Session+" is "+me.name+"-"+me.uid);
+	
 	if (CW.$upic && !isS(CW.$upic)) CW.$upic.attr("src", me.pic);
 
 	if (dblist.length && me.name) {
@@ -849,6 +871,7 @@ function _kill (url, nextStateUrl) {
 	if (slot=S.slot[url]) {
 		domid = slot.domid;
 		slot.closing=true;
+		cw.log("Closing "+slot.url);
 		if (S.active!==url) {
 			S.status[domid].notify("close");
 			_destroySlot.delay(CW.slotCloseTimeout, url, domid);
@@ -887,12 +910,13 @@ function _kill (url, nextStateUrl) {
 		var $form=CW.$slots.find("#"+domid);
 		delete S.status[domid];
 		delete S.slot[url];
-		slot=null;
 		var d;
 		try {
 			d = $.extend(true,{},$form.my("remove"),true);
 		} catch (e) {}
 		$form.remove();
+		cw.log("App "+slot.url+" closed");
+		slot=null;
 		_lock(false);
 		cw.event("slot close");
 		pi.resolve(d);
@@ -965,6 +989,7 @@ function _kill (url, nextStateUrl) {
 
 			url = runurl.url;
 
+			cw.log("Appswitch: ", url0, callerUrl);
 	
 			//Check if app already in slots
 			
@@ -1005,6 +1030,7 @@ function _kill (url, nextStateUrl) {
 			.then(_allDone)
 			.then(function(slot){
 				$(document).scrollTop(0);
+				cw.log("Appswitch success");
 				pi.resolve(slot);
 			})
 			.fail(function(a,b){
@@ -1057,6 +1083,7 @@ function _isTrusted() {
 			}
 		}
 		if (untrusted.length) {
+			cw.log("Confirm trust modal");
 			$.my.modal({
 				manifest:CW.appTrust, 
 				data:{trust:untrusted.sortBy("id")}
@@ -1076,7 +1103,9 @@ function _isTrusted() {
 						var doc  = Object.clone(ram[app._db][untrusted[i]._id],true);
 						_cache (doc);
 					}
-
+					
+					cw.log("Trust confirmed");
+					
 					// continue app start
 					z.resolve();
 
@@ -1084,6 +1113,7 @@ function _isTrusted() {
 				} else z.reject(1,"App start terminated by user.");
 			})
 			.fail(function(){
+				cw.log("App trust rejected by user");
 				z.reject(1,"App start terminated by user.")
 			});
 		} 
@@ -1092,59 +1122,6 @@ function _isTrusted() {
 	return z.promise();
 }
 
-/*function _isTrusted() {
-	var i, dirty=false, forms={}, req, stored, untrusted=[], raw;
-	if (app._db==="cw") _loadDoc();
-	else {
-		if (!read[runurl.db].trust) read[runurl.db].trust={}, dirty=1;
-		stored = read[runurl.db].trust;
-		//find components
-		req = (raw=db.ram(function(e) {
-			return (e.type==="manifest" 
-							&& e.manifest 
-							&& (e.manifest.id===runurl.appid || e.manifest.id.startsWith(runurl.appid+"."))
-						 );
-		})).reduce(function(a,b) {
-			a[b._id]=b._rev;
-			forms[b._id]=b;
-			return a;
-		}, {});
-
-		for (i in req) {
-			if (!(stored[i]==="*" || stored[i] === req[i])) {
-				untrusted.push({id:forms[i].id, _id:forms[i]._id, _rev:forms[i]._rev});
-			}
-		}
-		if (untrusted.length) {
-			$.my.modal({
-				manifest:CW.appTrust, 
-				data:{trust:untrusted.sortBy("id")}
-			}).then(function(obj){
-				if (isO(obj)) {
-					for (var i=0;i<obj.trust.length;i++) {
-						stored[obj.trust[i]._id]=obj.trust[i]._rev;
-					};
-					if (obj.trust.length) read[runurl.db]._dirty=true;
-
-					//unwind app
-					cw.lib.unjson(app);
-
-					//re-register now trusted components
-					for (i=0;i<untrusted.length;i++) {
-						var doc  = Object.clone(ram[app._db][untrusted[i]._id],true);
-						_cache (doc);
-					}
-
-					// continue app start
-					_loadDoc();
-
-
-				} else _f(1,"App start terminated by user.");
-			}).fail(function(){_f(1,"App start terminated by user.")});
-		} 
-		else _loadDoc();
-	} 
-}*/
 
 			function _loadDoc(){
 	
@@ -1428,9 +1405,11 @@ function _runApp(app){
 		
 		
 		// Run app
+		cw.log("Init $.my "+app.id);
 		$app.my(app)
 		.then(
 			function(){
+				cw.log("Started "+app.id);
 				z.resolve();
 			}, 
 			function(e, msg) {
@@ -1590,7 +1569,7 @@ function _app(app, db0, _notifyslot, run){
 			isEditor=false,
 			active,
 			db = Object.select(db0, [
-				"get","put","query",
+				"get","put","query", "sync",
 				"app", "actions", "del", "find", "hide", "tags",
 				"inram", "isread", "markread", "ram", 
 				"settings", "users","uuid"
@@ -1827,7 +1806,7 @@ function _app(app, db0, _notifyslot, run){
 			function _f(a,b) {
 				//fail
 				if (!_fail){
-					console.log("=== App start fail ===",a,b)
+					cw.log("Appswitch failed",a,b)
 					if ($app) $app.remove();
 					if (_notifyslot) _notifyslot.reject();
 					pi.reject(a,b);
@@ -1993,10 +1972,10 @@ _connect = function (id) {
 	var ext, db, dbid=id+"", pi=_pi();
 
 	if (dbs[dbid]) pi.resolve(dbs[dbid]);
-	else db = new Pouch(dbid, function(e,r){
+	else db = new Pouch(dbid, {size:100}, function(e,r){
 		if (e) pi.reject(e,"Connection to DB "+dbid+" failed.");
 		else {
-			con(dbid+": ##### Connected to DB #####");
+			con(dbid+": DB connected");
 
 			// register DB in local index dicts
 			if (!watchers[dbid]) watchers[dbid]={queue:[], revs:{}, idxs:{}, types:{"":$.Deferred()}};
@@ -2013,7 +1992,7 @@ _connect = function (id) {
 			db.info(function (e, res) {
 				var ls=0;
 				if (!e) ls=res.update_seq;
-				con(dbid+": Last update sequence is "+ls+".");
+				con(dbid+": last update sequence is "+ls);
 				db.changes({
 					since: ls,
 					continuous: true,
@@ -2022,11 +2001,13 @@ _connect = function (id) {
 
 				function _dbchanged(c) {
 					//check if we need load updated doc
-					if (c.changes && c.changes[0] && c.changes[0].rev &&( !ram[dbid][c.id]
-																															 || ram[dbid][c.id]._rev!=c.changes[0].rev)) {
-
-						con(dbid+ ": Received changes in "+ c.id, c);
-
+					if (
+						c.changes && 
+						c.changes[0] && 
+						c.changes[0].rev &&
+						( !ram[dbid][c.id] || ram[dbid][c.id]._rev!=c.changes[0].rev )
+					) {
+						con(dbid+ ": changes in "+ c.id, c);
 						if (/^db\-.*\-read$/.test(c.id))  {
 							con("Readstate update");
 							sys.get(c.id, function (e, res){if (!e) _cmpreads(res.db, res)});
@@ -2042,8 +2023,6 @@ _connect = function (id) {
 			.fail(function(e){
 				pi.reject(e,"Connection to DB "+dbid+" failed. "+e);
 			});
-
-
 		}
 
 
@@ -2052,7 +2031,7 @@ _connect = function (id) {
 		function _findRead(){
 			//try to find read
 			if (sys && sys.load && (!read[dbid] || !Object.size(read[dbid].read))) {
-				con(dbid+": Reading read and hidden list");
+				con(dbid+": reading read and hidden list");
 				sys.load(["db-"+dbid+"-read"])
 				.then(
 					function(a){if (a.length) read[dbid]=a[0];}, 
@@ -2089,660 +2068,672 @@ _connect = function (id) {
 
 	return pi.promise();
 
+	
 	//- - - - - - - -
 
 	function _setViews(db) {
-		// Checks if DB has _design/cloudwall views
-		// and they match those in cw.Sys.Db.List.views
-		var i, pi = _pi(), prev,
-				newv = {
-					_id:"_design/cloudwall", 
-					language:"javascript", 
-					views:{}, 
-					type:'ddoc',
-					options: {
-						local_seq: true,
-						include_design: true
-					}
-				},
-				v = ($.my.cache("cw.Sys.Db.List")||{}).views;
-		if (v && Object.size(v)) {
-			// build 
-			for (i in v) {
-				newv.views[i] = {};
-				if (v[i].map) newv.views[i].map = v[i].map.toString();
-				if (v[i].reduce) newv.views[i].reduce = v[i].reduce.toString();
-			}
-			// read curr views
-			db.get("_design/cloudwall").then(
-				function (oldv) {
-					prev = oldv;
-					if (
-						!Object.equal(
-							Object.select(oldv.views, Object.keys(newv.views)), 
-							newv.views
-						) 
-						|| oldv.type != newv.type
-						|| !Object.equal(oldv.options, newv.options)
-					) {
-						$.extend(true, newv, Object.reject(oldv, ["language","views", "options"]));
-						$.extend(true, newv.views, Object.reject(oldv.views, Object.keys(newv.views)))
-						_saveDdoc(newv);
-					} else {
-						con(dbid+": All cloudwall views are up to date.")
-						pi.resolve();
-					}
-				},
-				function(e){
-					if (!e.status || e.status == 404) _saveDdoc(newv);
-					else pi.reject("Can’t read design doc for DB "+dbid+".");
+	// Checks if DB has _design/cloudwall views
+	// and they match those in cw.Sys.Db.List.views
+	var i, pi = _pi(), prev,
+			newv = {
+				_id:"_design/cloudwall", 
+				language:"javascript", 
+				views:{}, 
+				type:'ddoc',
+				options: {
+					local_seq: true,
+					include_design: true
 				}
-			);
+			},
+			v = ($.my.cache("cw.Sys.Db.List")||{}).views;
+	if (v && Object.size(v)) {
+		// build 
+		for (i in v) {
+			newv.views[i] = {};
+			if (v[i].map) newv.views[i].map = v[i].map.toString();
+			if (v[i].reduce) newv.views[i].reduce = v[i].reduce.toString();
 		}
-
-		return pi.promise();
-
-		// - - - - -
-
-		function _saveDdoc(ddoc) {
-			db.put(ddoc).then(
-				function () {
-					con(dbid+": Updated views in _design/cloudwall ddoc.")
+		// read curr views
+		db.get("_design/cloudwall").then(
+			function (oldv) {
+				prev = oldv;
+				if (
+					!Object.equal(
+						Object.select(oldv.views, Object.keys(newv.views)), 
+						newv.views
+					) 
+					|| oldv.type != newv.type
+					|| !Object.equal(oldv.options, newv.options)
+				) {
+					$.extend(true, newv, Object.reject(oldv, ["language","views", "options"]));
+					$.extend(true, newv.views, Object.reject(oldv.views, Object.keys(newv.views)))
+					_saveDdoc(newv);
+				} else {
+					//con(dbid+": All cloudwall views are up to date.")
 					pi.resolve();
-				},
-				function (e) {
-					if (prev) con(dbid+": Fail to write update for design doc, continue with old ddoc and views.");
-					else pi.reject("Can’t update design doc for DB "+dbid+".");
 				}
-			);
+			},
+			function(e){
+				if (!e.status || e.status == 404) _saveDdoc(newv);
+				else pi.reject("Can’t read design doc for DB "+dbid+".");
+			}
+		);
+	}
+
+	return pi.promise();
+
+	// - - - - -
+
+	function _saveDdoc(ddoc) {
+		db.put(ddoc).then(
+			function () {
+				con(dbid+": updated views in _design/cloudwall ddoc.")
+				pi.resolve();
+			},
+			function (e) {
+				if (prev) con(dbid+": failed to write update for ddoc, proceeding with old ddoc and views.");
+				else pi.reject("Can’t update design doc for DB "+dbid+".");
+			}
+		);
+	}
+}
+
+
+	//- - - - - - - - - - - - - - - - - - - - -
+// Manage replications
+
+function _replicator (db, dbid) {
+	var i, lock=false,status = false,p = _dbsettings(dbid),
+			rto = {},rfrom={},state="stop",schedule = [],states = {};
+	$.extend(ext, {
+		"sync": function (A1){
+			// () – get status
+			// (false) – cancels replication
+			// (true) – (re)starts replication		
+			var i, dir, acc=0;
+			if (null==A1) return states;
+			else {
+				schedule.forEach(function(e){e.cancel()});
+				schedule=[];
+				if (A1) { 
+					state="warm";
+					p = _dbsettings(dbid); //get settings
+					for (i=0;i<p.sync.length;i++) {
+						dir = p.sync[i].dir;
+						if (isA(dir) && dir.length) {
+							acc+=_channel (
+								db, 
+								_getSyncUrl(dbid,i), 
+								dir.slice(0), 
+								p.sync[i].interval*1 || 0
+							)?1:0;
+						}
+					}
+					if (!acc) status=true;
+					state="start";	
+				} else {
+					state="stop";
+					con ("Replication of "+dbid+" stopping...");
+					for (i in rfrom) rfrom[i].cancel();
+					for (i in rto) rto[i].cancel();
+					for (i in states) states[i]=false;
+					cw.event("db replication stopped",dbid);
+				}
+			}
+			return states;
 		}
+	});
+
+
+	function _channel (odb, url, dir, interval) {	
+		var err=false, lock=false, 
+				isTo = dir.indexOf("to")!=-1, 
+				isFrom = dir.indexOf("from")!=-1,
+				modeTo = !interval?{continuous:true, live:true}:{}, 
+				modeFrom = !interval?{continuous:true, live:true}:{},
+				pushed=false, 
+				eto, efrom;
+
+		if (state==="stop") 
+			return con (dbid+": replication stopped, restart supressed."), true;
+		if (!navigator.onLine) {
+			con (dbid+": replication failed, browser is offline.");
+			_f();
+			return true;
+		}
+		try { // From-replication
+			if ( rfrom[url] )  rfrom[url].cancel(); 
+			if (isFrom) {
+				if (interval) {
+					if (_ls("from",_u(url))) Object.merge(modeFrom, {since:_ls("from",_u(url)).seq});
+				}
+				rfrom[url] = odb.replicate.from(
+					url, modeFrom, 
+					function(e,r){
+						if (e && !interval) {
+							_f();
+							con (dbid+": sync-in closed.", e,r);
+						} else if (e) {
+							_f(interval);
+							con (dbid+": sync-in failed, next cycle scheduled.", e,r);
+						} else {
+							_f(interval);
+						}
+						if (r && r.last_seq) _ls("from",_u(url),{seq:r.last_seq, stamp:Date.now()});
+					}
+				);	
+			}
+		} catch(e) {err=true;}
+
+		try { // To-replication
+			if ( rto[url] )  rto[url].cancel();
+			if ( isTo && !err) {
+				if (interval) {
+					if (_ls("to",_u(url))) Object.merge(modeTo, {since:_ls("to",_u(url)).seq});
+					else if (_ls("from",_u(url))) Object.merge(modeTo, {since:_ls("from",_u(url)).seq});
+				}
+
+				rto[url]=odb.replicate.to(
+					url, modeTo, 
+					function(e,r){
+						//console.log()
+						if (e && !interval) {
+							_f();
+							con (dbid+": sync-out closed.", e,r);
+						} else if (e) {
+							_f(interval);
+							con (dbid+": sync-out failed, next cycle scheduled.", e,r);
+						} else {
+							_f(interval);
+						}
+						if (r && r.last_seq) _ls("to",_u(url),{seq:r.last_seq, stamp:Date.now()});
+					}
+				);	
+			}
+		} catch(e) {err=true;}
+
+		states[_u(url)] = !err;
+		if (err) {
+			cw.event("db replication start failed", dbid);
+			con (dbid+": sync failed, restart required.");
+			_f();
+		}
+		else {
+			cw.event("db replication started",dbid);
+			con (dbid+": sync (re)started.");
+		}
+
+		return err;
+
+		function _f(restart){ if (!pushed) {
+			states[_u(url)]= !(restart||interval)?false:Date.now()+(restart||interval)*6e4;
+			pushed=true;
+			_schedule(_channel.fill(odb, url, dir, interval), restart||interval);
+			if (undefined===restart) cw.event("db replication failed",dbid);
+			else cw.event("db replication finished and rescheduled",dbid);
+		}}
 	}
 
 
-	//- - - - - - - - - - - - - - - - - - - - -
-	// Manage replications
-
-	function _replicator (db, dbid) {
-		var i, lock=false,status = false,p = _dbsettings(dbid),
-				rto = {},rfrom={},state="stop",schedule = [],states = {};
-		$.extend(ext, {
-			"sync": function (A1){
-				// () – get status
-				// (false) – cancels replication
-				// (true) – (re)starts replication		
-				var i, dir, acc=0;
-				if (null==A1) return states;
-				else {
-					schedule.forEach(function(e){e.cancel()});
-					schedule=[];
-					if (A1) { 
-						state="warm";
-						p = _dbsettings(dbid); //get settings
-						for (i=0;i<p.sync.length;i++) {
-							dir = p.sync[i].dir;
-							if (isA(dir) && dir.length) {
-								acc+=_channel (
-									db, 
-									_getSyncUrl(dbid,i), 
-									dir.slice(0), 
-									p.sync[i].interval*1 || 0
-								)?1:0;
-							}
-						}
-						if (!acc) status=true;
-						state="start";	
-					} else {
-						state="stop";
-						con ("Replication of "+dbid+" stopping...");
-						for (i in rfrom) rfrom[i].cancel();
-						for (i in rto) rto[i].cancel();
-						for (i in states) states[i]=false;
-					}
-				}
-				return states;
-			}
-		});
-
-
-		function _channel (odb, url, dir, interval) {	
-			var err=false, lock=false, 
-					isTo = dir.indexOf("to")!=-1, 
-					isFrom = dir.indexOf("from")!=-1,
-					modeTo = !interval?{continuous:true, live:true}:{}, 
-					modeFrom = !interval?{continuous:true, live:true}:{},
-					pushed=false, 
-					eto, efrom;
-
-			if (state==="stop") 
-				return con ("Replication of "+dbid+" stopped. Restart supressed."), true;
-			if (!navigator.onLine) {
-				con ("Replication of "+dbid+" failed. Browser is offline");
-				_f();
-				return true;
-			}
-			try { // From-replication
-				if ( rfrom[url] )  rfrom[url].cancel(); 
-				if (isFrom) {
-					if (interval) {
-						if (_ls("from",_u(url))) Object.merge(modeFrom, {since:_ls("from",_u(url)).seq});
-					}
-					rfrom[url] = odb.replicate.from(
-						url, modeFrom, 
-						function(e,r){
-							if (e && !interval) {
-								_f();con ("Replication-in of "+dbid+" closed.", e,r);
-							} else if (e) {
-								_f(interval);con ("Replication-in of "+dbid+" failed, next cycle wired.", e,r);
-							} else {
-								_f(interval);
-							}
-							if (r && r.last_seq) _ls("from",_u(url),{seq:r.last_seq, stamp:Date.now()});
-						}
-					);	
-				}
-			} catch(e) {err=true;}
-
-			try { // To-replication
-				if ( rto[url] )  rto[url].cancel();
-				if ( isTo && !err) {
-					if (interval) {
-						if (_ls("to",_u(url))) Object.merge(modeTo, {since:_ls("to",_u(url)).seq});
-						else if (_ls("from",_u(url))) Object.merge(modeTo, {since:_ls("from",_u(url)).seq});
-					}
-
-					rto[url]=odb.replicate.to(
-						url, modeTo, 
-						function(e,r){
-							//console.log()
-							if (e && !interval) {
-								_f();con ("Replication-out of "+dbid+" closed.", e,r);
-							} else if (e) {
-								_f(interval);con ("Replication-out of "+dbid+" failed, next cycle wired.", e,r);
-							} else {
-								_f(interval);
-							}
-							if (r && r.last_seq) _ls("to",_u(url),{seq:r.last_seq, stamp:Date.now()});
-						}
-					);	
-				}
-			} catch(e) {err=true;}
-
-			states[_u(url)] = !err;
-			if (err) con ("Replication of "+dbid+" failed. Restart required."), _f();
-			else {
-				cw.event("db replication started")
-				con ("Replication of "+dbid+" (re)started.");
-			}
-
-			return err;
-
-			function _f(restart){ if (!pushed) {
-				states[_u(url)]= !(restart||interval)?false:Date.now()+(restart||interval)*6e4;
-				pushed=true;
-				_schedule(_channel.fill(odb, url, dir, interval), restart||interval);
-				if (undefined===restart) cw.event("db replication failed");
-				else cw.event("db replication finished and rescheduled");
-			}}
+	function _schedule (fn, interval) {
+		var f;
+		if (!lock && state==="start") {
+			f= fn.delay(interval*6e4 || CW.syncRestart);
+			schedule.add(f,0);
 		}
+		if (schedule.length>50) schedule.splice(50);
+	}
 
+	function _u(s){
+		// masks pwd in url
+		return s.replace(/^(http[s]?\:\/\/[^\:@\/]+:)[^@]+(@.+)$/,"$1•••••$2");
+	}
 
-		function _schedule (fn, interval) {
-			var f;
-			if (!lock && state==="start") {
-				f= fn.delay(interval*6e4 || CW.syncRestart);
-				schedule.add(f,0);
-			}
-			if (schedule.length>50) schedule.splice(50);
-		}
-
-		function _u(s){
-			// masks pwd in url
-			return s.replace(/^(http[s]?\:\/\/[^\:@\/]+:)[^@]+(@.+)$/,"$1•••••$2");
-		}
-
-		function _ls(dir, url, data) {
-			if (!data) return cw.lib.unjson(JSON.parse(localStorage.getItem("_repl_"+dir+"_"+url)));
-			else localStorage.setItem("_repl_"+dir+"_"+url, cw.lib.json(data));
-		}
-	}; //--  end of replication manager
+	function _ls(dir, url, data) {
+		if (!data) return cw.lib.unjson(JSON.parse(localStorage.getItem("_repl_"+dir+"_"+url)));
+		else localStorage.setItem("_repl_"+dir+"_"+url, cw.lib.json(data));
+	}
+}; //--  end of replication manager
 
 
 	//- - - - - - - - - - - - - - - - - - - - -
-	// Extends db with more straightforward
-	// and simple access methods, all promise-based
+// Extends db with more straightforward
+// and simple access methods, all promise-based
 
-	function _extdb(db, dbid) {
-		var i, 
-				rd=ram[dbid],
-				slice = Array.prototype.slice;
+function _extdb(db, dbid) {
+	var i, 
+			rd=ram[dbid],
+			slice = Array.prototype.slice;
 
-		//find title
-		var title="", dbset= _dbsettings(dbid);
+	//find title
+	var title="", dbset= _dbsettings(dbid);
 
-		ext = {			
-			//===========================================
+	ext = {			
+		//===========================================
 
-			"name": dbid,
-			"title":function(){return _dbsettings(dbid).title},
-			"settings":_dbsettings.fill(dbid),
-			"actions": function (type){
-				//returns allowed actions for type
-				// or all types list
-				if (isS(type)) return (types[dbid]||{})[type]||{};
-				else if (null==type) return types[dbid]||{};
-				return {};
+		"name": dbid,
+		"title":function(){return _dbsettings(dbid).title},
+		"settings":_dbsettings.fill(dbid),
+		"actions": function (type){
+			//returns allowed actions for type
+			// or all types list
+			if (isS(type)) return (types[dbid]||{})[type]||{};
+			else if (null==type) return types[dbid]||{};
+			return {};
 
-			},
-			"form": function (A1) {
-				/*if (undefined===A1) return forms[dbid]._src;
+		},
+		"form": function (A1) {
+			/*if (undefined===A1) return forms[dbid]._src;
 				else if (null===A1) return Object.reject(forms[dbid],/^_/);
 				else*/ return cw.form (A1, dbid);
 
-			},
-			"app":function (appname) {
-				if (null==appname) {
-					if (dbid==="cw") return Object.keys(dbapps[dbid]).sort();
-					return Object.keys(dbapps["cw"]).union(Object.keys(dbapps[dbid])).sort();
-				}
-
-				if (dbid==="cw") return Object.clone(dbapps[dbid][appname],true);
-				return Object.clone(dbapps[dbid][appname] || dbapps["cw"][appname],true);
-			},
-			"att": function(id){return _att(dbid, id);},
-
-			//===========================================
-
-			"save":function _dbSave (doc0, silent){
-				if (cw.debug && silent) console.log ("Silent save request", doc0);
-				var pi=_pi(), tmp, doc, log, isnew, encdoc, att, myid;
-				pi.fail(function(e, msg){ if (!silent) _note(msg,"error")});
-
-				if (isO(doc0) ) {
-					//encoded doc cannot be saved
-					if (doc0.CRYPTO) {
-						pi.reject({}, "Cannot save pre-encrypted.");
-					}
-					//no name or type, reject
-					else if (!doc0.name || !doc0.type){
-						pi.reject({}, "Undefined name or type.");
-					}
-					//reject sys settings
-					else if (doc0._id==="cw" && dbid==="cw"){
-						pi.reject({}, "Saving system settings is forbidden using .save() method.");
-					}
-					else {
-						doc = Object.clone(Object.reject(doc0,"_attachments"),true);
-
-
-						log = isA(doc.log);
-						isnew = !doc._id || !doc._rev;
-
-						//copy attachments
-						if (doc0._attachments && Object.size(doc0._attachments)) {
-							doc._attachments={};
-							for (var i in doc0._attachments) {
-								att = doc0._attachments[i];
-								if (!att.data) doc._attachments[i]=Object.select(att,["content_type","digest", "revpos","stub"]);
-								else doc._attachments[i]=Object.select(att,["data","content_type"])	
-									}
-						}
-
-
-
-						if (isnew) {
-							doc.stamp=Date.now();
-							doc._id=doc._id||lib.uuid(me.name);
-							delete doc._rev;
-							if (log) doc.log=[[Date.now(), "create", me.name+"-"+me.uid, 1, dbid]];
-							doc.creator = doc.creator||(me.name+"-"+me.uid);
-						} 
-						else if (log) {
-							myid = me.name+"-"+me.uid;
-							if (!doc.log.length || doc.log[0][2] != myid || Date.now()-doc.log[0][0]>6e5) doc.log.add([[
-								Date.now(),
-								"update", 
-								myid, 
-								doc._rev.split("-")[0]*1+1,
-								dbid
-							]],0);
-
-							if (doc.log.length>50) doc.log = doc.log.to(49).add([doc.log.last()]);
-						}
-
-						encdoc=_encrypt(doc);
-						_put(encdoc);
-					}
-				} else pi.reject({}, "No doc to save.");
-				return pi.promise();
-
-				function _put(encdoc){
-					db.put(encdoc, function (e, res) {
-						if (!e) {
-							db.get(res.id, function(e, res) {
-								var obj=res;
-								if (!e) {
-
-									// ******* SAVE OK ********
-
-									obj._read=obj._rev;
-									obj._db = dbid;
-									obj = _cache (obj);
-
-									pi.resolve(obj);
-
-									if (!silent) _note((obj.type||"Doc").capitalize()+" "+(doc.name||doc._id)+" saved.","ok");
-
-								} else pi.reject(e, "Error reading doc "+doc._id+" after save.");
-							});
-						} else {
-							if (e.status=="409" && !silent) {
-								//we have conflict, try to resolve
-								$.my.modal({
-									manifest:"cw.Sys.Confirm",
-									data:{
-										text:'<span class="fi-alert o70 mr5 fs90"></span> Conflict: document was updated externally while edit. '
-										+'Saving doc will overwrite external changes.',
-										ok:"Overwrite"
-									}
-								}).then(function(d){
-									if (isO(d) && d.cmd==="commit") {
-										db.allDocs({startkey:doc._id,endkey:doc._id}).then(function(a){
-											var r=a.rows;
-											if (r && r.length) {
-												encdoc._rev=r[0].value.rev;
-												_put(encdoc);
-											} else {
-												pi.reject(e, "Conflict on doc "+doc._id+". System error during overwrite");
-												con("Doc read on overwite is", a);
-											}
-										}, function(){
-											pi.reject(e, "Conflict on doc "+doc._id+". Overwrite failed reading new revision id.");
-										});
-									} else {
-										con("Save of "+doc._id+" into "+ext.name+' was cancelled, conflict', e.message, e.stack);
-										pi.reject(e, "Conflict on doc "+doc._id+". Save cancelled.");
-									}
-								}).fail(function(){
-									con("Save of "+doc._id+" into "+ext.name+' was aborted, conflict', e.message, e.stack);
-									pi.reject(e, "Conflict on doc "+doc._id+". Save failed.");
-								});
-							} else {
-								con("Error saving "+doc._id+" into "+ext.name, e.message, e.stack);
-								pi.reject(e, "DB failed on doc "+doc._id+". Save aborted.");
-							}
-						}
-					});
-				} // --- end _put 
-			},
-
-			//===========================================
-
-			"load":function _dbLoad (A1, A2, A3){
-				// .load(key, includeAttaches).then(fn(res){}) >> res is doc
-				// .load(keyStart, keyEnd) >> res is [doc1,doc2,...]
-				// .load([key1, key2, key3...]) >> res is [doc1,doc2,...]
-				// .load (keyStart, keyEnd, docType) >> list of docs of type
-				var pi=_pi(), list=[], type, rd=ram[dbid];
-				//list of keys
-				if (isA(A1)) {
-					if (!A1.length) pi.resolve([]);
-					list=A1.map(function(e){
-						var i=e+"";
-						if (n(e) && (i.length>0)) return i;
-					}).compact();
-					type=isS(A2)?A2:null;
-					db.allDocs({
-						keys:list,
-						include_docs:true,
-						conflicts:true
-					}, function (e, res) {
-						var a=[], row,i=0;
-						if (!e) {
-							if (!res.rows.length) pi.resolve([]);
-							else {
-								for (;i<res.rows.length;i++) {
-									if (res.rows[i].doc && (!type || res.rows[i].doc.type===type)) {
-										res.rows[i].doc._db=dbid;
-										row = _cache(res.rows[i].doc);
-										if (n(row)) a.push(row);
-									}
-								}
-								pi.resolve(a);
-							}
-						} else pi.reject(e, "Error reading docs by keylist.");
-					});
-				}
-
-				// one elt, get with attaches
-				else if (isS(A1) && (undefined===A2 || isB(A2))) {
-					//look in cache...
-					if (rd.hasOwnProperty(A1) && rd[A1]._full) {
-						if (rd[A1]._deleted || rd[A1]._hidden) pi.resolve(null);
-						else pi.resolve(rd[A1]);
-					}
-					//...or read db
-					else db.get(A1,{attachments:A2, conflicts:true},function (e, res){
-						var obj=res;
-						if (!e) {
-							obj._db = dbid;
-							obj._full = !!A2;
-							obj = _cache (obj);
-							pi.resolve(obj);
-						} 
-						else pi.resolve(null);
-					});
-				}
-
-				// key range
-				else if (isS(A1) && isS(A2)) {
-					var start=A1, end=A2, reverse=false;
-					if (A1>A2) start=A2, end=A1, reverse=true;
-					type=isS(A3)?A3:null;
-					db.allDocs({
-						startkey:start,
-						endkey:end,
-						descending:reverse,
-						include_docs:true,
-						conflicts:true
-					}, function (e, res) {
-						var a=[], row,i=0;
-						if (!e) {
-							if (!res.rows.length) pi.resolve([]);
-							else {
-								for (;i<res.rows.length;i++) {
-									if (!type 
-											|| (res.rows[i].doc && res.rows[i].doc.type===type)
-										 ) {
-										res.rows[i].doc._db=dbid;
-										row = _cache(res.rows[i].doc);
-										if (n(row)) a.push(row);
-									}
-								}
-								pi.resolve(a);
-							}
-						} else pi.reject(e, "Error reading docs by keylist.");
-					});
-				}
-				return pi.promise();
-			},
-
-			//===========================================
-
-			"ram": function (A1) {
-				//traverse sync cache,
-				//returns array of results
-				var i,a=[];
-				if (isS(A1) && rd[A1]) a.push(rd[A1]);
-				else if (isA(A1)) {
-					for (i=0;i<A1.length;i++) if (rd.hasOwnProperty(A1[i])) a.push(rd[A1[i]]);
-				}
-				else if (isF(A1)) {
-					try {
-						for (i in rd) if (A1(rd[i])) a.push(rd[i]);
-					}catch(e){}
-				}
-				return a;
-			},
-
-			"inram": function (A1) {
-				return isS(A1) && rd.hasOwnProperty(A1);
-			},
-
-			//===========================================
-
-			"tags": function _dbTags (){
-				//returns sortad tag list
-				return Object.keys(tags[dbid]).sort();
-			},
-
-			//===========================================
-
-			"find":function _dbFind (A1, A2, A3){
-				var pi=_pi(), params={},
-						sort=null, reverse=false,
-						rnd, fn,filter=A1,start,end,str;
-
-				if (isO(A2) && (isF(A1)||isS(A1))) {
-					if (undefined!==A2.start && undefined!==A2.end) {
-						start=A2.start, end=A2.end, reverse=false;
-						if (start>end) start=A2.end, end=A2.start, reverse=true;
-						params.startkey=start;
-						params.endkey=end;
-					}
-					if (isF(A2.sort)) sort = A2.sort;
-				}
-
-				if (isO(A1) && A1.filter) {
-					filter = A1.filter;
-					if (undefined!==A1.start && undefined!==A1.end) {
-						start=A1.start, end=A1.end, reverse=false;
-						if (start>end) start=A1.end, end=A1.start, reverse=true;
-						params.startkey=start;
-						params.endkey=end;
-					}
-					if (isF(A1.sort)) sort = A1.sort;
-				}
-
-				if (isS(filter)) str=filter, filter = function (d) {return d.type===str?d._id:null};
-
-				//filter 
-				if (isF(filter)) {
-					rnd=Date.now()+"-"+Number.random(1e6);
-					cw.TMP[rnd] = filter;
-					fn = eval('(function(d){var k=cw.TMP["'+rnd+'"](d);if(undefined!==k&&null!==k)emit(k,d);})');
-					if (null===sort && (isF(A2) || isS(A2))) sort=A2, reverse = !!A3;
-					db.query(fn, params, function(e,res){
-						delete cw.TMP[rnd];
-						var a=[], row,i=0;
-						if (!e) {
-							if (!res.rows.length) pi.resolve([]);
-							else {
-								for (;i<res.rows.length;i++) {
-									res.rows[i].value._db=dbid;
-									row = _cache(res.rows[i].value);
-									if (n(row)) a.push(row);
-								}
-								pi.resolve(null!==sort?a.sortBy(sort,reverse):a);
-							}
-						} else pi.reject(e, "Error searching docs.");
-					});
-				} else pi.reject({}, "No filter function provided.");
-
-				return pi.promise();
-			},
-
-			//===========================================
-
-			"watch": function _dbWatch (type0){
-				// watches changes of type or all changes if type==""
-				// returns promise which receives notofocations
-				// with arrays of updated/new items
-				var type = type0||"";
-				if (!watchers[dbid].types[type]) {
-					watchers[dbid].types[type]=$.Deferred();
-				}
-				return watchers[dbid].types[type].promise();
-			},
-
-			//===========================================
-
-			"markread": function _dbMarkRead (id){
-				// not a promise
-				// Marks id as read			
-				var doc=ram[dbid][id],res={};
-				if (dbid==="cw") return null;
-				if (doc && doc._rev!==doc._read) {
-					res=$.extend(res,doc);
-					res._read=res._rev;
-					return _cache(res);
-				}
-				return doc;
-
-			},
-
-			"isread": function _isRead(id) {
-				if (dbid==="cw") return null;
-				return read[dbid].read[id]||null;
-			},
-
-
-			//===========================================
-
-			"hide":function _dbMarkHidden (id){
-				// not a promise
-				// Marks id as read
-				var doc=ram[dbid][id],res={};
-				if (dbid==="cw") return null;
-				if (doc && !doc._hidden) {
-					res=$.extend(res,doc);
-					res._hidden=true;
-					return _cache(res);
-				}
-				return doc;
-			},
-
-			//===========================================
-
-			"uuid":function (a){
-				return lib.uuid(a);
-			},
-
-			//===========================================
-
-			"users":function (a){
-				return users[dbid];
-			},
-
-			//===========================================
-
-			"del": function(id){
-				var doc=ram[dbid][id],res={},pi=_pi();
-				if (dbid==="cw" && id=="cw") pi.reject("Settings can not be deleted");
-				else if (doc && !doc._hidden) {
-					db.remove(doc, function(e,res){
-						if (!e) pi.resolve(true);
-						else con(e), pi.reject("Fail to delete doc "+(doc.title||doc.name));
-					});
-				}
-				return pi.promise();
-			},
-
-			"replicate":{
-				to: db.replicate.to.bind(db),
-				from:db.replicate.from.bind(db)
+		},
+		"app":function (appname) {
+			if (null==appname) {
+				if (dbid==="cw") return Object.keys(dbapps[dbid]).sort();
+				return Object.keys(dbapps["cw"]).union(Object.keys(dbapps[dbid])).sort();
 			}
 
-		} // -- end ext
+			if (dbid==="cw") return Object.clone(dbapps[dbid][appname],true);
+			return Object.clone(dbapps[dbid][appname] || dbapps["cw"][appname],true);
+		},
+		"att": function(id){return _att(dbid, id);},
+
+		//===========================================
+
+		"save":function _dbSave (doc0, silent){
+			if (cw.debug && silent) console.log ("Silent save request", doc0);
+			var pi=_pi(), tmp, doc, log, isnew, encdoc, att, myid;
+			pi.fail(function(e, msg){ if (!silent) _note(msg,"error")});
+
+			if (isO(doc0) ) {
+				//encoded doc cannot be saved
+				if (doc0.CRYPTO) {
+					pi.reject({}, "Cannot save pre-encrypted.");
+				}
+				//no name or type, reject
+				else if (!doc0.name || !doc0.type){
+					pi.reject({}, "Undefined name or type.");
+				}
+				//reject sys settings
+				else if (doc0._id==="cw" && dbid==="cw"){
+					pi.reject({}, "Saving system settings is forbidden using .save() method.");
+				}
+				else {
+					doc = Object.clone(Object.reject(doc0,"_attachments"),true);
 
 
-		for (i in db) if (!ext[i]) {
-			if (isF(db[i])) ext[i] = db[i].bind(db);
+					log = isA(doc.log);
+					isnew = !doc._id || !doc._rev;
+
+					//copy attachments
+					if (doc0._attachments && Object.size(doc0._attachments)) {
+						doc._attachments={};
+						for (var i in doc0._attachments) {
+							att = doc0._attachments[i];
+							if (!att.data) doc._attachments[i]=Object.select(att,["content_type","digest", "revpos","stub"]);
+							else doc._attachments[i]=Object.select(att,["data","content_type"])	
+								}
+					}
+
+
+
+					if (isnew) {
+						doc.stamp=Date.now();
+						doc._id=doc._id||lib.uuid(me.name);
+						delete doc._rev;
+						if (log) doc.log=[[Date.now(), "create", me.name+"-"+me.uid, 1, dbid]];
+						doc.creator = doc.creator||(me.name+"-"+me.uid);
+					} 
+					else if (log) {
+						myid = me.name+"-"+me.uid;
+						if (!doc.log.length || doc.log[0][2] != myid || Date.now()-doc.log[0][0]>6e5) doc.log.add([[
+							Date.now(),
+							"update", 
+							myid, 
+							doc._rev.split("-")[0]*1+1,
+							dbid
+						]],0);
+
+						if (doc.log.length>50) doc.log = doc.log.to(49).add([doc.log.last()]);
+					}
+
+					encdoc=_encrypt(doc);
+					_put(encdoc);
+				}
+			} else pi.reject({}, "No doc to save.");
+			return pi.promise();
+
+			function _put(encdoc){
+				db.put(encdoc, function (e, res) {
+					if (!e) {
+						db.get(res.id, function(e, res) {
+							var obj=res;
+							if (!e) {
+
+								// ******* SAVE OK ********
+
+								obj._read=obj._rev;
+								obj._db = dbid;
+								obj = _cache (obj);
+
+								pi.resolve(obj);
+
+								if (!silent) _note((obj.type||"Doc").capitalize()+" "+(doc.name||doc._id)+" saved.","ok");
+
+							} else pi.reject(e, "Error reading doc "+doc._id+" after save.");
+						});
+					} else {
+						if (e.status=="409" && !silent) {
+							//we have conflict, try to resolve
+							$.my.modal({
+								manifest:"cw.Sys.Confirm",
+								data:{
+									text:'<span class="fi-alert o70 mr5 fs90"></span> Conflict: document was updated externally while edit. '
+									+'Saving doc will overwrite external changes.',
+									ok:"Overwrite"
+								}
+							}).then(function(d){
+								if (isO(d) && d.cmd==="commit") {
+									db.allDocs({startkey:doc._id,endkey:doc._id}).then(function(a){
+										var r=a.rows;
+										if (r && r.length) {
+											encdoc._rev=r[0].value.rev;
+											_put(encdoc);
+										} else {
+											pi.reject(e, "Conflict on doc "+doc._id+". System error during overwrite");
+											con("Doc read on overwite is", a);
+										}
+									}, function(){
+										pi.reject(e, "Conflict on doc "+doc._id+". Overwrite failed reading new revision id.");
+									});
+								} else {
+									con("Save of "+doc._id+" into "+ext.name+' was cancelled, conflict', e.message, e.stack);
+									pi.reject(e, "Conflict on doc "+doc._id+". Save cancelled.");
+								}
+							}).fail(function(){
+								con("Save of "+doc._id+" into "+ext.name+' was aborted, conflict', e.message, e.stack);
+								pi.reject(e, "Conflict on doc "+doc._id+". Save failed.");
+							});
+						} else {
+							con("Error saving "+doc._id+" into "+ext.name, e.message, e.stack);
+							pi.reject(e, "DB failed on doc "+doc._id+". Save aborted.");
+						}
+					}
+				});
+			} // --- end _put 
+		},
+
+		//===========================================
+
+		"load":function _dbLoad (A1, A2, A3){
+			// .load(key, includeAttaches).then(fn(res){}) >> res is doc
+			// .load(keyStart, keyEnd) >> res is [doc1,doc2,...]
+			// .load([key1, key2, key3...]) >> res is [doc1,doc2,...]
+			// .load (keyStart, keyEnd, docType) >> list of docs of type
+			var pi=_pi(), list=[], type, rd=ram[dbid];
+			//list of keys
+			if (isA(A1)) {
+				if (!A1.length) pi.resolve([]);
+				list=A1.map(function(e){
+					var i=e+"";
+					if (n(e) && (i.length>0)) return i;
+				}).compact();
+				type=isS(A2)?A2:null;
+				db.allDocs({
+					keys:list,
+					include_docs:true,
+					conflicts:true
+				}, function (e, res) {
+					var a=[], row,i=0;
+					if (!e) {
+						if (!res.rows.length) pi.resolve([]);
+						else {
+							for (;i<res.rows.length;i++) {
+								if (res.rows[i].doc && (!type || res.rows[i].doc.type===type)) {
+									res.rows[i].doc._db=dbid;
+									row = _cache(res.rows[i].doc);
+									if (n(row)) a.push(row);
+								}
+							}
+							pi.resolve(a);
+						}
+					} else pi.reject(e, "Error reading docs by keylist.");
+				});
+			}
+
+			// one elt, get with attaches
+			else if (isS(A1) && (undefined===A2 || isB(A2))) {
+				//look in cache...
+				if (rd.hasOwnProperty(A1) && rd[A1]._full) {
+					if (rd[A1]._deleted || rd[A1]._hidden) pi.resolve(null);
+					else pi.resolve(rd[A1]);
+				}
+				//...or read db
+				else db.get(A1,{attachments:A2, conflicts:true},function (e, res){
+					var obj=res;
+					if (!e) {
+						obj._db = dbid;
+						obj._full = !!A2;
+						obj = _cache (obj);
+						pi.resolve(obj);
+					} 
+					else pi.resolve(null);
+				});
+			}
+
+			// key range
+			else if (isS(A1) && isS(A2)) {
+				var start=A1, end=A2, reverse=false;
+				if (A1>A2) start=A2, end=A1, reverse=true;
+				type=isS(A3)?A3:null;
+				db.allDocs({
+					startkey:start,
+					endkey:end,
+					descending:reverse,
+					include_docs:true,
+					conflicts:true
+				}, function (e, res) {
+					var a=[], row,i=0;
+					if (!e) {
+						if (!res.rows.length) pi.resolve([]);
+						else {
+							for (;i<res.rows.length;i++) {
+								if (!type 
+										|| (res.rows[i].doc && res.rows[i].doc.type===type)
+									 ) {
+									res.rows[i].doc._db=dbid;
+									row = _cache(res.rows[i].doc);
+									if (n(row)) a.push(row);
+								}
+							}
+							pi.resolve(a);
+						}
+					} else pi.reject(e, "Error reading docs by keylist.");
+				});
+			}
+			return pi.promise();
+		},
+
+		//===========================================
+
+		"ram": function (A1) {
+			//traverse sync cache,
+			//returns array of results
+			var i,a=[];
+			if (isS(A1) && rd[A1]) a.push(rd[A1]);
+			else if (isA(A1)) {
+				for (i=0;i<A1.length;i++) if (rd.hasOwnProperty(A1[i])) a.push(rd[A1[i]]);
+			}
+			else if (isF(A1)) {
+				try {
+					for (i in rd) if (A1(rd[i])) a.push(rd[i]);
+				}catch(e){}
+			}
+			return a;
+		},
+
+		"inram": function (A1) {
+			return isS(A1) && rd.hasOwnProperty(A1);
+		},
+
+		//===========================================
+
+		"tags": function _dbTags (){
+			//returns sortad tag list
+			return Object.keys(tags[dbid]).sort();
+		},
+
+		//===========================================
+
+		"find":function _dbFind (A1, A2, A3){
+			var pi=_pi(), params={},
+					sort=null, reverse=false,
+					rnd, fn,filter=A1,start,end,str;
+
+			if (isO(A2) && (isF(A1)||isS(A1))) {
+				if (undefined!==A2.start && undefined!==A2.end) {
+					start=A2.start, end=A2.end, reverse=false;
+					if (start>end) start=A2.end, end=A2.start, reverse=true;
+					params.startkey=start;
+					params.endkey=end;
+				}
+				if (isF(A2.sort)) sort = A2.sort;
+			}
+
+			if (isO(A1) && A1.filter) {
+				filter = A1.filter;
+				if (undefined!==A1.start && undefined!==A1.end) {
+					start=A1.start, end=A1.end, reverse=false;
+					if (start>end) start=A1.end, end=A1.start, reverse=true;
+					params.startkey=start;
+					params.endkey=end;
+				}
+				if (isF(A1.sort)) sort = A1.sort;
+			}
+
+			if (isS(filter)) str=filter, filter = function (d) {return d.type===str?d._id:null};
+
+			//filter 
+			if (isF(filter)) {
+				rnd=Date.now()+"-"+Number.random(1e6);
+				cw.TMP[rnd] = filter;
+				fn = eval('(function(d){var k=cw.TMP["'+rnd+'"](d);if(undefined!==k&&null!==k)emit(k,d);})');
+				if (null===sort && (isF(A2) || isS(A2))) sort=A2, reverse = !!A3;
+				db.query(fn, params, function(e,res){
+					delete cw.TMP[rnd];
+					var a=[], row,i=0;
+					if (!e) {
+						if (!res.rows.length) pi.resolve([]);
+						else {
+							for (;i<res.rows.length;i++) {
+								res.rows[i].value._db=dbid;
+								row = _cache(res.rows[i].value);
+								if (n(row)) a.push(row);
+							}
+							pi.resolve(null!==sort?a.sortBy(sort,reverse):a);
+						}
+					} else pi.reject(e, "Error searching docs.");
+				});
+			} else pi.reject({}, "No filter function provided.");
+
+			return pi.promise();
+		},
+
+		//===========================================
+
+		"watch": function _dbWatch (type0){
+			// watches changes of type or all changes if type==""
+			// returns promise which receives notofocations
+			// with arrays of updated/new items
+			var type = type0||"";
+			if (!watchers[dbid].types[type]) {
+				watchers[dbid].types[type]=$.Deferred();
+			}
+			return watchers[dbid].types[type].promise();
+		},
+
+		//===========================================
+
+		"markread": function _dbMarkRead (id){
+			// not a promise
+			// Marks id as read			
+			var doc=ram[dbid][id],res={};
+			if (dbid==="cw") return null;
+			if (doc && doc._rev!==doc._read) {
+				res=$.extend(res,doc);
+				res._read=res._rev;
+				return _cache(res);
+			}
+			return doc;
+
+		},
+
+		"isread": function _isRead(id) {
+			if (dbid==="cw") return null;
+			return read[dbid].read[id]||null;
+		},
+
+
+		//===========================================
+
+		"hide":function _dbMarkHidden (id){
+			// not a promise
+			// Marks id as read
+			var doc=ram[dbid][id],res={};
+			if (dbid==="cw") return null;
+			if (doc && !doc._hidden) {
+				res=$.extend(res,doc);
+				res._hidden=true;
+				return _cache(res);
+			}
+			return doc;
+		},
+
+		//===========================================
+
+		"uuid":function (a){
+			return lib.uuid(a);
+		},
+
+		//===========================================
+
+		"users":function (a){
+			return users[dbid];
+		},
+
+		//===========================================
+
+		"del": function(id){
+			var doc=ram[dbid][id],res={},pi=_pi();
+			if (dbid==="cw" && id=="cw") pi.reject("Settings can not be deleted");
+			else if (doc && !doc._hidden) {
+				db.remove(doc, function(e,res){
+					if (!e) pi.resolve(true);
+					else con(e), pi.reject("Fail to delete doc "+(doc.title||doc.name));
+				});
+			}
+			return pi.promise();
+		},
+
+		"replicate":{
+			to: db.replicate.to.bind(db),
+			from:db.replicate.from.bind(db)
 		}
 
+	} // -- end ext
 
-		return dbs[dbid]=ext;
 
-	} // -- end _extdb()
+	for (i in db) if (!ext[i]) {
+		if (isF(db[i])) ext[i] = db[i].bind(db);
+	}
+
+
+	return dbs[dbid]=ext;
+
+} // -- end _extdb()
+
+	
 }
 	
 	// Ajax hook for $.my,
@@ -2776,8 +2767,9 @@ function _ajax (A1, A2){
 					if (r) {
 						try {
 							window.eval(r);
-							con("Succesfully started local lib "+url);
+							con("Started local "+url);
 						} catch (e) {
+							con("Error starting local "+url, e.message);
 							pi.reject("Error initializing local lib "+url);
 						}
 						pi.resolve(null);
@@ -2814,6 +2806,11 @@ $.my.ajax(_ajax);
 		a.forEach(function(i){list[i]=dbs[i].title()});
 		return list;
 	}
+	
+	//#######################
+	
+	cw["version"] = function (){return VERSION;}
+	cw["version"].toString = function (){return VERSION;}
 
 	
 	function _startCloudwall () {
@@ -2829,7 +2826,6 @@ $.my.ajax(_ajax);
 	_getDbSettings = cw.crypto._getDbSettings;
 	_getSettings = cw.crypto._settings;
 	_initCrypto = cw.crypto._init;
-
 
 	// exec startup sequence
 	_db()											
@@ -2888,6 +2884,7 @@ $.my.ajax(_ajax);
 					unsaved+=1;
 				}
 			}
+			cw.log("~~~ Tab close "+(unsaved?"requested, some docs are unsaved":"")+" ~~~");
 			return unsaved?"Some docs are not saved. Proceed?":undefined;
 		}
 
@@ -3042,7 +3039,7 @@ $.my.ajax(_ajax);
 		$(window).on("resize", function (){
 			CW.maxSpaceWidth=$(window).width()-CW.margins;
 			cw.layout();
-		}.debounce(25));
+		}.debounce(67));
 
 
 		//---update on statechange
@@ -3089,7 +3086,7 @@ $.my.ajax(_ajax);
 	//#####  1
 	function _db() {
 		var pi0 = _pi();
-		db0=new Pouch("cw" /*, {auto_compaction:true}*/)
+		db0 = new Pouch("cw", {size:100}/*, {auto_compaction:true}*/)
 		.then(
 			function (res) {
 					sys=res;

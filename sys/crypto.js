@@ -1,8 +1,170 @@
 /**
- * CloudWall 2 crypto lib and settings sandbox
- * Created by ermouth 2015-04-01
+ * CloudWall 1.7.0 crypto lib and settings sandbox
+ * Created by ermouth 2015-06-27
  */
 if (!("cw" in window)) window.cw={};
+
+
+// #### START LOG ####
+
+if (!cw.log) (function _logstart(){
+	var f = function _logstart () {
+	
+	// System log, saves con() calls 
+	// to localStorage under the key ‘_cw_log_curr’
+	
+	var isA = Object.isArray, isB = Object.isBoolean, isS = Object.isString, isO = Object.isObject,
+		isN = Object.isNumber, isR = Object.isRegExp, isF = Object.isFunction;
+
+	var ls = localStorage, 
+			scurr = "_cw_log_curr",
+			sprev = "_cw_log_prev",
+			mcurr = 50*000,
+			mprev = 1000*1000,
+			marg = 500,
+			ses = isF(cw.session)?cw.session():
+				(isO(cw.lib) && isF(cw.lib.hash4))? cw.lib.hash4 (Date.now()+" "+Number.random(1e5,1e6)):
+				Number.random(65536,0x100000-1).toString(16).last(4),
+			lastR = Date.now()-20000,
+			lastM = Date.now();
+	
+	if (!isF(cw.session)) cw.session = _session;
+	
+	cw["log"] = (function _logger (A1){
+		var i, a = [], 
+				l = arguments.length,
+				now = Date.now();
+		if (l && !(l===1 && isN(A1))) {
+			a = Array.prototype.slice.call(arguments, 0);
+			_normalize (a);
+			a.unshift(ses);
+			
+			if (now-lastR <2000) {
+				a.unshift("+"+(now-lastM));
+				lastM = now;
+			} else {
+				a.unshift(now);
+				lastR = lastM = now;
+			}
+			_savelog(_stringify(a));
+			a = [];
+			return;
+		}
+		else if (isN(A1)) {
+			i = A1.clamp(1, 1e6);
+			a = (ls.getItem(scurr)||"").split("\n");
+			if (a.length < i) {
+				a = (ls.getItem(sprev)||"").split("\n").concat(a);
+			}
+			a = a.compact(true).last(i);
+			return a;
+		}
+		else {
+			return (ls.getItem(scurr)||"").split("\n").compact(true);
+		}
+	}).fill();
+	
+	//- - - - - - - - - - - - -
+	
+	function _stringify (a) {
+		// stringifies array, truncates too long entries;
+		// returns string
+		var i=0, s=[], r="";
+		for (i;i<a.length;i++) {
+			r = JSON.stringify(a[i]);
+			if (marg >= r.length) s.push(r);
+			else {
+				s.push(JSON.stringify("Truncated "+$.type(a[i])+": "+(isS(a[i])?a[i]:r).truncate(marg-1,"middle","…")));
+			}
+		}
+		return "["+s.join(",")+"]";
+	}
+	
+	//- - - - - - - - - - - - -
+	
+	function _savelog (s){
+		// appends string to log,
+		// s must have no \n
+		
+		var lines, pl="", cl = ls.getItem(scurr)||"";
+		if (cl.length + s.length > mcurr) {
+			// move current log to prev log
+			pl = ls.getItem(sprev)||"";
+			if (pl.length > 0) pl+="\n";
+			pl+= cl;
+			if (pl.length > mprev) {
+				// truncate prev log
+				lines = pl.split("\n");
+				var ctr = 0, i = lines.length-1, slines = 1;
+				for (i;i>-1;i--) {
+					ctr = ctr+lines[i].length;
+					if (ctr > mprev) break;
+					slines+=1;
+				}
+				pl = lines.last(slines).join("\n");
+				lines=null;
+				ls.setItem (sprev, pl);
+			}
+			else {
+				ls.setItem (sprev, pl);
+			}
+			ls.setItem (scurr, s);
+			pl=""; 
+			cl="";
+		} else {
+			ls.setItem(scurr, (cl.length?cl+"\n":"")+s);
+			cl="";		 
+		}
+	} // -- end _savelog
+	
+	//- - - - - - - - - - - - -
+	
+	function _normalize (a) {
+		// normalize array of arguments 
+		// to allow serialization
+		var r,i,jq;
+		for (i=0;i<a.length;i++) {
+			r = a[i];
+			if (!isN(r) && !isS(r) && !Object.isDate(r)) {
+				if (isO(r) || isA(r)) {
+					try {
+						r = JSON.stringify (r);
+					} catch (e) {
+						r = "Parsing "+$.type(r)+" of keys:["+Object.keys(r).join(", ")+"] failed: "+e.message;
+						a[i] = r;
+					}
+				}
+				else if (isF(r)) a[i] = "function "+r.name+"(){"+f.length+"}";
+				else if ((typeof r == "object") && isS(r.jquery) && isF(r.each)) {
+					// normalize jQuery object/collection
+					if (r.size()) {
+						jq=[];
+						r.each(function(){
+							var n = this, id = n.id, clist = Array.prototype.slice.call(n.classList,0);
+							jq.push(n.nodeName+(id?"#"+id:"")+(clist.length?"."+clist.join("."):""));
+						});
+						a[i] = {jQuery:jq}
+					}
+					else a[i]={jQuery:[]};
+				}
+				else a[i] = null;
+			}
+		}
+	} // -- end _normalize
+	
+	function _session(){
+		return ses;
+	}
+	
+}
+;
+	try { f(); } catch(e) {};
+	if (!Object.isFunction(cw.log)) cw.log = console.log.bind(console);
+})();
+
+
+// #### START CRYPTO ####
+
 if (!cw.crypto) cw.crypto = (function() {
 
 	var Pouch = window.PouchDB,
@@ -182,16 +344,21 @@ if (!cw.crypto) cw.crypto = (function() {
 						cw.db(d.name).sync(false);
 						pi.then(function(){
 
-							for (var i=0;i<cd.sync.length;i++) {
-								cd.sync[i].dir.forEach(function(dir){
-									localStorage.removeItem(["","repl",dir, _u(cd.sync[i].url)].join("_"))
-								})
+							if (Object.isArray(cd.sync)) {
+								for (var i=0;i<cd.sync.length;i++) {
+									cd.sync[i].dir.forEach(function(dir){
+										localStorage.removeItem(["","repl",dir, _u(cd.sync[i].url)].join("_"))
+									})
+								}
 							}
 
 							Pouch.destroy(d.name).then(function(){
+								cw.log("DB ‘"+d.name+"’ destroyed, reload scheduled.");
 								window.location.reload();
 							});
-						}.debounce(1000));
+						}.debounce(500));
+						
+						cw.log("Local DB ‘"+d.name+"’ deletion confirmed, saving updated settings.");
 						_saveSettings(S);
 						//console.log(S, dbid);
 					}
@@ -207,7 +374,7 @@ if (!cw.crypto) cw.crypto = (function() {
 			
 			//- - - - - - - sync db - - - - - - -
 			
-			else if (d._cmd === "sync"){
+			else if (d._cmd === "sync" || d._cmd === "sync0"){
 				$.my.modal({
 					manifest:"cw.Sys.Confirm",
 					data:{
@@ -219,39 +386,56 @@ if (!cw.crypto) cw.crypto = (function() {
 						ok:"Force replication"
 					}
 				}).then(function(res){
+					
 					var cd = D0[d.name], dbsnew=[], ptr=0;
 					if (isO(res) && res.cmd == "commit") {
 						for (var i=0;i<cd.sync.length;i++) {
 							if (cd.sync[i].dir.length) {
 								(function(sync, sync1){
+									cw.log("Started forced sync ‘"+d.name+"’ "+sync.dir.join("&")+" "+sync.url);
 									var ptr=0;
 									cw.db(d.name).sync(false);
+									
+									var opts = d._cmd === "sync0"?{since:0}:{};
+									
 									cw.db(d.name)
-									.replicate[sync.dir[ptr]](sync.url, function(e, ok){
+									.replicate[sync.dir[ptr]](sync.url, opts, function(e, ok){
 
-										if (!e) cw.note("Replication "+sync.dir[ptr]+" "+sync1.url+" finished.", "ok");
-										else {
-											cw.note("Replication "+sync.dir[ptr]+" "+sync1.url+" failed.", "error");
-											console.log(e)
-										}
+										if (!e) _ok(ok);
+										else _fail(e);
 										ptr+=1;
+										
 										if (sync.dir[ptr]) cw.db(d.name)
-										.replicate[sync.dir[ptr]](sync.url, function(e, ok){
-											if (!e) cw.note("Replication "+sync.dir[ptr]+" "+sync1.url+" finished.", "ok");
-											else cw.note("Replication "+sync.dir[ptr]+" "+sync1.url+" failed.", "error");
-											if (isF(done)) try {done(e, ok);}catch(err){};
-											cw.db(d.name).sync(true);
+										.replicate[sync.dir[ptr]](sync.url, opts, function(e, ok){
+											if (!e) _ok(ok);
+											else _fail(e);
+											_done(e,ok);
 										});
-										else {
-											if (isF(done)) try {done(e, ok);}catch(err){};
-											cw.db(d.name).sync(true);
-										}
-									})
+										else _done(e,ok);
+									});
+									
+									function _ok (msg) {
+										cw.log("Forced sync ‘"+d.name+"’ "+sync.dir[ptr]+" "+sync.url+" finished", msg);
+										cw.note("Replication "+sync.dir[ptr]+" "+sync1.url+" finished.", "ok");
+									}
+									
+									function _fail (msg) {
+										cw.log("Forced sync ‘"+d.name+"’ "+sync.dir[ptr]+" "+sync.url+" failed", msg);
+										cw.note("Replication "+sync.dir[ptr]+" "+sync1.url+" failed.", "error");
+										console.log(msg);
+									}
+									
+									function _done(e,ok) {
+										if (isF(done)) try {done(e, ok);}catch(err){};
+										cw.db(d.name).sync(true);
+									}
+									
 								})(cd.sync[i], d.sync[i]);
 							}
 						}
-						pi.resolve("Started forced DB sync.")
+						pi.resolve("Started forced DB sync.");
 					}
+					
 				}).fail(function(){
 					pi.reject("DB forced sync cancelled.");
 				})
@@ -275,6 +459,8 @@ if (!cw.crypto) cw.crypto = (function() {
 				}).then(function(res){
 					var dbsnew=[];
 					if (isO(res) && res.cmd == "commit") {
+						
+						cw.log("Starting ‘"+d.name+"’ destroy+resync.");
 
 						var cd = D0[d.name];
 						for (i=0;i<cd.sync.length;i++) {
@@ -284,8 +470,9 @@ if (!cw.crypto) cw.crypto = (function() {
 						}
 
 						Pouch.destroy(d.name).then(function(){
+							cw.log("DB ‘"+d.name+"’ destroyed for resync, reload scheduled.");
 							window.location.reload();
-						});
+						}.debounce(500));
 						//console.log(S, dbid);
 					}
 
@@ -419,23 +606,29 @@ if (!cw.crypto) cw.crypto = (function() {
 				},
 				width:350,
 				esc:true
-			}).always(function(res){	
+			})
+			.always(function(res){	
 				if (isO(res)) {
 					PIN=_pin(res.pin);
 					PIN2=_pin2(res.pin, doc.name);
 					_decSettings (doc);	
 				} else pi.reject("No PIN provided to decrypt settings")
-					});
+			});
 		}
 		else  cw.debug=true, _decSettings (doc);
 
 		return pi.promise();
+		
+		//- - - - - - - - - - - - - - - - - - -
 
 		function _decSettings (doc) {
 			var obj = decode(doc, PIN);
 			if (!obj.dbs || !obj.uid) {
 				obj = decode(doc, PIN2);
-				if (!obj.dbs || !obj.uid) pi.reject("Invalid PIN, can’t decrypt settings");
+				if (!obj.dbs || !obj.uid) {
+					cw.log ("Invalid PIN entered on start.");
+					pi.reject("Invalid PIN, can’t decrypt settings");
+				}
 			}
 			if (obj.dbs && obj.uid) {
 
@@ -446,7 +639,7 @@ if (!cw.crypto) cw.crypto = (function() {
 					if (obj.pic.length>2e3) {
 						var upic=new Image(); upic.src=obj.pic;
 						img = cw.lib.image(upic);
-						me.pic = img.sharpen(1.5).resample(50,50).sharpen(0.3).jpeg(0.95);
+						me.pic = img.sharpen(0.5).resample(64,64).sharpen(0.1).jpeg(0.99);
 					};
 				}catch(e) {
 					me.pic = obj.pic;
