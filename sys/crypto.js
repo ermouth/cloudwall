@@ -19,7 +19,7 @@ if (!cw.log) (function _logstart(){
 	var ls = localStorage, 
 			scurr = "_cw_log_curr",
 			sprev = "_cw_log_prev",
-			mcurr = 50*000,
+			mcurr = 50*1000,
 			mprev = 1000*1000,
 			marg = 500,
 			ses = isF(cw.session)?cw.session():
