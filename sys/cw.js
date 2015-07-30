@@ -1,11 +1,11 @@
 /**
- * CloudWall 1.7.0 Main 
- * Created by ermouth 2015-06-27
+ * CloudWall 1.8.0 Main 
+ * Created by ermouth 2015-07-05
  */
 
 (function(){
 	
-	var VERSION = "1.7.0";
+	var VERSION = "1.8.0";
 	
 	// Some shortcuts and constants
 	var $E = $.extend, 
@@ -679,17 +679,20 @@ function _uncache (db, id) {
 	
 	/******* Settings update handler *******/
 
-function _processSettings() {
+function _processSettings(priorityDb) {
 	var i, 
 			pi0 = _pi(),
 			dblist = cw.crypto.dblist(),
-			finlist=[];
+			finlist=[], ctr = 0;
 
 	Object.merge(me, cw.crypto.me());
 	
 	con("User for session "+Session+" is "+me.name+"-"+me.uid);
 	
-	if (CW.$upic && !isS(CW.$upic)) CW.$upic.attr("src", me.pic);
+	if (CW.$upic && me.pic) {
+		if (!isS(CW.$upic)) CW.$upic.attr("src", me.pic);
+		else $(CW.$upic).attr("src", me.pic);
+	}
 
 	if (dblist.length && me.name) {
 
@@ -715,8 +718,13 @@ function _processSettings() {
 			}
 			else {
 				//connect to db
-				_connect(dbid).then(function(db){
-					try{db.sync(true);} catch(e) {con(e)}
+				(dbid !== priorityDb && dbid!=="cw"? (ctr+=1, _connect(dbid, ctr*300+300)):_connect(dbid))
+				.then(function(db){
+					
+					(function(){
+						try{db.sync(true);} catch(e) {con(e)}
+					}).delay(ctr*500+1000);
+					
 					if (dbid==="cw") {
 						sys=db;
 						//load apps
@@ -732,7 +740,8 @@ function _processSettings() {
 						_allConnected();
 					}
 
-				}).fail(function(e, msg){
+				}.fill(void 0, ctr))
+				.fail(function(e, msg){
 					_note(msg, "error");
 					_allConnected();
 				});
@@ -1348,8 +1357,10 @@ function _linkAll() {
 					$app.removeClass("hide cw-app-init")
 					//.width(rw.slot)
 					.addClass("cw-app-active")
-					.find("textarea")
+					.find("textarea:visible")
 					.blur();
+					
+					try { $app.my("restyle"); } catch(err) {console.log(err)}
 
 					if (slot.caret) {
 						// {$node, pos, top}
@@ -1967,7 +1978,7 @@ function _app(app, db0, _notifyslot, run){
 // Connects to DB
 // returns promise, that is resolved with db object
 
-_connect = function (id) {
+_connect = function (id, postpone) {
 
 	var ext, db, dbid=id+"", pi=_pi();
 
@@ -2039,7 +2050,13 @@ _connect = function (id) {
 				)
 				.always(function(){
 					_extdb(db,dbid);
-					_loadForms();
+					if (!postpone) {
+						_loadForms().always(_fin);
+					}
+					else {
+						setTimeout(_loadForms, postpone);
+						_fin();
+					}
 				});
 			} 
 			//mount ext methods to db
@@ -2053,10 +2070,13 @@ _connect = function (id) {
 
 		function _loadForms() {
 			//read and mount manifests
-			ext.load("cw-","cwz","manifest").then(function(a){
+			
+			//dbs[dbid].load("cw-","cwz","manifest").then(function(a){
+			return ext.load("cw-","cwz","manifest").then(function(a){
 				if (a.length) con ("Read "+a.length+" manifest"+(a.length>1?"s":"")+" from DB "+dbid+".");
-				_fin();
+				
 			});
+			//_fin();
 		}
 
 		//replicate, then finalize
@@ -2819,7 +2839,8 @@ $.my.ajax(_ajax);
 	
 	var pi=_pi(), 
 			i, db0,
-			_fail=false;
+			_fail=false,
+			priority = window.location.hash.replace(/^#/,'').split("/")[0] || "cw";
 
 	// remount unsafe methods
 	_getSyncUrl = cw.crypto._getSyncUrl;
@@ -2830,7 +2851,7 @@ $.my.ajax(_ajax);
 	// exec startup sequence
 	_db()											
 	.then(_readSettings)			
-	.then(_processSettings)		
+	.then(function(){ return _processSettings(priority); })		
 	.then(_startUi)						
 	.then(_startMonitors)		
 	.then(_readUsers)				

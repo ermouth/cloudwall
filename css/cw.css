@@ -196,15 +196,17 @@
 }
 #cw-notes>div {
 	margin-bottom:20px; 
-	border-radius:4px; 
+	border-radius:6px; 
 	width:290px; 
 	padding:20px; 
 	background-color:rgba(0,30,60,0.8);
-	border:1px solid white;
+	/*border:1px solid white;*/
+	box-shadow:0 0 0 1px white;
 	color:#f0f8ff;
 	font-size:13pt; 
 	line-height:16pt;
 	word-wrap: break-word;
+	overflow:hidden;
 }
 
 #cw-notes>div.error {

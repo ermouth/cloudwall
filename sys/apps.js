@@ -8,67 +8,7 @@
 	
 {
 	"id": "cw.Sys.Db.DocInfo",
-	"params": {
-		"width": 700
-	},
-	"data": {
-		"db": null,
-		"id": "",
-		"info": [],
-		"doc": {
-		},
-		"actions": {
-		},
-		"actions2": {
-		},
-		"cmd": ""
-	},
-	"ui": {
-		"#pic": "doc.pic",
-		"#name": "doc.name",
-		"#list": function (d) {
-
-			return $.my.formgen(d.info.reduce(function(a,b){
-				a.push([b.n,'<span>'+b.v+'</span>']);
-				return a;
-			},[{row:"560px",label:"110px", labelCss:"gray fs90", rowCss:"my-row pt8"}]))
-		
-			},
-		"#actions": {
-			"bind": function (d) {
-
-				var html="", fi, name, that=this;
-				if(Object.size(d.actions2)) {
-					html+='<div class="fr ml10">'+_btns(d.actions2, "ml5 mr0")+'</div>';
-				}
-				html+=_btns(d.actions,"mr5");
-				return html;
-				
-				//--------
-				
-				function _btns (list, css) {
-					var i, html='';
-					for (i in list) {
-						fi=that.Actions.fi[i]||"";
-						name = that.Actions.name[i]||i.capitalize();
-						html+='<button data-action="'+i+'" '
-							+' title="'+(that.Actions.tip[i]||"").assign(d.doc)+'"'
-							+' class="'+css+' button'
-						if (fi) html+=' fs90 '+fi+'"> <span class="fs110">'+name+'</span></span>';
-						else html+='"> '+name+'</button>';
-					}
-					return html;
-				}
-			
-				},
-			"css": {
-				"hide": function (d) {
-					return !Object.size(d.actions)
-					}
-			}
-		}
-	},
-	"init": function ($o, form) {
+	"init": function ($o,form) {
 
 	var that=this, pi=$.Deferred(),
 			k1="name type crypto title _id _rev _read _nokey _conflicts contact creator stamp log created owners _attachments parent pic".split(" "),
@@ -128,7 +68,7 @@
 							html+= r.map(function(i){
 								var t = i.escapeHTML(), 
 										att = d.doc[e][i],
-										len = att.data.length - att.data.last(2).replace(/[^=]/g,'').length;
+										len = Math.round(att.data.length/4*3)-att.data.last(2).replace(/[^=]/g,'').length;
 								return [
 									'<tr><td>',
 									'<span title="'+t+'">'+t.truncate(45,"middle","…")+'</span>',
@@ -209,6 +149,67 @@
 	return pi.promise();
 		
 		},
+	"build": 8,
+	"params": {
+		"width": 700
+	},
+	"data": {
+		"db": null,
+		"id": "",
+		"cmd": "",
+		"info": [],
+		"doc": {
+		},
+		"actions": {
+		},
+		"actions2": {
+		}
+	},
+	"ui": {
+		"#pic": "doc.pic",
+		"#name": "doc.name",
+		"#list": function (d) {
+
+			return $.my.formgen(d.info.reduce(function(a,b){
+				a.push([b.n,'<span>'+b.v+'</span>']);
+				return a;
+			},[{row:"560px",label:"110px", labelCss:"gray fs90", rowCss:"my-row pt8"}]))
+		
+			},
+		"#actions": {
+			"bind": function (d) {
+
+				var html="", fi, name, that=this;
+				if(Object.size(d.actions2)) {
+					html+='<div class="fr ml10">'+_btns(d.actions2, "ml5 mr0")+'</div>';
+				}
+				html+=_btns(d.actions,"mr5");
+				return html;
+				
+				//--------
+				
+				function _btns (list, css) {
+					var i, html='';
+					for (i in list) {
+						fi=that.Actions.fi[i]||"";
+						name = that.Actions.name[i]||i.capitalize();
+						html+='<button data-action="'+i+'" '
+							+' title="'+(that.Actions.tip[i]||"").assign(d.doc)+'"'
+							+' class="'+css+' button'
+						if (fi) html+=' fs90 '+fi+'"> <span class="fs110">'+name+'</span></span>';
+						else html+='"> '+name+'</button>';
+					}
+					return html;
+				}
+			
+				},
+			"css": {
+				"hide": function (d) {
+					return !Object.size(d.actions)
+					}
+			}
+		}
+	},
 	"Actions": {
 		"fi": {
 			"edit": "fi-pencil",
@@ -246,7 +247,7 @@
 },
 {
 	"id": "cw.Sys.Db.Settings",
-	"init": function ($o, form) {
+	"init": function ($o,form) {
 
 		var that=this;
 		$o.html($.my.formgen(that.HTML));
@@ -794,7 +795,7 @@
 },	
 {
 	"id": "cw.Sys.Db.List",
-	"init": function ($o, form) {
+	"init": function ($o,form) {
 
 
 	var pi = $.Deferred(), 
@@ -957,7 +958,7 @@
 	}
 		
 			},
-	"Filter": function (dbres, del) {
+	"Filter": function (dbres,del) {
 
 	var i,j,r, a, obj, reg, tmp,
 			that = this, 
@@ -1033,7 +1034,7 @@
 	
 		
 			},
-	"GetActions": function (type, force) {
+	"GetActions": function (type,force) {
 
 	var that = this,
 			acts = that.data.actions,
@@ -1054,7 +1055,7 @@
 	else return [apps[cmds.edit || cmds.view] || {app:{}}, cmds];
 		
 			},
-	"Cmd": function (form, act, db, id, app) {
+	"Cmd": function (form,act,db,id,app) {
 
 
 	// executes command over doc
@@ -1266,7 +1267,7 @@
 	
 				},
 		"#start": {
-			"init": function ($o, form) {
+			"init": function ($o,form) {
 
 		var that=this;
 		$o.list({
@@ -1400,7 +1401,7 @@
 		]);
 	
 					},
-			"init": function ($o, form) {
+			"init": function ($o,form) {
 
 		var that =this,
 				_act = that.Cmd.fill(that);
@@ -1524,7 +1525,7 @@
 				}
 			},
 			"#btxt": {
-				"bind": function (d, v, $o) {
+				"bind": function (d,v,$o) {
 
 				var css = "", cmd="";
 				if (d.app) {
@@ -1742,6 +1743,7 @@
 	"files": {
 		"unknown.png": {
 			"content_type": "image/png",
+			"revpos": 0,
 			"digest": "md5-M6nwyK6OobaFbftCi9/raQ==",
 			"data": "iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABJQTFRF////tre99fX219fa5eboy8zPIEyigwAAAL5JREFUeNqM1VEOxCAIBFAd4P5X3trdbgQGy3w2L1M12I6xBSGjiMwQq1ysMOs5LpljkrssKxdl7bw8uV0Gl476kc5BbEU0S+fUnkiU4M7MdV4I021/vVUlVSaI7+Lu5iPcliANeG9d36GmJXJIHIVIZ1NAJY5CMTLXVSM6cIii1UhDIZqN6O46DcT4zWJ8SiCmkKu7JkKZy53hbv1d9THK7iidO8jgSplcIYmjkjoiC3fJ+LGX8igOv4+PAAMAOM0EMf5JMSUAAAAASUVORK5CYII="
 		}
@@ -1749,7 +1751,7 @@
 },
 {
 	"id": "cw.Sys.Db.Ddocs",
-	"init": function ($o, form) {
+	"init": function ($o,form) {
 
 		var that = this,
 				pi = $.Deferred(),
@@ -1775,8 +1777,20 @@
 		return pi.promise();
 	
 		},
-	"HTML": ["<h3>Ddocs in <i id=\"dbname\"></i> DB</h3>",
-		"<div id=\"dlist\"></div>"],
+	"app": {
+		"name": "Sys.Db.Ddocs",
+		"version": "2",
+		"timeout": "3000",
+		"title": "Ddoc List",
+		"author": "ermouth",
+		"ico": "data:image/jpeg;base64,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",
+		"maskstate": "",
+		"nodetitle": "dbname",
+		"width": [1000]
+	},
+	"data": {
+		"ddocs": []
+	},
 	"ui": {
 		"#dbname": "this.dbname",
 		"#dlist": {
@@ -1789,26 +1803,14 @@
 			}
 		}
 	},
-	"data": {
-		"ddocs": []
-	},
-	"app": {
-		"name": "Sys.Db.Ddocs",
-		"version": "2",
-		"timeout": "3000",
-		"title": "Ddoc List",
-		"author": "ermouth",
-		"ico": "data:image/jpeg;base64,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",
-		"maskstate": "",
-		"nodetitle": "dbname",
-		"width": [1000]
-	}
+	"HTML": ["<h3>Ddocs in <i id=\"dbname\"></i> DB</h3>",
+		"<div id=\"dlist\"></div>"]
 },
 	
 {
 	"id": "cw.Sys.Side",
 	" ": " ",
-	"init": function ($o, form) {
+	"init": function ($o,form) {
 
 	var icos = {}, d = form.data; $o.formgen(this.HTML);
 	
@@ -2226,7 +2228,7 @@
 		}
 	},
 	"List": {
-		"init": function ($o, form) {
+		"init": function ($o,form) {
 
 			$o.html('<div id="cont" class="xgray ov '
 				+(form.data.shift?"pl25":"")
@@ -2324,7 +2326,7 @@
 },
 {
 	"id": "cw.Sys.Dock",
-	"init": function ($o, form) {
+	"init": function ($o,form) {
 
 		var that = this, d = form.data;
 		$o.parent().parent().css({top:"25px"}); 
@@ -2411,7 +2413,7 @@
 		" #ico": "cursor: help;cursor:context-menu;width:25px; height:16px;padding-right:9px;margin:2px 1px -2px 0;"
 	},
 	"AppList": {
-		"init": function ($o, form) {
+		"init": function ($o,form) {
 
 		$o.html(
 			'<div id="cont" class="blue"><img id="ico" src=""/>'
@@ -2511,6 +2513,13 @@
 		]);
 	
 		},
+	"params": {
+		"delay": 5,
+		"width": 350
+	},
+	"data": {
+		"trust": []
+	},
 	"ui": {
 		"#list": function (d) {
 
@@ -2521,6 +2530,26 @@
 			return html; 
 		
 			},
+		"#btn-ok": {
+			"bind": function (d,v,$o) {
+
+				if (v!=null) {
+					$o.trigger("commit");
+				}
+			
+				},
+			"events": "click"
+		},
+		"#btn-cancel": {
+			"bind": function (d,v,$o) {
+
+				if (v!=null) {
+					$o.trigger("cancel");
+				}
+			
+				},
+			"events": "click"
+		},
 		"#btn-all": {
 			"bind": function (d,v,$o) {
 
@@ -2531,39 +2560,12 @@
 			
 				},
 			"events": "click"
-		},
-		"#btn-cancel": {
-			"bind": function (d,v,$o) {
-
-				if (v!=null) {
-					$o.trigger("cancel");
-				}
-			
-				},
-			"events": "click"
-		},
-		"#btn-ok": {
-			"bind": function (d,v,$o) {
-
-				if (v!=null) {
-					$o.trigger("commit");
-				}
-			
-				},
-			"events": "click"
 		}
-	},
-	"data": {
-		"trust": []
-	},
-	"params": {
-		"delay": 5,
-		"width": 350
 	}
 },
 {
 	"id": "cw.Sys.Confirm",
-	"init": function ($o, form) {
+	"init": function ($o,form) {
 
 		var d=form.data;
 		$o.formgen([
@@ -2574,18 +2576,18 @@
 		]);
 	
 		},
+	"params": {
+		"delay": 5,
+		"width": 350
+	},
+	"data": {
+		"text": "",
+		"css": "xgray",
+		"ok": "Ok",
+		"cancel": "Cancel",
+		"cmd": ""
+	},
 	"ui": {
-		"#btn-cancel": {
-			"bind": function (d,v,$o) {
-
-				if (v!=null) {
-					d.cmd="cancel";
-					$o.trigger("cancel");
-				}
-			
-				},
-			"events": "click.my"
-		},
 		"#btn-ok": {
 			"bind": function (d,v,$o) {
 
@@ -2596,23 +2598,23 @@
 			
 				},
 			"events": "click.my"
+		},
+		"#btn-cancel": {
+			"bind": function (d,v,$o) {
+
+				if (v!=null) {
+					d.cmd="cancel";
+					$o.trigger("cancel");
+				}
+			
+				},
+			"events": "click.my"
 		}
-	},
-	"data": {
-		"text": "",
-		"css": "xgray",
-		"ok": "Ok",
-		"cancel": "Cancel",
-		"cmd": ""
-	},
-	"params": {
-		"delay": 5,
-		"width": 350
 	}
 },
 {
 	"id": "cw.Sys.YesNoCancel",
-	"init": function ($o, form) {
+	"init": function ($o,form) {
 
 		var d=form.data;
 		$o.formgen([
@@ -2624,17 +2626,35 @@
 		]);
 	
 		},
+	"build": 6,
+	"params": {
+		"delay": 5,
+		"width": 450
+	},
+	"data": {
+		"text": "",
+		"css": "xgray",
+		"yes": "Yes",
+		"no": "No",
+		"cancel": "Cancel",
+		"cmd": ""
+	},
 	"ui": {
-		"#btn-cancel": {
+		"#btn-yes": {
 			"bind": function (d,v,$o) {
 
 				if (v!=null) {
-					d.cmd="cancel";
-					$o.trigger("cancel");
+					d.cmd="yes";
+					$o.trigger("commit");
 				}
 			
 				},
-			"events": "click.my"
+			"events": "click.my",
+			"css": {
+				"self:hide": function (d) {
+					 return !d.yes
+					}
+			}
 		},
 		"#btn-no": {
 			"bind": function (d,v,$o) {
@@ -2645,36 +2665,34 @@
 				}
 			
 				},
-			"events": "click.my"
+			"events": "click.my",
+			"css": {
+				"self:hide": function (d) {
+					 return !d.no
+					}
+			}
 		},
-		"#btn-yes": {
+		"#btn-cancel": {
 			"bind": function (d,v,$o) {
 
 				if (v!=null) {
-					d.cmd="yes";
-					$o.trigger("commit");
+					d.cmd="cancel";
+					$o.trigger("cancel");
 				}
 			
 				},
-			"events": "click.my"
+			"events": "click.my",
+			"css": {
+				"self:hide": function (d) {
+					 return !d.cancel
+					}
+			}
 		}
-	},
-	"data": {
-		"text": "",
-		"css": "xgray",
-		"yes": "Yes",
-		"no": "No",
-		"cancel": "Cancel",
-		"cmd": ""
-	},
-	"params": {
-		"delay": 5,
-		"width": 450
 	}
 },
 {
 	"id": "cw.Sys.Cropper.Square",
-	"init": function ($o, form) {
+	"init": function ($o,form) {
 
 		var html = $.my.formgen([
 		'<div class="fl mr20 tac vat bg-lgray" style="width:600px;height:450px;' 
@@ -2702,28 +2720,21 @@
 		$o.html(html);
 	
 		},
+	"params": {
+		"width": 820
+	},
+	"data": {
+		"filename": "",
+		"data": "",
+		"cropped": false,
+		"size": 200
+	},
+	"style": {
+		" .jcrop-holder": "display:inline-block;vertical-align:middle"
+	},
 	"ui": {
-		"#btn-close": {
-			"bind": function (d,v,$o) {
-				if (v!=null) $o.my().root.trigger("cancel");
-				},
-			"events": "click.my"
-		},
-		"#btn-apply": {
-			"bind": function (d,v,$o) {
-
-				if (v!=null && d.cropped) {
-					d.data = $o.my().root.find("#preview")[0]
-						.toDataURL('image/jpeg',0.95)
-						.substr(23);
-					$o.my().root.trigger("commit");
-				}
-			
-				},
-			"events": "click.my"
-		},
 		"#file": {
-			"bind": function (d, v, $o) {
+			"bind": function (d,v,$o) {
 
 
 		var f,
@@ -2799,24 +2810,31 @@
 		}
 	
 				}
+		},
+		"#btn-apply": {
+			"bind": function (d,v,$o) {
+
+				if (v!=null && d.cropped) {
+					d.data = $o.my().root.find("#preview")[0]
+						.toDataURL('image/jpeg',0.95)
+						.substr(23);
+					$o.my().root.trigger("commit");
+				}
+			
+				},
+			"events": "click.my"
+		},
+		"#btn-close": {
+			"bind": function (d,v,$o) {
+				if (v!=null) $o.my().root.trigger("cancel");
+				},
+			"events": "click.my"
 		}
-	},
-	"style": {
-		" .jcrop-holder": "display:inline-block;vertical-align:middle"
-	},
-	"data": {
-		"filename": "",
-		"data": "",
-		"cropped": false,
-		"size": 200
-	},
-	"params": {
-		"width": 820
 	}
 },
 {
 	"id": "cw.Sys.Attachments",
-	"init": function ($o, form) {
+	"init": function ($o,form) {
 
 		var that=this,
 			d = form.data;
@@ -2875,7 +2893,7 @@
 		}
 	
 		},
-	"Unfold": function (A, elt, doc) {
+	"Unfold": function (A,elt,doc) {
 
 		var r;
 		try {
@@ -2885,12 +2903,147 @@
 		return r;
 	
 		},
-	"style": {
-		" .cw-att-item": "white-space:nowrap; overflow:hidden; padding:0.2em 0 0.2em 0; line-height:1.4em;",
-		" input[type=file]": "width:100%;cursor:pointer;opacity:0; position:absolute;top:0;left:0;height:1.5em"
+	"params": {
+		"width": 400
+	},
+	"data": {
+		"sort": function (fobj,fname,doc) {
+			 return fname; 
+			},
+		"width": 200,
+		"truncate": 200,
+		"limit": 10000000,
+		"ico": function (fobj,fname) {
+
+		var css="fi-paperclip",
+				types={
+					"fi-photo":/\.(png|jp[e]?g|gif|tif[f]?|bmp)$/i,
+					"fi-social-adobe":/\.(pdf|ai|psd)$/i,
+					"fi-page-doc":/\.(doc[x]?|txt|rtf)$/i,
+					"fi-graph-pie":/\.(xls[x]?|csv)$/i,
+					"fi-archive":/\.(zip|rar|7z|7zip)$/i,
+					"fi-html5 pl2":/\.(htm[l]|php)$/i,
+					"fi-css3 pl2":/\.css$/i,
+					"fi-widget":/\.(js[on]?|php|asp|jar|c|erl)$/i,
+					"fi-sound":/\.(wav|aiff|mp3|ogg|mpeg3)$/i
+				};
+		if (!fobj.digest) css="orange fi-burst-new";
+		else Object.each(types, function(key, re){
+			if (re.test(fname)) css=key;
+		});
+		return '<span class="'+css+' dib vam o80 lh110" style="width:1.3em;"></span>';
+	
+			},
+		"aux": function (fobj,fname,doc) {
+
+		return "";
+	
+			},
+		"css": "cw-att-files",
+		"itemCss": "cw-att-item hoverlink",
+		"download": function (fobj,fname,doc) {
+			 return "Manage "+fname; 
+			},
+		"upload": "<span class=\"pseudolink\">Upload file...</span>",
+		"accept": "",
+		"doc": {
+		},
+		"files": []
+	},
+	"Attachment": {
+		"init": function ($o,form) {
+
+		var d = form.data;
+		$o.html(
+			d.ico
+			+'<div class="dib vat oh">'
+			+'<div class="oh" style="white-space:nowrap">'
+			+(d.dl?'<span class="pseudolink cw-att-dl" title="'
+				+d.dl+'" data-fname="'+d.name+'">':"")
+			+'<span class="cw-att-fname"></span>'
+			+'<span class="cw-att-ext"></span>'
+			+(d.dl?'</span>':"")
+			+'</div>'
+			+(d.aux?'<div class="cw-att-aux">'+d.aux+'</div>':"")
+			+'</div>'
+		);
+	
+			},
+		"data": {
+			"name": "",
+			"title": "",
+			"ext": "",
+			"ico": "",
+			"aux": "",
+			"dl": ""
+		},
+		"ui": {
+			".cw-att-fname": "title",
+			".cw-att-ext": "ext"
+		}
+	},
+	"ModalManageAtt": {
+		"init": function ($o,form) {
+
+		var html="", d=form.data, size = +(d.size || d.length || 0);
+		if (/^image/.test(d.mime)) {
+			html+='<div class="w800 tac">'
+			+'<img src="'+d.url+'" class="dib mb15" style="max-width:800px; max-height:600px;" />'
+			+'</div>';
+		}
+		html+= '<div class="lh110 fs130 xgray" style="word-break: break-all;">'+d.name+'</div>';
+		html+= '<div class="lh110 fs90 gray mt5">'
+		+size.format(0,' ')+' byte'+(/(^1|[02-9]1)$/.test(size+"")?'':'s')
+		+(!d.digest?", not yet saved to DB":"")
+		+'</div>';
+		html+= '<div class="my-row pt15 mt20 btd fs85 mb-5">'
+		+'<a class="button tdn green mr5" href="'
+		+d.url+'" target="_blank" download="'
+		+d.name+'"><span class="fi-download fs90"></span> Download</a>'
+		+(/.+\.(jp[e]?g|png|tif[f]?|pdf|txt|js|css|htm[l])$/i.test(d.name)?
+			'<a class="button tdn green mr5" href="'
+			+d.url+'" target="_blank"><span class="fi-eye fs90"></span> Open</a>':"")
+
+		+ '<span class="button red" id="btn-del"><span class="fi-trash fs90"></span> Delete</span>'
+		+ '<div class="fr"><span class="button" id="btn-cancel">Cancel</span></div>'
+
+		+'</div>';
+
+		$o.html(html);
+		$o.on("click","a", function (){
+			(function(){$o.trigger("cancel");}).delay(100);
+		})
+	
+			},
+		"data": {
+			"name": "",
+			"size": "",
+			"url": "",
+			"mime": "",
+			"cmd": ""
+		},
+		"ui": {
+			"#btn-cancel": {
+				"bind": function (d,v,$o) {
+					if (v!=null) $o.trigger("cancel")
+					},
+				"events": "click.my"
+			},
+			"#btn-del": {
+				"bind": function (d,v,$o) {
+
+				if (v!=null) {
+					d.cmd="delete";
+					$o.trigger("commit");
+				}
+			
+					},
+				"events": "click.my"
+			}
+		}
 	},
 	"ui": {
-		"#att-fpanel": function (d, v, $o) {
+		"#att-fpanel": function (d,v,$o) {
 
 		var i,j,k,
 				a=d.doc._attachments,
@@ -2938,6 +3091,12 @@
 	
 			},
 		".cw-att-upload": "upload",
+		"#att-flist": {
+			"bind": "files",
+			"check": true,
+			"manifest": "Attachment",
+			"list": "<div class=\"cw-att-item hoverlink\"></div>"
+		},
 		"#upload": {
 			"bind": function (d,v,$o) {
 
@@ -2972,159 +3131,19 @@
 					return !d.upload
 					}
 			}
-		},
-		"#att-flist": {
-			"bind": "files",
-			"check": true,
-			"manifest": "Attachment",
-			"list": "<div class=\"cw-att-item hoverlink\"></div>"
 		}
 	},
-	"ModalManageAtt": {
-		"init": function ($o, form) {
-
-		var html="", d=form.data, size = +(d.size || d.length || 0);
-		if (/^image/.test(d.mime)) {
-			html+='<div class="w800 tac">'
-			+'<img src="'+d.url+'" class="dib mb15" style="max-width:800px; max-height:600px;" />'
-			+'</div>';
-		}
-		html+= '<div class="lh110 fs130 xgray" style="word-break: break-all;">'+d.name+'</div>';
-		html+= '<div class="lh110 fs90 gray mt5">'
-		+size.format(0,' ')+' byte'+(/(^1|[02-9]1)$/.test(size+"")?'':'s')
-		+(!d.digest?", not yet saved to DB":"")
-		+'</div>';
-		html+= '<div class="my-row pt15 mt20 btd fs85 mb-5">'
-		+'<a class="button tdn green mr5" href="'
-		+d.url+'" target="_blank" download="'
-		+d.name+'"><span class="fi-download fs90"></span> Download</a>'
-		+(/.+\.(jp[e]?g|png|tif[f]?|pdf|txt|js|css|htm[l])$/i.test(d.name)?
-			'<a class="button tdn green mr5" href="'
-			+d.url+'" target="_blank"><span class="fi-eye fs90"></span> Open</a>':"")
-
-		+ '<span class="button red" id="btn-del"><span class="fi-trash fs90"></span> Delete</span>'
-		+ '<div class="fr"><span class="button" id="btn-cancel">Cancel</span></div>'
-
-		+'</div>';
-
-		$o.html(html);
-		$o.on("click","a", function (){
-			(function(){$o.trigger("cancel");}).delay(100);
-		})
-	
-			},
-		"ui": {
-			"#btn-del": {
-				"bind": function (d,v,$o) {
-
-				if (v!=null) {
-					d.cmd="delete";
-					$o.trigger("commit");
-				}
-			
-					},
-				"events": "click.my"
-			},
-			"#btn-cancel": {
-				"bind": function (d,v,$o) {
-					if (v!=null) $o.trigger("cancel")
-					},
-				"events": "click.my"
-			}
-		},
-		"data": {
-			"name": "",
-			"size": "",
-			"url": "",
-			"mime": "",
-			"cmd": ""
-		}
-	},
-	"Attachment": {
-		"init": function ($o, form) {
-
-		var d = form.data;
-		$o.html(
-			d.ico
-			+'<div class="dib vat oh">'
-			+'<div class="oh" style="white-space:nowrap">'
-			+(d.dl?'<span class="pseudolink cw-att-dl" title="'
-				+d.dl+'" data-fname="'+d.name+'">':"")
-			+'<span class="cw-att-fname"></span>'
-			+'<span class="cw-att-ext"></span>'
-			+(d.dl?'</span>':"")
-			+'</div>'
-			+(d.aux?'<div class="cw-att-aux">'+d.aux+'</div>':"")
-			+'</div>'
-		);
-	
-			},
-		"ui": {
-			".cw-att-fname": "title",
-			".cw-att-ext": "ext"
-		},
-		"data": {
-			"name": "",
-			"title": "",
-			"ext": "",
-			"ico": "",
-			"aux": "",
-			"dl": ""
-		}
-	},
-	"data": {
-		"sort": function (fobj, fname, doc) {
-			 return fname; 
-			},
-		"width": 200,
-		"truncate": 200,
-		"limit": 10000000,
-		"ico": function (fobj, fname) {
-
-		var css="fi-paperclip",
-				types={
-					"fi-photo":/\.(png|jp[e]?g|gif|tif[f]?|bmp)$/i,
-					"fi-social-adobe":/\.(pdf|ai|psd)$/i,
-					"fi-page-doc":/\.(doc[x]?|txt|rtf)$/i,
-					"fi-graph-pie":/\.(xls[x]?|csv)$/i,
-					"fi-archive":/\.(zip|rar|7z|7zip)$/i,
-					"fi-html5 pl2":/\.(htm[l]|php)$/i,
-					"fi-css3 pl2":/\.css$/i,
-					"fi-widget":/\.(js[on]?|php|asp|jar|c|erl)$/i,
-					"fi-sound":/\.(wav|aiff|mp3|ogg|mpeg3)$/i
-				};
-		if (!fobj.digest) css="orange fi-burst-new";
-		else Object.each(types, function(key, re){
-			if (re.test(fname)) css=key;
-		});
-		return '<span class="'+css+' dib vam o80 lh110" style="width:1.3em;"></span>';
-	
-			},
-		"aux": function (fobj, fname, doc) {
-
-		return "";
-	
-			},
-		"css": "cw-att-files",
-		"itemCss": "cw-att-item hoverlink",
-		"download": function (fobj, fname, doc) {
-			 return "Manage "+fname; 
-			},
-		"upload": "<span class=\"pseudolink\">Upload file...</span>",
-		"accept": "",
-		"files": [],
-		"doc": {
-		}
-	},
-	"params": {
-		"width": 400
+	"style": {
+		" .cw-att-item": "white-space:nowrap; overflow:hidden; padding:0.2em 0 0.2em 0; line-height:1.4em;",
+		" input[type=file]": "width:100%;cursor:pointer;opacity:0; position:absolute;top:0;left:0;height:1.5em"
 	}
 },
 	
 	
 {
 	"id": "cw.Manifest",
-	"init": function ($o, form) {
+	"build": 52,
+	"init": function ($o,form) {
 
 		
 	var pi=$.Deferred(), that=this;
@@ -3217,7 +3236,6 @@
 	}
 		
 			},
-	"build": 49,
 	"app": {
 		"name": "Manifest",
 		"version": "2",
@@ -3228,17 +3246,20 @@
 		"nodetitle": "editor.title",
 		"nodedoc": "editor",
 		"nodecmd": "cmd",
+		"build": 51,
 		"maskstate": ["cmd",
 			"editor._id"],
 		"width": [1320,
 			1170],
+		"collapsed": [],
 		"types": {
 			"manifest": ["edit",
 				"create"]
 		}
 	},
 	"params": {
-		"delay": 50
+		"delay": 50,
+		"restyle": 200
 	},
 	"data": {
 		"cmd": "",
@@ -3353,7 +3374,13 @@
 
 			//mount js on manifest
 			if (!err.length) {
-				d.editor.manifest=Object.merge(app?{id:"",app:app}:{id:""}, JSON.parse($.my.tojson(js)), true);
+				d.editor.manifest = Object.merge(
+					app
+					?{id:"", build:r.build||0, app:app}
+					:{id:"", build:r.build||0}, 
+					JSON.parse($.my.tojson(js)), 
+					true
+				);
 
 				//check if field pointers are valid
 				var n1,n2,n3,n4;
@@ -3389,6 +3416,7 @@
 			"watch": "#pane,#manifesto"
 		},
 		"#btn-save": {
+			"delay": 150,
 			"bind": function (d,v,$o) {
 
 			var dbid=this.db.name, that=this; 
@@ -3441,7 +3469,7 @@
 			"events": "click.my"
 		},
 		"#atts": {
-			"init": function ($o, form) {
+			"init": function ($o,form) {
 
 			$o.my("cw.Sys.Attachments", {
 				doc:form.data.editor,
@@ -3872,11 +3900,17 @@
 },
 {
 	"id": "cw.Manifest.Editor",
-	"GetTabHash": function (item, idx) {
-		return $.my.f.sdbmCode(item)
+	"build": 93,
+	"getCollapsed": function () {
+		return this.Collapsed
+		},
+	"GetTabHash": function (item,idx) {
+
+		return $.my.f.sdbmCode(Object.reject(item,"data"))+this.Collapsed;
+	
 		},
 	"GetTabId": function (e) {
-		return e.stamp || e.id
+		return e.stamp + e.id
 		},
 	"Postfix": function () {
 		return {}
@@ -3884,7 +3918,7 @@
 	"Prefix": function () {
 		return {}
 		},
-	"init": function ($form, form) {
+	"init": function ($form,form) {
 	
 	var d = form.data, that = this;
 	
@@ -3928,799 +3962,140 @@
 	act.active = true;
 	this.Editors.push(act);	
 	
+	// Remove tab
+	
 	$form.on("removetab.my", function(evt, data){
 		var t = d.com, e = that.Editors;
 		t.removeAt(t.indexOf(data));
 		e.removeAt(e.indexOf(data));
 		t[0].active=true;
 		
+		that.TabCollapse();
 		$form.find("#coms,#eds").trigger("recalc");
 	});
 	
-		
-		},
-	"HTML": "<!-- btns -->\n<div id=\"cmd\" class=\"buttons fr fs85\">\n\t<button  id=\"btn-opts\" class=\"button btnl\"><span \n\t\tclass=\"fi-wrench\"></span></button><button \n\t\tid=\"btn-compile\" class=\"button validate\"><span \n\t\tclass=\"fi-shopping-bag\"></span></button><button \n\t\tid=\"btn-run\" class=\"button btnr green pl10 pr10 validate\"><span \n\t\tclass=\"fi-play\"></span></button>\n</div>\n<!-- tabs -->\n<div id=\"coms\" class=\"gray\">\n\t<div class=\"tab dib vat\">\n\t\t\t<span id=\"xtitle\">\n\t\t\t\t<span id=\"title\" class=\"\"></span>\n\t\t\t</span>\n\t\t\t<span class=\"ctype\"></span>\n\t</div>\n</div>\n<span class=\"fi-plus fs90 p5 pseudolink tdn\" id=\"btn-add\"></span>\n<!-- editors -->\n<div id=\"eds\" class=\"cb\"></div>\n<!-- hidden -->\n<div id=\"warnM\" class=\"hide\"></div>",
-	"NewAppSrc": "// More detailed manifest structure description \n// read at http://jquerymy.com/api/\n({\n\tparams:{},\n\tdata:{\n\t\t// Data to bind with controls,\n\t\t// freeform like \n\t\t// { type:\"box\", size:{x:\"7\", y:\"5\"}, count:\"6\" }\n\t},\n\tinit: function ($form, form) {\n\t\t// Init function, executed before controls init.\n\t\t// Renders ui skeleton and prepares data if needed.\n\t\t// Any init function can return promise to become async.\n\t},\n\tui:{\n\t\t/*\n\t\t\"#someControl\":{\n\t\t\tbind:\"size.x\",\n\t\t\tcheck:/someRegexp/\n\t\t}, ...\n\t\t*/\n\t},\n\tstyle:{\n\t\t/*\n\t\t// Creates runtime stylesheet with rules\n\t\t// selective for manifest, like\n\t\t\t\" .red\":\"color:red\",\n\t\t\t\" .item\":{\n\t\t\t\t\" .red\":\"color:#c02\"\n\t\t\t}\n\t\t*/\n\t}\n})",
-	"style": {
-		"": "width:100%; margin-top:3px",
-		" .CodeMirror": "font:13px 'PT Mono',Monaco,monospace;line-height:1.4em;",
-		" button:focus": "outline:none;",
-		" .itl": "font-style:italic;",
-		" .itl:after": "content:\"*\";font-style:normal;margin-left:1px;",
-		" #cmd": {
-			" .button": "margin:0 0 0 2px; border-radius:0; padding: 5px 8px;",
-			" .btnl": "border-radius: 4px 0 0 4px;",
-			" .btnr": "border-radius: 0 4px 4px 0;"
-		},
-		" #eds": {
-			"": "border:1px solid #ddd; margin-top:10px;border-radius:2px",
-			">xdiv": "height:0;overflow:hidden;",
-			">xdiv:first-child": "height:auto;",
-			" .CodeMirror-linenumbers": "transition: background-color 0.3s",
-			" .ed-error .CodeMirror-linenumbers": "background-color:rgba(255, 200, 200, 0.75)"
-		},
-		" #coms": {
-			"": "float: left;margin-bottom: 15px;max-width: 85%;",
-			" .tab": "margin-right:2px;",
-			" #xtitle": "padding:4px 7px; cursor:move;",
-			" #title": "cursor:pointer;",
-			" .active": "background-color:rgba(142, 211, 255, 0.25);color:#3C5168;",
-			" .active.red": "background-color:rgba(255, 200, 200, 0.75);",
-			" .ctype": "font-size:80%; opacity:0.7; display:block;position:absolute;top:-8px;right:-5px;"
-		}
-	},
-	"Types": {
-		"css": {
-			"css": "fi-css3",
-			"compile": function (css) {
-
-			var err=[], res="";
-			res = ((css+"")
-			.replace(/\/\*[\s\S]+?\*\//gm,"")
-			.replace(/@charset[^;]+?;/gim,'')
-			.replace(/[\n\t\s]+/g,' ')
-			.replace(/\}/g,'}⊻')
-			.replace(/^\n+/g,"").replace(/[\n\s]+$/g,"")
-			.split('⊻')
-			.compact(true)
-			.reduce(function(a,b){
-				var t = b.trim(), p, k, v;
-				if (/^[^{]+\{[^\}]+\}$/.test(t)) {
-					p = t.to(-1).split("{");
-					k = " "+p[0].trim();
-					v = p[1].trim();
-					if (v.last()!=";") v+=";";
-					if (!a[k]) a[k]="";
-					a[k]+=v;
-				} else {
-					err.push("Invalid rule "+t.truncate(40));
-				}
-				return a;
-			},{}));
-			return [err, res];
-		
-				},
-			"CM": {
-				"mode": "css",
-				"theme": "base16-light"
-			}
-		},
-		"js": {
-			"compile": function (s) {
-
-			var err=[], res = null;
-			try {
-				// Eval is unsafe and resource-consuming
-				//res = eval(s);
-				
-				// More safe way
-				res = (new Function ("", "return ("+s+");"))();
-
-			} catch (e) {
-				err.push(e.message+".");
-			}
-			return err.length?[err, undefined]:[err,res];
-		
-				},
-			"CM": {
-				"mode": "javascript"
-			}
-		},
-		"text": {
-			"compile": null,
-			"CM": {
-				"mode": ""
-			}
-		},
-		"html": {
-			"css": "fi-html5",
-			"compile": null,
-			"CM": {
-				"mode": "htmlmixed",
-				"theme": "base16-light"
-			}
-		}
-	},
-	"Preview": {
-		"id": "cw.Manifesto.Preview",
-		"init": function ($o, form) {
-
-		var d=form.data, 
-				p = d._opts, 
-				m = d._src,
-				pi = $.Deferred();
-		
-		try {
-			this.Manifest = $.extend({db:d._db},(d._prefix||{}),eval(d._src));
-			$.extend(!0, this.Manifest, d._subs());
-		} catch (err){
-			console.log(err, err.stack)
-			pi.reject(err);
-		}
-
-		
-		$o.html(
-			'<div id="btn-close" class="'
-			+(p.runMode=="modal"?"hide":"")
-			+'">×</div>'
-			+'<div id="'+p.runId+'" class="'
-			+p.runCss+'" style="margin:0 auto;width:'
-			+d._opts.runWidth+'px"></div>'
-		);
-		pi.resolve();
-		
-		return pi.promise();
+	// Tab Collapser
+	if (d.collapsed) that.Collapsed = d.collapsed.map(function(e){return [e, true,1]});
+	that.TabCollapse();
 	
-			},
-		"style": {
-			">#btn-close": "position:absolute;top:0;right:0;cursor:pointer;z-index:+100;font-size:50px;line-height:1em; padding:0 10px;transition:color 0.3s; color:rgba(0,0,0,0.2);",
-			">#btn-close:hover": "color:#c02"
+		
 		},
-		"ui": {
-			">div:eq(1)": {
-				"bind": "_runtime",
-				"manifest": "Manifest"
-			},
-			"#btn-close": {
-				"bind": function (d,v,$o) {
+	"NewAppSrc": "// More detailed manifest structure description \n// read at http://jquerymy.com/api.html\n({\n\tparams:{},\n\tdata:{\n\t\t// Data to bind with controls,\n\t\t// freeform like \n\t\t// { type:\"box\", size:{x:\"7\", y:\"5\"}, count:\"6\" }\n\t},\n\tinit: function ($form, form) {\n\t\t// Init function, executed before controls init.\n\t\t// Renders ui skeleton and prepares data if needed.\n\t\t// Any init function can return promise to become async.\n\t},\n\tui:{\n\t\t/*\n\t\t\"#someControl\":{\n\t\t\tbind:\"size.x\",\n\t\t\tcheck:/someRegexp/\n\t\t}, ...\n\t\t*/\n\t},\n\tstyle:{\n\t\t/*\n\t\t// Creates runtime stylesheet with rules\n\t\t// selective for manifest, like\n\t\t\t\" .red\":\"color:red\",\n\t\t\t\" .item\":{\n\t\t\t\t\" .red\":\"color:#c02\"\n\t\t\t}\n\t\t*/\n\t}\n})",
+	"TabCollapse": function (reflist) {
 
-				if (null!=v) {					
-					if (/^(full|modal)/.test(d._opts.runMode+"")) {
-						$o.trigger("cancel");
-					} 
-				}
-			
-					},
-				"events": "click.my"
-			}
-		},
-		"data": {
-			"_runtime": {
-			}
-		}
-	},
-	"Compiler": {
-		"init": function ($o) {
-			 
-		$o.formgen(this.HTML); 
 	
-			},
-		"Stats": 0,
-		"Critic": function (content) {
+	// Re-builds collapse list for tabs
 
-
-	var globalVarsToIgnore = [
-		'Array', 'Boolean', 'Date', 'decodeURI', 'decodeURIComponent', 'encodeURI', 'encodeURIComponent', 'Error', 'eval', 'EvalError', 'Function', 'hasOwnProperty', 'isFinite', 'isNaN', 'JSON', 'Map', 'Math', 'NaN', 'Number', 'Object', 'parseFloat', 'parseInt', 'RangeError', 'ReferenceError', 'RegExp', 'Set', 'String', 'SyntaxError', 'TypeError', 'URIError', 'WeakMap'
-
-		, 'addEventListener', 'applicationCache', 'atob', 'Audio', 'Blob', 'blur', 'btoa', 'CanvasGradient', 'CanvasPattern', 'CanvasRenderingContext2D', 'clearInterval', 'clearTimeout', 'close', 'closed', 'CustomEvent', 'defaultStatus', 'document', 'DOMParser', 'Element', 'ElementTimeControl', 'event', 'FileReader', 'focus', 'FormData', 'frames', 'getComputedStyle', 'history', 'HTMLAnchorElement', 'HTMLBaseElement', 'HTMLBlockquoteElement', 'HTMLBodyElement', 'HTMLBRElement', 'HTMLButtonElement', 'HTMLCanvasElement', 'HTMLDirectoryElement', 'HTMLDivElement', 'HTMLDListElement', 'HTMLElement', 'HTMLFieldSetElement', 'HTMLFontElement', 'HTMLFormElement', 'HTMLFrameElement', 'HTMLFrameSetElement', 'HTMLHeadElement', 'HTMLHeadingElement', 'HTMLHRElement', 'HTMLHtmlElement', 'HTMLIFrameElement', 'HTMLImageElement', 'HTMLInputElement', 'HTMLIsIndexElement', 'HTMLLabelElement', 'HTMLLayerElement', 'HTMLLegendElement', 'HTMLLIElement', 'HTMLLinkElement', 'HTMLMapElement', 'HTMLMenuElement', 'HTMLMetaElement', 'HTMLModElement', 'HTMLObjectElement', 'HTMLOListElement', 'HTMLOptGroupElement', 'HTMLOptionElement', 'HTMLParagraphElement', 'HTMLParamElement', 'HTMLPreElement', 'HTMLQuoteElement', 'HTMLScriptElement', 'HTMLSelectElement', 'HTMLStyleElement', 'HTMLTableCaptionElement', 'HTMLTableCellElement', 'HTMLTableColElement', 'HTMLTableElement', 'HTMLTableRowElement', 'HTMLTableSectionElement', 'HTMLTextAreaElement', 'HTMLTitleElement', 'HTMLUListElement', 'HTMLVideoElement', 'Image', 'length', 'localStorage', 'location', 'matchMedia', 'MessageChannel', 'MessageEvent', 'MessagePort', 'MouseEvent', 'moveBy', 'moveTo', 'MutationObserver', 'name', 'navigator', 'Node', 'NodeFilter', 'onbeforeunload', 'onblur', 'onerror', 'onfocus', 'onload', 'onresize', 'onunload', 'open', 'openDatabase', 'opener', 'Option', 'parent', 'print', 'removeEventListener', 'resizeBy', 'resizeTo', 'screen', 'scroll', 'scrollBy', 'scrollTo', 'sessionStorage', 'setInterval', 'setTimeout', 'SharedWorker', 'status', 'SVGAElement', 'SVGAltGlyphDefElement', 'SVGAltGlyphElement', 'SVGAltGlyphItemElement', 'SVGAngle', 'SVGAnimateColorElement', 'SVGAnimatedAngle', 'SVGAnimatedBoolean', 'SVGAnimatedEnumeration', 'SVGAnimatedInteger', 'SVGAnimatedLength', 'SVGAnimatedLengthList', 'SVGAnimatedNumber', 'SVGAnimatedNumberList', 'SVGAnimatedPathData', 'SVGAnimatedPoints', 'SVGAnimatedPreserveAspectRatio', 'SVGAnimatedRect', 'SVGAnimatedString', 'SVGAnimatedTransformList', 'SVGAnimateElement', 'SVGAnimateMotionElement', 'SVGAnimateTransformElement', 'SVGAnimationElement', 'SVGCircleElement', 'SVGClipPathElement', 'SVGColor', 'SVGColorProfileElement', 'SVGColorProfileRule', 'SVGComponentTransferFunctionElement', 'SVGCSSRule', 'SVGCursorElement', 'SVGDefsElement', 'SVGDescElement', 'SVGDocument', 'SVGElement', 'SVGElementInstance', 'SVGElementInstanceList', 'SVGEllipseElement', 'SVGExternalResourcesRequired', 'SVGFEBlendElement', 'SVGFEColorMatrixElement', 'SVGFEComponentTransferElement', 'SVGFECompositeElement', 'SVGFEConvolveMatrixElement', 'SVGFEDiffuseLightingElement', 'SVGFEDisplacementMapElement', 'SVGFEDistantLightElement', 'SVGFEFloodElement', 'SVGFEFuncAElement', 'SVGFEFuncBElement', 'SVGFEFuncGElement', 'SVGFEFuncRElement', 'SVGFEGaussianBlurElement', 'SVGFEImageElement', 'SVGFEMergeElement', 'SVGFEMergeNodeElement', 'SVGFEMorphologyElement', 'SVGFEOffsetElement', 'SVGFEPointLightElement', 'SVGFESpecularLightingElement', 'SVGFESpotLightElement', 'SVGFETileElement', 'SVGFETurbulenceElement', 'SVGFilterElement', 'SVGFilterPrimitiveStandardAttributes', 'SVGFitToViewBox', 'SVGFontElement', 'SVGFontFaceElement', 'SVGFontFaceFormatElement', 'SVGFontFaceNameElement', 'SVGFontFaceSrcElement', 'SVGFontFaceUriElement', 'SVGForeignObjectElement', 'SVGGElement', 'SVGGlyphElement', 'SVGGlyphRefElement', 'SVGGradientElement', 'SVGHKernElement', 'SVGICCColor', 'SVGImageElement', 'SVGLangSpace', 'SVGLength', 'SVGLengthList', 'SVGLinearGradientElement', 'SVGLineElement', 'SVGLocatable', 'SVGMarkerElement', 'SVGMaskElement', 'SVGMatrix', 'SVGMetadataElement', 'SVGMissingGlyphElement', 'SVGMPathElement', 'SVGNumber', 'SVGNumberList', 'SVGPaint', 'SVGPathElement', 'SVGPathSeg', 'SVGPathSegArcAbs', 'SVGPathSegArcRel', 'SVGPathSegClosePath', 'SVGPathSegCurvetoCubicAbs', 'SVGPathSegCurvetoCubicRel', 'SVGPathSegCurvetoCubicSmoothAbs', 'SVGPathSegCurvetoCubicSmoothRel', 'SVGPathSegCurvetoQuadraticAbs', 'SVGPathSegCurvetoQuadraticRel', 'SVGPathSegCurvetoQuadraticSmoothAbs', 'SVGPathSegCurvetoQuadraticSmoothRel', 'SVGPathSegLinetoAbs', 'SVGPathSegLinetoHorizontalAbs', 'SVGPathSegLinetoHorizontalRel', 'SVGPathSegLinetoRel', 'SVGPathSegLinetoVerticalAbs', 'SVGPathSegLinetoVerticalRel', 'SVGPathSegList', 'SVGPathSegMovetoAbs', 'SVGPathSegMovetoRel', 'SVGPatternElement', 'SVGPoint', 'SVGPointList', 'SVGPolygonElement', 'SVGPolylineElement', 'SVGPreserveAspectRatio', 'SVGRadialGradientElement', 'SVGRect', 'SVGRectElement', 'SVGRenderingIntent', 'SVGScriptElement', 'SVGSetElement', 'SVGStopElement', 'SVGStringList', 'SVGStylable', 'SVGStyleElement', 'SVGSVGElement', 'SVGSwitchElement', 'SVGSymbolElement', 'SVGTests', 'SVGTextContentElement', 'SVGTextElement', 'SVGTextPathElement', 'SVGTextPositioningElement', 'SVGTitleElement', 'SVGTransform', 'SVGTransformable', 'SVGTransformList', 'SVGTRefElement', 'SVGTSpanElement', 'SVGUnitTypes', 'SVGURIReference', 'SVGUseElement', 'SVGViewElement', 'SVGViewSpec', 'SVGVKernElement', 'SVGZoomAndPan', 'TimeEvent', 'top', 'URL', 'WebSocket', 'window', 'Worker', 'XMLHttpRequest', 'XMLSerializer', 'XPathEvaluator', 'XPathException', 'XPathExpression', 'XPathNamespace', 'XPathNSResolver', 'XPathResult'
-
-		, 'escape', 'unescape'
-
-		// added on top of JSHint
-		, 'Int8Array', 'Int16Array', 'Int32Array'
-
-		, 'Uint8Array', 'Uint16Array', 'Uint32Array', 'Uint8ClampedArray'
-
-		, 'Float32Array', 'Float64Array'
-
-		, 'ArrayBuffer'
-
-		, 'ActiveXObject', 'console', 'define', 'exports', 'module', 'performance', 'requestAnimationFrame', 'require', 'self'
-	];
-
-	JSHINT(content, {
-		browser: true,
-		es3: true,
-		freeze: true,
-		maxerr: 10000,
-		undef: true,
-		funcscope: true
+	var that = this,
+			curr = that.Collapsed,
+			coll = curr.reduce(function(a,b,i){a[b[0]] = i;return a;},{}),
+			res = [],
+			c;
+	
+	// Need optimization!
+	
+	c= (reflist || that.data.com.map(function(e){return e.id}))
+	.sortBy()
+	.reduce(function(a,b){
+		var ins = -1;
+		if(!a.a[b]) {
+			var k = Object.keys(a.a);
+			k.forEach(function(e,i){
+				if (ins==-1 && b.startsWith(e+".")) ins=i;
+			});
+		}
+		if (ins>-1) {
+			a.coll[k[ins]] = (a.coll[k[ins]] || 0)+1;
+		}
+		else a.a[b]=0;
+		return a;
+	},{a:{},coll:{}})["coll"];
+	
+	Object.keys(c)
+	.forEach(function(k){
+		if (k in coll) res.push([k, curr[coll[k]][1], c[k]]);
+		else res.push([k, false, c[k]]);
 	});
+	
+	that.data.collapsed = res.map(function(e){
+		if (e[1]) return e[0];
+	}).compact();
+	
+	return that.Collapsed = res;
+	
+		
+		},
+	"HTML": "<!-- btns -->\n<div id=\"cmd\" class=\"buttons fr fs85\">\n\t<button  id=\"btn-opts\" class=\"button btnl\"><span \n\t\tclass=\"fi-wrench\"></span></button><button \n\t\tid=\"btn-compile\" class=\"button validate\"><span \n\t\tclass=\"fi-shopping-bag\"></span></button><button \n\t\tid=\"btn-run\" class=\"button btnr green pl10 pr10 validate\"><span \n\t\tclass=\"fi-play\"></span></button>\n</div>\n<!-- tabs -->\n<div id=\"coms\" class=\"xgray mt2\">\n\t<div class=\"tab dib vat\">\n\t\t\t<span id=\"xtitle\">\n\t\t\t\t<span id=\"title\" class=\"\"></span>\n\t\t\t\t<span class=\"fold\"></span>\n\t\t\t</span>\n\t\t\t<span class=\"ctype\"></span>\n\t</div>\n</div>\n<span class=\"fi-plus fs90 p5 pseudolink tdn\" id=\"btn-add\"></span>\n<!-- editors -->\n<div id=\"eds\" class=\"cb\"></div>\n<!-- hidden -->\n<div id=\"warnM\" class=\"hide\"></div>",
+	"ParseJS": function (s,clean) {
 
-	var result = JSHINT.data();
-	var jscriticResult = {};
-
-
-	(result.globals || []).forEach(function(name) {
-		if (name === 'navigator') {
-			// pretty weak sauce but what can we do...
-			var index = content.indexOf('navigator.userAgent');
-			if (index > -1) {
-				jscriticResult.hasBrowserSniff = true;
-				jscriticResult.browserSniffExcerpt =
-					'\n...' +
-					content.slice(index - Math.min(500, index), index + 500) +
-					'...\n';
+	
+	var g=s,
+			u = UglifyJS, 
+			ast,
+			res ={
+				globals:[],
+				errors:[]
+			},
+			gl;
+	try{
+		ast = u.parse(s+"");
+	} catch (e) {
+		res.errors.push (e.message+" @"+e.line+":"+e.col)
+	}
+	if (ast) {
+		ast.figure_out_scope();
+		if (Object.isObject(gl = ast.globals) && gl._size) {
+			Object.keys(gl._values)
+			.forEach(function(i){
+				res.globals.push(gl._values[i].name);
+			});
+			res.globals.sort();
+			if (clean) {
+				res.globals = [].remove.apply(
+					res.globals,
+					("String Function Date Math Number Object Array RegExp isNaN undefined parseInt parseFloat "
+						+"isFinite").split(" ")
+				);
 			}
 		}
-	});
-
-	jscriticResult.extendedNatives = [];
-	(result.errors || []).forEach(function(e) {
-		if (e.code === 'W121') {
-			jscriticResult.doesExtendNative = true;
-			jscriticResult.extendedNatives.push(e.a);
-		}
-	});
-
-	jscriticResult.extendedNatives = _.unique(jscriticResult.extendedNatives);
-
-	(result.errors || []).forEach(function(e) {
-		if (e.code === 'W060') {
-			jscriticResult.hasDocumentWrite = true;
-		}
-	});
-
-	(result.errors || []).forEach(function(e) {
-		if (e.code === 'W061' || e.code === 'W054') {
-			jscriticResult.hasEval = true;
-			jscriticResult.evalExcerpt = e.evidence;
-		}
-	});
-
-	(result.errors || []).forEach(function(e) {
-		if (e.code === 'W119') {
-			jscriticResult.doesUseES6 = true;
-		}
-	});
-
-	jscriticResult.mozillaOnlyFeatures = [];
-
-	(result.errors || []).forEach(function(e) {
-		if (e.code === 'W118') {
-			jscriticResult.hasMozillaOnlyFeatures = true;
-			jscriticResult.mozillaOnlyFeatures.push(e.a);
-		}
-	});
-
-	jscriticResult.mozillaOnlyFeatures = _.unique(jscriticResult.mozillaOnlyFeatures);
-
-	jscriticResult.ieIncompats = [];
-	(result.errors || []).forEach(function(e) {
-		if (e.code === 'W070' /* last comma */ ||
-				e.code === 'E034' /* getters/setters */ ) {
-			jscriticResult.hasIEIncompat = true;
-			jscriticResult.ieIncompats.push(e.reason.match(/[^\.]*/)[0]);
-		}
-	});
-
-	jscriticResult.ieIncompats = _.unique(jscriticResult.ieIncompats);
-
-	var globals = _.difference(_.unique(result.globals || []), globalVarsToIgnore);
-
-	var leakedVars = [];
-	(result.errors || []).forEach(function(e) {
-		if (e.code === 'W117' || e.code === 'W120') {
-			jscriticResult.doesLeakVars = true;
-			leakedVars.push(e.a);
-		}
-	});
-
-	jscriticResult.realLeakedVars = _.difference(_.unique(leakedVars), globalVarsToIgnore);
-
-	jscriticResult.realGlobals = globals.concat(jscriticResult.realLeakedVars);
-
-	jscriticResult.unused = _.unique((result.unused || []).map(function(o) {
-		return o.name;
-	}));
-
-
-	return jscriticResult;
-
-			
-			},
-		"HTML": ["<div id=\"stats\" class=\"fs80 gray fr mt3\"></div>",
-			"<h3 class=\"dib vat mt0 mb15\">Manifest compiler</h3>",
-			"<div class=\"fs85 ml20 dib vat mt3\">",
-			"<span id=\"opts\"></span>",
-			"</div>",
-			"<div><textarea id=\"src\"></textarea></div>",
-			{
-				"rowCss": "my-row pt15 fs90 fr"
-			},
-			["",
-				"btn#btn-apply.green.mr5",
-				{
-					"val": "Remember mode"
-				},
-				"btn#btn-cancel",
-				{
-					"val": "Cancel"
-				}],
-			"<div id=\"critic\" class=\"fs80 lh130 dib vat mt15 xgray\"></div>"],
-		"style": {
-			" .CodeMirror": "font:13px 'PT Mono',Monaco,monospace;overflow:scroll; height:300px;line-height:1.3em;border:1px solid #cde;"
+	}
+	return res;
+		
 		},
-		"ui": {
-			"#btn-apply": function (d,v,$o) {
-				if (null!=v) $o.trigger("commit");
-				},
-			"#btn-cancel": function (d,v,$o) {
-				if (null!=v) $o.trigger("cancel");
-				},
-			"#stats": {
-				"bind": function () {
-
-				return "Code is "+(this.Stats||0).bytes(2)+" long."
-			
-					},
-				"watch": "#opts"
-			},
-			"#src": {
-				"init": function ($o) {
-
-				CodeMirror.fromTextArea($o[0], {
-					mode:"javascript",
-					lineNumbers:false,
-					indentWithTabs:!0,
-					indentUnit:2,
-					tabSize:2,
-					theme:"default",
-					readOnly:true,
-					lineWrapping:true
-				});
-			
-					},
-				"bind": "src",
-				"watch": "#opts"
-			},
-			"#critic": {
-				"bind": function (d,v,$o) {
-
-				var a=[];
-				a.push( '<span class="gray fs90 w90 dib">Globals</span> '+((this.About.realGlobals||[]).join(", ")||"—") );
-				
-				a.push( '<span class="gray fs90 w90 dib">Ok for IE8</span> '+(this.About.hasIEIncompat?"No (orphan commas or getters)":"Yes") );
-				
-				return a.join("<br>");
-			
-					},
-				"watch": "#opts"
-			},
-			"#opts": {
-				"bind": function (d,v,$o) {
-
-				var that = this,
-						jsmin = cw.lib.jsmin, 
-						toj = $.my.tojson;
-				if (v!=null) {
-					var i = cw.lib.a2o(v),
-							_src = d._src;
-					
-					if (i.childs) {
-						_src = "("+cw.lib.js2txt($.extend(!0, eval(d._src), d.Subs()),'\t')+")";
-					} 
-					//else _src = d._src;
-					
-					if (i.json) d.src = toj(eval(jsmin(_src)), '\t');
-					else if (i.cjson) d.src = toj(eval(jsmin(_src)));
-					else if (i.jsmin) d.src = jsmin(_src);
-					else if (i.uglify) {
-						// compress and uglify 
-						var u = UglifyJS,
-								ast = u.parse(_src);
-						ast.figure_out_scope();
-						ast = ast.transform(u.Compressor({side_effects  : false}));
-						ast.figure_out_scope();
-						ast.compute_char_frequency();
-						ast.mangle_names();
-						d.src = ast.print_to_string().replace(/;$/,'');
-					}
-					else d.src=_src;
-					
-					this.Stats = unescape(encodeURIComponent(d.src)).length;
-					this.About = this.Critic(i.json||i.cjson?_src:d.src);
-					
-					d.opts = v;
-				}
-				return d.opts;
-			
-					},
-				"init": function ($o, form) {
-
-				$o.tags({
-					tags:[
-						[
-							{"JS object":"js"},
-							{"JS min":"jsmin"},
-							{"JS ugly":"uglify"},
-							{"JSON":"json"},
-							{"JSON min":"cjson"}
-						],
-						[
-							{"Include childs":"childs"}
-						]
-					], 
-					groupshim:' &nbsp;<span class="orange">|</span>&nbsp; '
-				})
-			
-					}
-			}
-		},
-		"About": {
-		}
+	"params": {
+		"restyle": 200
 	},
-	"Settings": {
-		"init": function ($o) {
-			 $o.formgen(this.HTML); 
-			},
-		"HTML": [{
-				"row": "500px",
-				"label": "120px",
-				"rowCss": "my-row pt15 fs90"
-			},
-			"<h3>Form’s settings</h3>",
-			["Compile mode",
-				"spn#compileto.fs90"],
-			["Preview mode",
-				"spn#runmode.fs90"],
-			["Preview CSS",
-				"inp#runcss.fs90"],
-			["Preview id",
-				"inp#runid.fs90.w150"],
-			["Preview width",
-				"inp#runwidth.fs90.w100",
-				"<small> px</small>"],
-			{
-				"rowCss": "my-row pt15 mt25 btd fs90"
-			},
-			["",
-				"btn#btn-apply.green.mr5",
-				{
-					"val": "Save"
-				},
-				"btn#btn-cancel",
-				{
-					"val": "Cancel"
-				}]],
-		"ui": {
-			"#runwidth": "runWidth",
-			"#runcss": "runCss",
-			"#runid": "runId",
-			"#btn-apply": function (d,v,$o) {
-				if (null!=v) $o.trigger("commit");
-				},
-			"#btn-cancel": function (d,v,$o) {
-				if (null!=v) $o.trigger("cancel");
-				},
-			"#compileto": {
-				"bind": "compileTo",
-				"init": function ($o, form) {
-
-				$o.tags({tags:[[
-					{"JS min":"jsmin"},
-					{"JSON":"json"},
-					{"JSON min":"cjson"}
-					//{"Apply over...":"selector"}
-				]], empty:{"JS object":"js"}})
-			
-					}
-			},
-			"#runmode": {
-				"bind": "runMode",
-				"init": function ($o) {
-
-				$o.tags({
-					tags:[[
-						//{"Inline":"inline"},
-						{"Fullscreen":"fullscreen"}
-					]], 
-					empty:{"Modal":"modal"}
-				})
-			
-					}
-			}
-		},
-		"params": {
-			"width": 500
-		},
-		"data": {
-			"runWidth": "500",
+	"require": [{
+			"UglifyJS": "lib/uglify.js"
+		}],
+	"inherit": ["db"],
+	"data": {
+		"_src": "",
+		"com": [],
+		"_err": [],
+		"_opts": {
+			"runWidth": "800",
 			"runCss": "",
 			"runId": "manifest-preview",
-			"runMode": ["modal"],
-			"compileTo": ["js"]
+			"compileTo": ["js"],
+			"runMode": ["modal"]
 		}
 	},
-	"NewTab": {
-		"init": function ($o , form) {
-
-		$o.formgen(this.HTML);
-		form.data.result.stamp = form.data.result.stamp || (Date.now()+"");
-	
-			},
-		"style": {
-		},
-		"HTML": ["<h3 id=\"title\"></h3>",
-			{
-				"row": "400px",
-				"label": "0px",
-				"rowCss": "my-row pt10 pb2"
-			},
-			["",
-				"inp#id.fs120",
-				{
-					"plc": "Property name"
-				},
-				"msg"],
-			["",
-				"<span id=\"xtype\" class=\"mr20\">",
-				"sel#type.w140",
-				{
-					"vals": ["js",
-						"html",
-						"text",
-						"css"]
-				},
-				"</span><span>",
-				"<label class=\"fs80 xgray dib\">",
-				"<input type=\"checkbox\" value=\"nocompile\" name=\"opts\"/>",
-				" Preview only</label>"],
-			{
-				"rowCss": "my-row mt15 pt15 btd"
-			},
-			["",
-				"btn#btn-apply.green.mr5",
-				{
-					"val": "Create tab"
-				},
-				"<span class=\"fr\">",
-				"btn#btn-del.red.mr0",
-				{
-					"val": "Delete"
-				},
-				"</span>",
-				"btn#btn-cancel",
-				{
-					"val": "Cancel"
-				}]],
-		"ui": {
-			"input[name=\"opts\"]": "result.opts",
-			"#btn-cancel": function (d,v,$o) {
-
-			if (v!=null) $o.trigger("cancel");
-		
-				},
-			"#btn-apply": function (d,v,$o) {
-
-			if (v!=null) $o.trigger("commit");
-			return this.Opts.apply;
-		
-				},
-			"#title": "this.Opts.title",
-			"#btn-del": {
-				"bind": function (d,v,$o) {
-
-				if (v!=null) {
-					d.op = "Del";
-					$o.trigger("commit");
-				}
-				return this.Opts.del||"";
-			
-					},
-				"css": {
-					"hide": function () {
-						return !this.Opts.del
-						}
-				}
-			},
-			"#type": {
-				"bind": "result.type",
-				"init": function ($o) {
-
-				$o.select2();
-			
-					},
-				"watch": "#id"
-			},
-			"#id": {
-				"bind": function (d,v,$o) {
-
-				if (v!=null) {
-					if (d.result.type=="js") d.result.data = "({\n\n})";
-					if (d.result.type=="html") d.result.data = "<div>\n\n</div>";
-					d.result.id=v;
-
-				}
-				return d.result.id;
-			
-					},
-				"check": /^(\.[^\.\s\t\r\n]+)+\.?$/i,
-				"error": "Branch name like .Branch or .Branch.Leaf",
-				"delay": 100
-			}
-		},
-		"data": {
-			"op": "Save",
-			"result": {
-				"stamp": 0,
-				"id": "",
-				"type": "js",
-				"data": "",
-				"active": false,
-				"opts": [],
-				"err": []
-			},
-			"root": {
-			}
-		},
-		"Opts": {
-			"apply": "Create",
-			"title": "New tab"
-		},
-		"params": {
-			"width": 400
-		}
+	"Item": {
+		"stamp": 0,
+		"id": "Root",
+		"type": "js",
+		"data": "({})",
+		"active": true,
+		"opts": []
 	},
-	"Ed": {
-		"id": "cw.Manifesto.CM",
-		"init": function ($o, form) {
-
-		$o.html([
-			'<div style="position:absolute;top:7px;right:7px;z-index:+5">',
-			'<button  id="btn-opts" class="button fs90"><span '
-				+'class="fi-widget"></span></button>',
-			'</div>',
-			'<div>',
-			'<textarea id="cm"></textarea>',
-			'</div>',
-			'<div class="warn hide"></div>'
-		].join(""))
-		//console.log(form)
-	
-			},
-		"style": {
-			" #btn-opts": "border-radius:100px;padding:5px 7px;transition: opacity 0.3s;opacity:0.5;margin:0px!important;line-height:0.95em;",
-			" #btn-opts:hover": "opacity:1;",
-			" .CodeMirror ": function ($o) {
-
-			var ofs = $("#cw-header").is(":visible")?$("#cw-header").outerHeight(true):0,
-					pad = parseInt($("#cw-space").css("paddingTop")) || 0,
-					tab = $o.parents(".my-manifest-1a9u4bgu").find("#coms").outerHeight(true),
-					css = "height:"+($(window).height()-(pad+ofs+tab+15))+"px;";
-			return css;
-		
-				}
-		},
-		"ui": {
-			".warn": {
-				"bind": function (d,v,$o) {
-
-			var  row = d, ext = {}, ins={}, err=[];
-
-			var $r, cmp = this.Types[d.type].compile,
-					a = cmp?cmp(d.data):[[], d.data],
-					err=a[0].slice(0);
-
-			if ((d.err||[]).length!=err.length) {
-				d.err = err;
-				$o.trigger("change");
-			}
-			else d.err = err;
-			$r = $o.my().root;
-			$r.toggleClass("hide", !d.active);
-			$r.toggleClass("ed-error", !!err.length);
-			
-		
-					},
-				"watch": "#cm",
-				"delay": 100
-			},
-			"#btn-opts": {
-				"bind": function (d,v,$o) {
-
-			if (null!=v) {
-				$o.modal({
-					manifest: Object.merge(
-						this.NewTab,
-						{
-							Opts:{apply:"Save", title:"Tab settings", del:"Del tab"},
-							style:{" #xtype":"display:none;"}
-						}
-					),
-					data:{result:Object.clone(d,true)},
-					width:400,
-					align:"top:0px,right:0px", css:"fs90", xnose:"top"
-				}).then(function(r){
-					if (r.op === "Del") {
-						$o.trigger("removetab", d);
-						//$o.trigger("remove");	
-					} else if (r.op === "Save") {
-						Object.merge(d, Object.reject(r.result, ["data","stamp","type"]));
-						$o./*my("find",".warn").*/trigger("change");
-					}
-				}.debounce(50));
-			}
-			if (d.id.to(1)!==".") $o.addClass("hide");
-		
-					}
-			},
-			"#cm": {
-				"bind": "data",
-				"init": function ($o, form) {
-
-			var opts = this.Types[form.data.type];
-			CodeMirror.fromTextArea($o[0], {
-				mode:opts.CM.mode,
-				lineNumbers:true,
-				indentWithTabs:!0,
-				indentUnit:2,
-				tabSize:2,
-				theme: opts.CM.theme||"default"
-			});
-		
-					},
-				"delay": 50,
-				"css": {
-					"hide": function (d) {
-						return !d.active
-						}
-				}
-			}
-		}
+	"Mode": {
+		"saveToLs": false,
+		"previewParent": "#cw-body",
+		"fullscreenStyle": "padding:50px; min-width:150px;"
 	},
-	"Tab": {
-		"ui": {
-			"#title": {
-				"bind": function (d,v,$o) {
-
-				if (null != v && !d.active) $o.trigger("switch", d);
-				return d.id;
-			
-					},
-				"events": "click.my",
-				"init": function ($o, form) {
-
-				var d = form.data;
-				$o.on("dblclick.my", function(){	
-					if (d.err && d.err.length && d.active) {
-						cw.lib.note("Tab errors:<br>"+d.err.join("<br>"), "error");
-					} 
-				})
-				.parent().parent().find(".ctype")
-				.addClass(this.Types[d.type].css||"hide");
-			
-					}
-			},
-			"#xtitle": {
-				"watch": "#title",
-				"css": {
-					"active": function (d) {
-						 return d.active 
-						},
-					"bold fs105": function (d) {
-						 return (d.id||"").to(1)!=="."
-						},
-					"itl": function (d) {
-						 return (d.opts||[]).indexOf("nocompile")>-1
-						},
-					"red": function (d) {
-						return d.err && d.err.length
-						}
-				}
-			}
-		}
-	},
+	"Editors": [],
+	"Collapsed": [],
 	"ui": {
 		"#btn-opts": function (d,v,$o) {
 
@@ -4800,8 +4175,16 @@
 		// Preview fullscreen
 		else if (d._opts.runMode=="fullscreen") {
 			$p = $(that.Mode.previewParent||"body");
-			$p.find(">*:visible")
-			.addClass("hide my-manifesto-preview-hide");
+			
+			$p.find(">*:visible").each(function(){
+				var $t = $(this);
+				if (
+					!$t.is(".my-modal")
+					&& !$t.is(".my-modal-screen")
+					&& !$t.is(".my-modal-proxy")
+				) $t.addClass("hide my-manifesto-preview-hide");
+			});		
+			
 			$e = $(
 				'<div class="my-manifesto-preview-run db" '
 				+'style="'+that.Mode.fullscreenStyle
@@ -4836,6 +4219,125 @@
 	}
 			
 			},
+		"#coms": {
+			"bind": "com",
+			"check": true,
+			"init": function ($o,form) {
+
+		var d = form.data,
+				that = this;
+
+		$o.sortable({handle:"#xtitle"});
+		
+		// Switch tab
+
+		$o.on("switch.my", function(evt, data){	
+			var $f = $(this).my().root,  e = that.Editors, i = 0;			
+			for (;i<d.com.length;i++) d.com[i].active=!1;
+			data.active = !0;	
+			if (e.indexOf(data)===-1) e.unshift(data);
+			try { that.TabCollapse(); 	} catch(e) { console.log(e) }
+			return false;
+		});
+
+		// Fold/unfold tabgroups 
+		
+		$o.on("click.my",".fold", function(){
+			var id = $(this).parents('.my-form').eq(0).my("data").id;
+			var e = that.Collapsed.find(function(e){
+				return e[0]==id;
+			});
+			if (e) {
+				e[1]=!e[1];
+				$o.trigger("recalc");
+			}
+		}.debounce(50));
+
+	
+				},
+			"manifest": "Tab",
+			"hash": "this.GetTabHash",
+			"id": "this.GetTabId",
+			"list": ">div",
+			"delay": 20,
+			"css": {
+				"fs90 lh160 mb10": function (d) {
+
+			return d.com.length>25;
+		
+					}
+			}
+		},
+		"#eds": {
+			"bind": "this.Editors",
+			"watch": "#coms",
+			"recalc": "#coms",
+			"recalcDepth": 1,
+			"manifest": "Ed",
+			"hash": "GetTabHash",
+			"id": "GetTabId",
+			"list": "<section></section>",
+			"delay": 100
+		},
+		"#btn-add": {
+			"bind": function (d,v,$o) {
+
+			var that=this;
+			if (v!=null) {
+				if (!$o.data("modal")) $o.modal({
+					manifest:this.NewTab,
+					data:{},
+					esc: true,
+					enter:true,
+					root:$o.parent(),
+					align:"top:100%",
+					bound:0,
+					css:"mt10", 
+					nose:"top",
+					screen:'rgba(255,255,255,0.5)'
+				}, function (e){ 
+					return !!(e && Object.size(e)) 
+				}).then(function(r){
+					$o.my("find","#coms").trigger("insert", {
+						where:1e6,
+						what:r.result
+					});
+					that.TabCollapse();
+				});
+				else $o.modal(true);
+			}
+		
+				},
+			"events": "click.my"
+		},
+		"#btn-compile": {
+			"bind": function (d,v,$o) {
+
+		var that = this;
+		if (v!=null) {
+			if (d._err.length) cw.lib.note(d._err.join("<br>"),"error");
+			else {
+				$o.modal({
+					manifest: $.extend({ParseJS:this.ParseJS},this.Compiler),
+					data:{
+						_src:that._src,
+						opts:d._opts.compileTo,
+						Subs:that.Subs
+					},
+					width:920,
+					esc:true,
+					enter:true,
+					global:true,
+					screen:true
+				}).then(function(r){
+					d._opts.compileTo=r.opts.slice(0);
+				})
+
+			}
+		}
+	
+				}
+		},
 		"#warnM": {
 			"bind": function (d,v,$o) {
 
@@ -4874,8 +4376,6 @@
 		d._err = err;
 		
 		that._src = "("+this.js2txt(r,'\t')+")";;
-		//d._src = "("+this.js2txt(r,'\t')+")";
-		//d._src = this.js2txt(r,'\t');
 				
 		that._preview = "("+this.js2txt(p,'\t')+")";
 		
@@ -4885,145 +4385,776 @@
 		$o.trigger("change");
 	
 				},
-			"watch": "#coms",
+			"watch": "#eds",
 			"delay": 300
-		},
-		"#btn-compile": {
-			"bind": function (d,v,$o) {
-
-		var that = this;
-		if (v!=null) {
-			if (d._err.length) cw.lib.note(d._err.join("<br>"),"error");
-			else {
-				$o.modal({
-					manifest: this.Compiler,
-					data:{
-						_src:that._src,
-						opts:d._opts.compileTo,
-						Subs:that.Subs
-					},
-					width:$o.my().root.width(),
-					esc:true,
-					enter:true,
-					global:true,
-					screen:true
-				}).then(function(r){
-					d._opts.compileTo=r.opts.slice(0);
-				})
-
-			}
 		}
-	
+	},
+	"Tab": {
+		"id": "Manifest.Editor.Tab",
+		"inherit": ["getCollapsed",
+			"ParseJS"],
+		"Colors": {
+			"blue": ["rgb(14, 85, 163)",
+				"rgba(142, 211, 255, 0.25)"],
+			"red": ["#A3293D",
+				"rgba(255, 200, 200, 0.75)"],
+			"green": ["rgb(75, 129, 1)",
+				"#E3F3CB"],
+			"teal": ["#07AB8F",
+				"rgba(198, 252, 234, 0.67)"],
+			"orange": ["#F77400",
+				"rgb(255, 227, 185)"],
+			"violet": ["rgba(109, 37, 179, 0.9);",
+				"rgba(210, 142, 255, 0.25);"]
+		},
+		"ui": {
+			"#xtitle": {
+				"bind": function (d,v,$o) {
+
+				var that = this,
+						Coll=false,
+						clr = d.color?d.color+"":"",
+						colors = that.Colors;
+				if (clr) {
+					$o.css({ color:colors[clr][0] });
+					if (d.active) { $o.css({ "background-color":colors[clr][1] }); } 
+					else { 	$o.css({ "background-color":"" }); }
 				}
-		},
-		"#btn-add": {
-			"bind": function (d,v,$o) {
+				else $o.css({ color:"", "background-color":"" });
+				
+				$o.css({opacity:d.active?"1":"0.7"});
+			
+					},
+				"watch": "#title",
+				"css": {
+					"active": function (d) {
+						 return d.active 
+						},
+					"bold fs105": function (d) {
+						 return (d.id||"").to(1)!=="."
+						},
+					"itl": function (d) {
+						 return (d.opts||[]).indexOf("nocompile")>-1
+						},
+					"haserror": function (d) {
+						return d.err && d.err.length
+						}
+				}
+			},
+			".fold": {
+				"bind": function (d,v,$o) {
 
-			var that=this;
-			if (v!=null) {
-				if (!$o.data("modal")) $o.modal({
-					manifest:this.NewTab,
-					data:{},
-					esc: true,
-					enter:true,
-					root:$o.parent(),
-					align:"top:100%",
-					bound:0,
-					css:"mt10", 
-					nose:"top",
-					screen:'rgba(255,255,255,0.5)'
-				}, function (e){ 
-					return !!(e && Object.size(e)) 
-				}).then(function(r){
-					$o.my("find","#coms").trigger("insert", {
-						where:1e6,
-						what:r.result
-					})
-				});
-				else $o.modal(true);
-			}
-		
-				},
-			"events": "click.my"
-		},
-		"#eds": {
-			"bind": "this.Editors",
-			"watch": "#coms",
-			"recalc": "#coms",
-			"recalcDepth": 1,
-			"manifest": "Ed",
-			"hash": "GetTabHash",
-			"id": "GetTabId",
-			"list": "<section></section>",
-			"delay": 100
-		},
-		"#coms": {
-			"bind": "com",
-			"check": true,
-			"init": function ($o , form) {
+				var that = this, 
+						$p,
+						html="";
+						
+				if (v==null) {
+					$p = $o.my().root;
+					that.getCollapsed().forEach(function(e){
+						if (d.id==e[0]) {
+								html = e[1]?'<span class="fs120">›</span>'+e[2]
+								:'<span class="fs120">‹</span>'+e[2]
+						}
+						else if (d.id.startsWith(e[0]+".")) {
 
-			var d = form.data,
-					that = this;
+							var folded = !!$p.is(".w00");
+							$p.toggleClass("w00", !!e[1] && !d.active);
+							if (folded) {
+								$p.css({"background-color":"rgba(255,240,0,0.5)"});
+								(function(){$p.css({"background-color":"rgba(255,255,255,0)"});}).delay(150);
+							}
+						}
+					});
+					return html;
+				}
+				else return v;
+			
+					}
+			},
+			"#title": {
+				"bind": function (d,v,$o) {
 
-			$o.sortable({handle:"#xtitle"});
+				if (null != v) {
+					if (!d.active) $o.trigger("switch", d);
+					else if (d.err && d.err.length) {
+						var e = this.ParseJS("("+d.data+")");
+						d.err=e.errors;
+						$o.modal({
+							root:$o.my().root.parents(".my-form").eq(0),
+							width:250,
+							nose:"top",
+							bound:0,
+							align:"top:120%;",
+							esc:true,
+							enter:true,
+							manifest:{
+								init:['<span id="t" class="red o80 fs85 lh150"></span><input type="text" class="di fs50 o0 w00 mt0 mb0"/>'],
+								ui:{"#t":"t","input":"x"}
+							},
+							data:{t:e.errors.join("<br>")},
+							screen:'rgba(255,255,255,0.5)'
+						})
+					}
+				}
+				return d.id;
+			
+					},
+				"events": "click.my",
+				"init": function ($o,form) {
 
-			$o.on("switch.my", function(evt, data){	
-				var $f = $(this).my().root,  e = that.Editors, i = 0;			
-				for (;i<d.com.length;i++) d.com[i].active=!1;
-				data.active = !0;	
-				if (e.indexOf(data)===-1) e.unshift(data);
-				return false;
-			});
-		
-				},
-			"manifest": "Tab",
-			"hash": "GetTabHash",
-			"id": "GetTabId",
-			"list": ">div",
-			"delay": 20,
-			"css": {
-				"fs90 lh160 mb10": function (d) {
-
-				return d.com.length>25;
+				var d = form.data;
+				$o.parent().parent().find(".ctype")
+				.addClass(this.Types[d.type].css||"hide");
 			
 					}
 			}
 		}
 	},
-	"Editors": [],
-	"Mode": {
-		"saveToLs": false,
-		"previewParent": "#cw-body",
-		"fullscreenStyle": "padding:50px; min-width:150px;"
+	"Ed": {
+		"id": "cw.Manifesto.CM",
+		"init": function ($o,form) {
+
+		$o.html([
+			'<div style="position:absolute;top:7px;right:7px;z-index:+5">',
+			'<button  id="btn-opts" class="button fs90"><span '
+				+'class="fi-widget"></span></button>',
+			'</div>',
+			'<div>',
+			'<textarea id="cm"></textarea>',
+			'</div>',
+			'<div class="warn hide"></div>'
+		].join(""))
+		//console.log(form)
+	
+			},
+		"params": {
+			"restyle": 200
+		},
+		"ui": {
+			"#cm": {
+				"bind": "data",
+				"init": function ($o,form) {
+
+			var opts = this.Types[form.data.type];
+			CodeMirror.fromTextArea($o[0], {
+				mode:opts.CM.mode,
+				lineNumbers:true,
+				indentWithTabs:!0,
+				indentUnit:2,
+				tabSize:2,
+				theme: opts.CM.theme||"default"
+			});
+		
+					},
+				"delay": 50,
+				"css": {
+					"hide": function (d) {
+						return !d.active
+						}
+				}
+			},
+			"#btn-opts": {
+				"bind": function (d,v,$o) {
+
+			if (null!=v) {
+				$o.modal({
+					manifest: Object.merge(
+						this.NewTab,
+						{
+							Opts:{apply:"Save", title:"Tab settings", del:"Del tab"},
+							style:{" #xtype":"display:none;"}
+						}
+					),
+					data:{result:Object.clone(d,true)},
+					width:400,
+					align:"top:0px,right:0px", css:"fs90", xnose:"top"
+				}).then(function(r){
+					if (r.op === "Del") {
+						$o.trigger("removetab", d);
+						//$o.trigger("remove");	
+					} else if (r.op === "Save") {
+						Object.merge(d, Object.reject(r.result, ["data","stamp","type"]));
+						$o./*my("find",".warn").*/trigger("change");
+					}
+				}.debounce(50));
+			}
+			//if (d.id.to(1)!==".") $o.addClass("hide");
+		
+					}
+			},
+			".warn": {
+				"bind": function (d,v,$o) {
+
+			var  row = d, ext = {}, ins={}, err=[];
+
+			var $r, cmp = this.Types[d.type].compile,
+					a = cmp?cmp(d.data):[[], d.data],
+					err=a[0].slice(0);
+
+			if ((d.err||[]).length!=err.length) {
+				d.err = err;
+				$o.trigger("change");
+			}
+			else d.err = err;
+			$r = $o.my().root;
+			$r.toggleClass("hide", !d.active);
+			$r.toggleClass("ed-error", !!err.length);
+			
+		
+					},
+				"watch": "#cm",
+				"delay": 100
+			}
+		},
+		"style": {
+			" #btn-opts": "border-radius:100px;padding:5px 7px;transition: opacity 0.3s;opacity:0.5;margin:0px!important;line-height:0.95em;",
+			" #btn-opts:hover": "opacity:1;",
+			" .CodeMirror ": function ($o) {
+
+			var ofs = $("#cw-header").is(":visible")?$("#cw-header").outerHeight(true):0,
+					pad = parseInt($("#cw-space").css("paddingTop")) || 0,
+					tab = $o.parents(".my-manifest-1a9u4bgu").find("#coms").outerHeight(true),
+					css = "height:"+($(window).height()-(pad+ofs+tab+15))+"px;";
+			return css;
+		
+				}
+		}
 	},
-	"Item": {
-		"stamp": 0,
-		"id": "Root",
-		"type": "js",
-		"data": "({})",
-		"active": true,
-		"opts": []
+	"NewTab": {
+		"init": function ($o,form) {
+
+		$o.formgen(this.HTML);
+		form.data.result.stamp = form.data.result.stamp || (Date.now()+"");
+	
+			},
+		"params": {
+			"width": 400
+		},
+		"Opts": {
+			"apply": "Create",
+			"title": "New tab"
+		},
+		"data": {
+			"op": "Save",
+			"root": {
+			},
+			"result": {
+				"stamp": 0,
+				"id": "",
+				"type": "js",
+				"data": "",
+				"active": false,
+				"err": [],
+				"opts": [],
+				"color": []
+			}
+		},
+		"ui": {
+			"input[name=\"opts\"]": "result.opts",
+			"#btn-cancel": function (d,v,$o) {
+
+			if (v!=null) $o.trigger("cancel");
+		
+				},
+			"#btn-apply": function (d,v,$o) {
+
+			if (v!=null) $o.trigger("commit");
+			return this.Opts.apply;
+		
+				},
+			"#title": "this.Opts.title",
+			"#id": {
+				"bind": function (d,v,$o) {
+
+				if (v!=null) {
+					if (d.result.type=="js") d.result.data = "({\n\n})";
+					if (d.result.type=="html") d.result.data = "<div>\n\n</div>";
+					d.result.id=v;
+
+				}
+				return d.result.id;
+			
+					},
+				"check": /^(\.[^\.\s\t\r\n]+)+\.?$/i,
+				"error": "Branch name like .Branch or .Branch.Leaf",
+				"delay": 100
+			},
+			"#type": {
+				"bind": "result.type",
+				"init": function ($o) {
+
+				$o.select2();
+			
+					},
+				"watch": "#id"
+			},
+			"#ncolor": {
+				"init": function ($o) {
+
+				var clr = [
+					{'<span class="blue">✪</span>':'blue'},
+					{'<span class="red">✪</span>':'red'},
+					{'<span class="orange">✪</span>':'orange'},
+					{'<span class="green">✪</span>':'green'},
+					{'<span class="teal">✪</span>':'teal'},
+					{name:'<span>✪</span>', value:'violet', css:"violet"}
+				];
+				$o.tags({tags:[clr], tagshim:"", tagcss:"tag pt3 pl4 pb2 pr6 lh100 cp"});
+			
+					},
+				"bind": "result.color"
+			},
+			"#btn-del": {
+				"bind": function (d,v,$o) {
+
+				if (v!=null) {
+					d.op = "Del";
+					$o.trigger("commit");
+				}
+				return this.Opts.del||"";
+			
+					},
+				"css": {
+					"hide": function () {
+						return !this.Opts.del
+						}
+				}
+			}
+		},
+		"HTML": ["<h3 id=\"title\"></h3>",
+			{
+				"row": "400px",
+				"label": "70px",
+				"rowCss": "my-row pt10 pb2",
+				"labelCss": "xgray fs85 lh110"
+			},
+			["",
+				"inp#id.fs120",
+				{
+					"plc": "Property name"
+				},
+				"msg"],
+			["Type",
+				"<span id=\"xtype\" class=\"mr20\">",
+				"sel#type.w140.mt-3",
+				{
+					"vals": ["js",
+						"html",
+						"text",
+						"css"]
+				},
+				"</span><span>",
+				"<label class=\"fs90 xgray dib\">",
+				"<input type=\"checkbox\" value=\"nocompile\" name=\"opts\"/>",
+				" Preview only</label>"],
+			["Tab color",
+				"<span id=\"ncolor\" class=\"fs110 lh110\"></span>"],
+			{
+				"rowCss": "my-row mt15 pt15 btd"
+			},
+			["",
+				"btn#btn-apply.green.mr5",
+				{
+					"val": "Create tab"
+				},
+				"<span class=\"fr\">",
+				"btn#btn-del.red.mr0",
+				{
+					"val": "Delete"
+				},
+				"</span>",
+				"btn#btn-cancel",
+				{
+					"val": "Cancel"
+				}]],
+		"style": {
+		}
 	},
-	"data": {
-		"_src": "",
-		"_opts": {
-			"runWidth": "800",
+	"Settings": {
+		"init": function ($o) {
+			 $o.formgen(this.HTML); 
+			},
+		"data": {
+			"runWidth": "500",
 			"runCss": "",
 			"runId": "manifest-preview",
-			"runMode": ["modal"],
-			"compileTo": ["js"]
+			"compileTo": ["js"],
+			"runMode": ["modal"]
 		},
-		"_err": [],
-		"com": []
+		"params": {
+			"width": 500
+		},
+		"ui": {
+			"#runwidth": "runWidth",
+			"#runcss": "runCss",
+			"#runid": "runId",
+			"#btn-apply": function (d,v,$o) {
+				if (null!=v) $o.trigger("commit");
+				},
+			"#btn-cancel": function (d,v,$o) {
+				if (null!=v) $o.trigger("cancel");
+				},
+			"#runmode": {
+				"bind": "runMode",
+				"init": function ($o) {
+
+				$o.tags({
+					tags:[[
+						//{"Inline":"inline"},
+						{"Fullscreen":"fullscreen"}
+					]], 
+					empty:{"Modal":"modal"}
+				})
+			
+					}
+			},
+			"#compileto": {
+				"bind": "compileTo",
+				"init": function ($o,form) {
+
+				$o.tags({tags:[[
+					{"JS min":"jsmin"},
+					{"JSON":"json"},
+					{"JSON min":"cjson"}
+					//{"Apply over...":"selector"}
+				]], empty:{"JS object":"js"}})
+			
+					}
+			}
+		},
+		"HTML": [{
+				"row": "500px",
+				"label": "120px",
+				"rowCss": "my-row pt15 fs90"
+			},
+			"<h3>Form’s settings</h3>",
+			["Compile mode",
+				"spn#compileto.fs90"],
+			["Preview mode",
+				"spn#runmode.fs90"],
+			["Preview CSS",
+				"inp#runcss.fs90"],
+			["Preview id",
+				"inp#runid.fs90.w150"],
+			["Preview width",
+				"inp#runwidth.fs90.w100",
+				"<small> px</small>"],
+			{
+				"rowCss": "my-row pt15 mt25 btd fs90"
+			},
+			["",
+				"btn#btn-apply.green.mr5",
+				{
+					"val": "Save"
+				},
+				"btn#btn-cancel",
+				{
+					"val": "Cancel"
+				}]]
 	},
-	"inherit": ["db"],
-	"require": [{
-			"_": "lib/underscore.js",
-			"UglifyJS": "lib/uglify.js"
+	"Compiler": {
+		"init": function ($o) {
+			 
+		$o.formgen(this.HTML); 
+	
+			},
+		"Stats": 0,
+		"About": {
 		},
-		{
-			"JSHINT": "lib/jshint.js"
-		}]
+		"ui": {
+			"#btn-apply": function (d,v,$o) {
+				if (null!=v) $o.trigger("commit");
+				},
+			"#btn-cancel": function (d,v,$o) {
+				if (null!=v) $o.trigger("cancel");
+				},
+			"#opts": {
+				"bind": function (d,v,$o) {
+
+				var that = this,
+						jsmin = cw.lib.jsmin, 
+						toj = $.my.tojson;
+				if (v!=null) {
+					var i = cw.lib.a2o(v),
+							_src = d._src;
+					
+					if (i.childs) {
+						_src = "("+cw.lib.js2txt($.extend(!0, eval(d._src), d.Subs()),'\t')+")";
+					} 
+					//else _src = d._src;
+					
+					if (i.json) d.src = toj(eval(jsmin(_src)), '\t');
+					else if (i.cjson) d.src = toj(eval(jsmin(_src)));
+					else if (i.jsmin) d.src = jsmin(_src);
+					else if (i.uglify) {
+						// compress and uglify 
+						var u = UglifyJS,
+								ast = u.parse(_src);
+						ast.figure_out_scope();
+						ast = ast.transform(u.Compressor({side_effects: false}));
+						ast.figure_out_scope();
+						// No char freq opt to avoid 
+						// different results from the same code
+						//ast.compute_char_frequency();
+						ast.mangle_names();
+						d.src = ast.print_to_string().replace(/;$/,'');
+					}
+					else d.src=_src;
+					
+					this.Stats = unescape(encodeURIComponent(d.src)).length;
+					this.About = this.ParseJS("("+(i.json||i.cjson?_src:d.src) +")", true);
+
+					d.opts = v;
+				}
+				return d.opts;
+			
+					},
+				"init": function ($o,form) {
+
+				$o.tags({
+					tags:[
+						[
+							{"JS object":"js"},
+							{"JS min":"jsmin"},
+							{"JS ugly":"uglify"},
+							{"JSON":"json"},
+							{"JSON min":"cjson"}
+						],
+						[
+							{"Include childs":"childs"}
+						]
+					], 
+					groupshim:' &nbsp;<span class="orange">|</span>&nbsp; '
+				})
+			
+					}
+			},
+			"#critic": {
+				"bind": function (d,v,$o) {
+
+				var a=[];
+				a.push( '<span class="gray fs90 w90 dib">Globals</span> '+((this.About.globals||[]).join(", ")||"—") );
+				return a.join("<br>");
+			
+					},
+				"watch": "#opts"
+			},
+			"#src": {
+				"init": function ($o) {
+
+				CodeMirror.fromTextArea($o[0], {
+					mode:"javascript",
+					lineNumbers:false,
+					indentWithTabs:!0,
+					indentUnit:2,
+					tabSize:2,
+					theme:"default",
+					readOnly:true,
+					lineWrapping:true
+				});
+			
+					},
+				"bind": "src",
+				"watch": "#opts"
+			},
+			"#stats": {
+				"bind": function () {
+
+				return "Code is "+(this.Stats||0).bytes(2)+" long."
+			
+					},
+				"watch": "#opts"
+			}
+		},
+		"style": {
+			" .CodeMirror": "font:13px 'PT Mono',Monaco,monospace;overflow:scroll; height:300px;line-height:1.3em;border:1px solid #cde;"
+		},
+		"HTML": ["<div id=\"stats\" class=\"fs80 gray fr mt3\"></div>",
+			"<h3 class=\"dib vat mt0 mb15\">Compiler</h3>",
+			"<div class=\"fs85 ml20 dib vat mt3\">",
+			"<span id=\"opts\"></span>",
+			"</div>",
+			"<div><textarea id=\"src\"></textarea></div>",
+			{
+				"rowCss": "my-row pt15 fs90 fr"
+			},
+			["",
+				"btn#btn-apply.green.mr5",
+				{
+					"val": "Remember mode"
+				},
+				"btn#btn-cancel",
+				{
+					"val": "Cancel"
+				}],
+			"<div id=\"critic\" class=\"w650 fs80 lh130 dib vat mt15 xgray\"></div>"]
+	},
+	"Preview": {
+		"id": "cw.Manifesto.Preview",
+		"init": function ($o,form) {
+
+		var d=form.data, 
+				p = d._opts, 
+				m = d._src,
+				pi = $.Deferred();
+		
+		try {
+			this.Manifest = $.extend({db:d._db},(d._prefix||{}),eval(d._src));
+			$.extend(!0, this.Manifest, d._subs());
+		} catch (err){
+			console.log(err, err.stack)
+			pi.reject(err);
+		}
+
+		
+		$o.html(
+			'<div id="btn-close" class="'
+			+(p.runMode=="modal"?"hide":"")
+			+'">×</div>'
+			+'<div id="'+p.runId+'" class="'
+			+p.runCss+'" style="margin:0 auto;width:'
+			+d._opts.runWidth+'px"></div>'
+		);
+		pi.resolve();
+		
+		return pi.promise();
+	
+			},
+		"data": {
+			"_runtime": {
+			}
+		},
+		"ui": {
+			"#btn-close": {
+				"bind": function (d,v,$o) {
+
+				if (null!=v) {					
+					if (/^(full|modal)/.test(d._opts.runMode+"")) {
+						$o.trigger("cancel");
+					} 
+				}
+			
+					},
+				"events": "click.my"
+			},
+			">div:eq(1)": {
+				"bind": "_runtime",
+				"manifest": "Manifest"
+			}
+		},
+		"style": {
+			">#btn-close": "position:absolute;top:0;right:0;cursor:pointer;z-index:+100;font-size:50px;line-height:1em; padding:0 10px;transition:color 0.3s; color:rgba(0,0,0,0.2);",
+			">#btn-close:hover": "color:#c02"
+		}
+	},
+	"Types": {
+		"html": {
+			"css": "fi-html5",
+			"compile": null,
+			"CM": {
+				"mode": "htmlmixed",
+				"theme": "base16-light"
+			}
+		},
+		"text": {
+			"compile": null,
+			"CM": {
+				"mode": ""
+			}
+		},
+		"js": {
+			"compile": function (s) {
+
+			var err=[], res = null;
+			try {
+				// Eval is unsafe and resource-consuming
+				//res = eval(s);
+				
+				// More safe way
+				res = (new Function ("", "return ("+s+");"))();
+
+			} catch (e) {
+				err.push(e.message+".");
+			}
+			return err.length?[err, undefined]:[err,res];
+		
+				},
+			"CM": {
+				"mode": "javascript"
+			}
+		},
+		"css": {
+			"css": "fi-css3",
+			"compile": function (css) {
+
+			var err=[], res="";
+			res = ((css+"")
+			.replace(/\/\*[\s\S]+?\*\//gm,"")
+			.replace(/@charset[^;]+?;/gim,'')
+			.replace(/[\n\t\s]+/g,' ')
+			.replace(/\}/g,'}⊻')
+			.replace(/^\n+/g,"").replace(/[\n\s]+$/g,"")
+			.split('⊻')
+			.compact(true)
+			.reduce(function(a,b){
+				var t = b.trim(), p, k, v;
+				if (/^[^{]+\{[^\}]+\}$/.test(t)) {
+					p = t.to(-1).split("{");
+					k = " "+p[0].trim();
+					v = p[1].trim();
+					if (v.last()!=";") v+=";";
+					if (!a[k]) a[k]="";
+					a[k]+=v;
+				} else {
+					err.push("Invalid rule "+t.truncate(40));
+				}
+				return a;
+			},{}));
+			return [err, res];
+		
+				},
+			"CM": {
+				"mode": "css",
+				"theme": "base16-light"
+			}
+		}
+	},
+	"style": {
+		"": "width:100%;",
+		" .violet": "color:rgb(109, 37, 179);",
+		" .o0": "opacity:0;",
+		" .w00": "width:0!important;margin-right:0!important;overflow:hidden;white-space: nowrap;",
+		" .fold": "font-family:'PT Mono',Monaco,monospace; font-size:70%;font-weight:bold;letter-spacing:-1px;opacity:0.7;text-shadow:0 1px 3px white;cursor:pointer; display: inline-block;vertical-align: top; margin-top: -2px;",
+		" .CodeMirror": "font:13px 'PT Mono',Monaco,monospace;line-height:1.4em;",
+		" button:focus": "outline:none;",
+		" .itl": "font-style:italic;",
+		" .itl:after": "content:\"*\";font-style:normal;margin-left:1px;",
+		" #coms": {
+			"": "float: left;margin-bottom: 15px;max-width: 85%;",
+			" .tab": "margin-right:2px;",
+			" #xtitle": "padding:4px 7px; cursor:move; border-radius:2px; transition: color 0.2s, background-color 0.2s, opacity 0.2s;",
+			" .haserror": "color:#FF2A4D!important;",
+			" #title": "cursor:pointer;",
+			" .active": "background-color:rgba(220,220,220, 0.5);color:#505560;",
+			" .active.haserror": "color:white!important;background-color:#EE637A!important;",
+			" .ctype": "font-size:80%; opacity:0.7; display:block;position:absolute;top:-8px;right:-5px;"
+		},
+		" .tab": {
+			"": "transition: color 0.2s, background-color 0.15s;background-color:rgba(255,255,255,0);"
+		},
+		" #eds": {
+			"": "border:1px solid #ddd; margin-top:10px;border-radius:2px",
+			">xdiv": "height:0;overflow:hidden;",
+			">xdiv:first-child": "height:auto;",
+			" .CodeMirror-linenumbers": "transition: background-color 0.3s",
+			" .ed-error .CodeMirror-linenumbers": "background-color:rgba(255, 200, 200, 0.75)"
+		},
+		" #cmd": {
+			" .button": "margin:0 0 0 2px; border-radius:0; padding: 5px 8px;",
+			" .btnl": "border-radius: 4px 0 0 4px;",
+			" .btnr": "border-radius: 0 4px 4px 0;"
+		}
+	}
 },
 	
 

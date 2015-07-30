@@ -1,6 +1,6 @@
 /**
- * CloudWall 1.7.0 crypto lib and settings sandbox
- * Created by ermouth 2015-06-27
+ * CloudWall 1.8.0 crypto lib and settings sandbox
+ * Created by ermouth 2015-07-05
  */
 if (!("cw" in window)) window.cw={};
 
@@ -94,15 +94,8 @@ if (!cw.log) (function _logstart(){
 			pl+= cl;
 			if (pl.length > mprev) {
 				// truncate prev log
-				lines = pl.split("\n");
-				var ctr = 0, i = lines.length-1, slines = 1;
-				for (i;i>-1;i--) {
-					ctr = ctr+lines[i].length;
-					if (ctr > mprev) break;
-					slines+=1;
-				}
-				pl = lines.last(slines).join("\n");
-				lines=null;
+				pl=pl.last(mprev - 1);
+				pl=pl.from(1+pl.indexOf('\n'));
 				ls.setItem (sprev, pl);
 			}
 			else {
