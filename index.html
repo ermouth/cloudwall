@@ -1,68 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>CloudWall Me 1.8.0</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="icon"  type="image/png" href="i/favicon.png">
-	
-<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, minimum-scale=0.5, user-scalable=no">
+	<title>CloudWall Me 2.2.2</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="icon"  type="image/png" href="i/favicon.png">
 
-<!-- CSS first for correct pixel measuring during start -->
-<link rel="stylesheet" type="text/css" href="css/general.css" />
-<link rel="stylesheet" type="text/css" href="css/cw.css" />
-	
-<!-- Proxima Nova font -->
-<link rel="stylesheet" type="text/css" href="css/nova.css" />
+	<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, minimum-scale=0.5, user-scalable=no">
 
-<!-- Base libs -->
-<script src="lib/general.js"></script>
-<script src="lib/pouchdb.js"></script>
-<script src="lib/plugins.js"></script>
+	<!-- CSS first for correct pixel measuring during start -->
+	<link rel="stylesheet" type="text/css" href="css/general.css" />
+	<link rel="stylesheet" type="text/css" href="css/cw.css" />
 
-<!-- CloudWall.me -->
-<script src="sys/crypto.js"></script>
-<script src="sys/cw.js"></script>
+	<!-- Base libs -->
+	<script src="lib/general.js"></script>
+	<script src="lib/pouchdb.js"></script>
+	<script src="lib/plugins.js"></script>
 
-<!-- System apps and components -->
-<script src="sys/apps.js"></script>
+	<script>
+		// Set en locale
+		$.my.locale('en');
+	</script>
+
+	<!-- CloudWall.me -->
+	<script src="sys/crypto.js"></script>
+	<script src="sys/cw.js"></script>
+
+	<!-- System apps and components -->
+	<script src="sys/apps.js"></script>
 
 
-<style>* {box-sizing:border-box;-moz-box-sizing:border-box;margin:0;padding:0;}</style>
+	<style>* {box-sizing:border-box;-moz-box-sizing:border-box;margin:0;padding:0;}</style>
 </head>
 
 <body>
 <div id="cw-notes"></div>
 <div id="cw-body" >
-	<div id="cw-page" class="cw-Static w600" style="margin:30px auto;">
-		<div id="cw-header" class="cb fs90 blue pb20 mb30" style="width:100%;border-bottom: 1px solid rgba(35, 118, 200, 0.25);">
-			<a href="../"><img src="i/logo.png" class="mr2" style="width:241px;height:20px;margin-left:-43px;" alt="CloudWall"></a>
+	
+	<!-- Start -->
+	
+	<div id="cw-page" class="cw-Static w550" style="margin:30px auto;">
+		<div id="cw-header" class="cb fs90 blue pb20 mb30 tac bbs">
+			<a href="/" class="dib vat tdn ml-30 w240 o80"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+		 x="0" y="0" width="100%" viewBox="0, 0, 400, 32">
+ <defs>
+   <linearGradient id="G_2" gradientUnits="userSpaceOnUse" x1="3.962" y1="24" x2="55.184" y2="8">
+     <stop offset="0" stop-color="#ACD6FF"/>
+     <stop offset="0.455" stop-color="#9AC4F5"/>
+     <stop offset="1" stop-color="#7494D0"/>
+   </linearGradient>
+ </defs>
+     <path d="M36,0 C45,-0 51,7 50,14 C58,15 59,20 59,22 C59,28 54,31 48,31 L9,31 C4,31 0,28 0,23 C-0,18 3,15 7,14 C7,8 13,3 20,3 C23,3 25,4 26,5 C26,3 30,0 36,0 z" fill="#FFFFFF"/>
+     <path d="M8,32 L8,31 L8,31 C7,31 6,31 6,31 C3,30 1,28 0,26 C0,26 0,26 0,26 L10,26 L10,32 z M38,32 L38,26 L11,26 L11,32 z M50,32 L50,31 C50,31 51,31 52,31 C52,31 53,31 53,31 C55,30 56,29 57,27 C57,27 58,27 58,26 C58,26 58,26 58,26 L39,26 L39,32 z M58,24 C59,23 59,21 58,19 C58,18 57,18 57,17 C57,17 57,17 57,17 L54,17 L54,24 z M53,24 L53,17 L26,17 L26,24 z M24,24 L24,17 L2,17 C1,18 0,20 0,22 C-0,22 -0,23 0,24 C0,24 0,24 0,24 z M55,15 C55,15 55,15 54,15 C54,15 53,14 52,14 C51,14 51,14 50,14 C50,13 50,13 50,12 C50,11 50,9 50,8 L50,8 L39,8 L39,15 z M38,15 L38,8 L11,8 L11,15 z M10,15 L10,8 L9,8 C9,8 9,8 9,8 C8,10 7,12 7,14 C7,15 6,15 6,15 C5,15 5,15 4,15 z M49,6 C49,6 49,6 48,6 C48,5 47,4 47,4 C45,2 42,0 39,0 C38,0 37,-0 36,0 C34,0 32,0 30,1 C28,2 27,3 26,4 L26,4 L26,6 z M24,6 L24,4 C23,4 23,3 22,3 C21,3 21,3 20,3 C20,3 19,3 19,3 C18,3 17,3 16,3 C15,4 13,5 11,6 C11,6 11,6 11,6 z" fill="url(#G_2)"/>
+   <path d="M107,7 L102,9 Q97,4 89,4 Q83,4 79,7 Q75,11 75,15 Q75,21 79,24 Q83,27 89,27 Q98,27 102,22 L107,24 Q103,28 99,30 Q95,32 89,32 Q81,32 75,27 Q69,23 69,15 Q69,8 75,4 Q81,-0 89,-0 Q101,-0 107,7 z M166,18 Q166,22 163,24 Q160,27 154,27 Q149,27 146,24 Q142,22 142,18 Q142,14 146,11 Q149,9 154,9 Q160,9 163,11 Q166,14 166,18 z M172,18 Q172,12 166,8 Q161,4 154,4 Q147,4 143,8 Q137,12 137,18 Q137,24 143,28 Q147,31 154,31 Q161,31 166,28 Q172,24 172,18 z M207,5 L202,5 L202,21 Q202,27 192,27 Q182,27 182,21 L182,5 L177,5 L177,22 Q177,26 181,29 Q185,31 192,31 Q199,31 203,29 Q207,26 207,22 z M221,26 L221,10 L233,10 Q237,10 240,12 Q242,14 242,18 Q242,22 240,24 Q238,26 234,26 z M216,5 L216,31 L233,31 Q237,31 240,30 Q242,29 244,27 Q248,23 248,18 Q248,12 244,9 Q240,5 233,5 z M295,0 L288,26 L280,0 L273,0 L266,26 L258,0 L252,0 L262,31 L269,31 L277,5 L284,31 L291,31 L301,0 z M313,21 L319,9 L326,21 z M322,5 L316,5 L302,31 L307,31 L310,25 L328,25 L331,31 L337,31 z M366,26 L349,26 L349,5 L344,5 L344,31 L366,31 z M400,26 L379,26 L379,5 L374,5 L374,31 L400,31 z M135,26 L118,26 L118,5 L113,5 L113,31 L135,31 z" fill="#719BD3"/>
+</svg></a>
 		</div>
-		<div id="cw-space" class="tac">
-		
-			<div class="cw-busy w90" style="margin:150px auto;"></div>
-		
+		<div id="cw-space" class="tac fw300 fs90 gray1">
+			<div class="p100">
+				Loading components...<br>
+				<div class="cw-busy w90 dib vat mt10 mr5 h3"></div>
+			</div>
 		</div>
 	</div>
 	
-	<!-- RUNTIME -->
+	<!-- Runtime -->
 	
-	<div id="cw-header" class="cw-Runtime hide mt20 cb fs90 blue pb15" style="width:100%;border-bottom: 1px solid rgba(35, 118, 200, 0.25);">
-		<img src="i/logo.png" class="mr2" style="width:198px;height:16px;margin-left:-36px;" alt="CloudWall" id="cw-header-logo">
-		<div class="vat dib lgray fs95 ml15 lh150 hoverlink">
-			<a class="mr10 pseudolink" target="_blank" href="docs/about.html">About</a>
-			<a class="mr10 pseudolink" target="_blank" href="docs/arch.html">Architecture</a>
-			
-			<a class="mr10 pseudolink" target="_blank" href="docs/ide.html">IDE</a>
-			<a class="mr10 pseudolink" target="_blank" href="docs/api.html">API</a>
-			<a class="mr10 pseudolink" target="_blank" href="docs/app.html">App authoring</a>
-			<a class="mr10 pseudolink" target="_blank" href="docs/build.html">Custom builds</a>
-			
-			<a class="mr10 pseudolink" target="_blank" href="docs/sync.html">Sync guide</a>
-			<a class="mr10 pseudolink" target="_blank" href="docs/howto.html">FAQ</a>
-			
-		</div>
-		<a href="profile.html" target="_blank"><img id="cw-upic" title="Manage account"/></a>
-	</div>
+	<div id="cw-header" class="cw-Runtime hide mt20 cb fs90 blue pb15"><img id="cw-upic" class="hide"/></div>
 	<div id="cw-space" class="cw-Runtime hide "><div id="cw-side" class=""></div><div id="cw-slots" class=""></div><div id="cw-dock" class="">
 		<div class="ml20 fs80"></div>
 	</div></div></div>
@@ -70,27 +72,29 @@
 
 			
 <script>
-$(function(){
-	$.my.modal.parent("#cw-body");
-	
-	$("#cw-header-logo").on("click", function(){$("#cw-header").slideUp(200);})
-	
-	PouchDB.enableAllDbs = true;
+	$(function(){
 
-	var db = new PouchDB("cw", function(e,r){ if (!e) db.get("cw", _start);});
-	
-	function _start (e) {
-		if (e) {
+		// Set root for modals
+		$.my.modal.parent("#cw-body");
+
+		// Enable DBs visibility	
+		PouchDB.enableAllDbs = true;
+
+		// System DB and profile
+		var db = new PouchDB('cw');
+		db.get('cw')
+		.then(function(){
+			// Start CloudWall
+			cw.start().then(function (a){
+				console.log ("=== CloudWall 2.2.2 standalone ===");
+			}, function (e, msg) {
+				console.log("=== CloudWall failed to start ===",msg, e);
+			});
+		})
+		.catch(function(){
 			$('body').append('<'+'script src="sys/quickstart.js"'+'></'+'script'+'>');
-		}
-		else cw.start().then(function (a){
-			console.log ("=== CloudWall 1.8.0 ===");
-		}, function (e, msg) {
-			console.log("=== CloudWall failed to start ===",msg, e);
 		});
-	}
-});
-
+	});
 </script>
 	
 </html>
