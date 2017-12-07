@@ -1,5 +1,5 @@
 # CloudWall 2.2.2
-CloudWall is noBackend toy operating system, that syncs with CouchDB. See details and running version at [http://cloudwall.me](http://cloudwall.me).
+CloudWall is noBackend toy operating system, that syncs with CouchDB. See details and running version at [https://cloudwall.me](https://cloudwall.me).
 
 Since CloudWall is in permanent beta state, sync your data with remote CouchDB frequently.
 
@@ -45,7 +45,7 @@ CloudWall now starts from `cw.mydomain.com/`, the domain root. Rewrite rules als
 The `profile.json` attachment of `_design/cw22` contains default user profile, which includes default list of DBs user connects at start. Edit this attach to make up the list.
 
 ## Custom build
-To make custom build of CloudWall, please read [how to install](http://docs.cloudwall.me/quickstart.html#h-1baojekg) CloudWall sources.
+To make custom build of CloudWall, please read [how to install](https://cloudwall.me/docs/quickstart.html#h-1baojekg) CloudWall sources.
 
 ---
 
