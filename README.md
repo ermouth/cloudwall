@@ -1,4 +1,4 @@
-# CloudWall 2.2.2
+# CloudWall 2.2.3
 CloudWall is noBackend toy operating system, that syncs with CouchDB. See details and running version at [https://cloudwall.me](https://cloudwall.me).
 
 Since CloudWall is in permanent beta state, sync your data with remote CouchDB frequently.
@@ -17,7 +17,7 @@ and documentation, create below doc in the `_replicator` bucket of your CouchDB:
   "source": "https://cloudwall.smileupps.com/cw2/",
   "target": "cloudwall",
   "create_target":true,
-  "doc_ids":["_design/cw22","_design/cw22docs"],
+  "doc_ids":["_design/cw22","_design/cw22docs","_design/photon"],
   "user_ctx":{"name":"admin", "roles":["_admin"]}
 }
 
@@ -27,7 +27,7 @@ and documentation, create below doc in the `_replicator` bucket of your CouchDB:
   "source": "https://cloudwall.smileupps.com/cw2/",
   "target": "http://admin:__________@localhost:5984/cloudwall",
   "create_target":true,
-  "doc_ids":["_design/cw22","_design/cw22docs"]
+  "doc_ids":["_design/cw22","_design/cw22docs","_design/photon"]
 }
 ```
 
@@ -42,7 +42,7 @@ secure_rewrites = false
 ```
 CloudWall now starts from `cw.mydomain.com/`, the domain root. Rewrite rules also make entire CouchDB available from the domain root, to allow in-domain auth and DB sync.
 
-The `profile.json` attachment of `_design/cw22` contains default user profile, which includes default list of DBs user connects at start. Edit this attach to make up the list.
+The `profile.json` attachment of `_design/cw22` contains default user profile, which includes default list of DBs user connects at start. Edit that attachment to set up the list.
 
 ## Custom build
 To make custom build of CloudWall, please read [how to install](https://cloudwall.me/docs/quickstart.html#h-1baojekg) CloudWall sources.

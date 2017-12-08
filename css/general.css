@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/* #####   General CSS 2.2.2  #####*/
+/* #####   General CSS 2.2.3  #####*/
 * {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -13,6 +13,7 @@ body {
   color: #38414c;
   line-height: 1.3em;
   background: #fff;
+  font-weight: 300;
 }
 /* ====== HTML ELTS ====== */
 /* Main */

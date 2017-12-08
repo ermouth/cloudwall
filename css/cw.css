@@ -19,12 +19,16 @@
 
 	#cw-body {
 		margin:0 auto 0 auto; 
-		font-size:14.5pt; 
-		line-height:1.4em;
+		font-size:19px; 
+		line-height:26px;
 		text-rendering: geometricPrecision;
 		font-weight:300;
 	}
-	#cw-body input, #cw-body textarea, #cw-body button {font-weight:300;}
+
+	input, textarea, button {
+		font-weight:inherit;
+	}
+
 	#cw-body.cw {
 		padding:0px 40px 0 40px; 
 	}

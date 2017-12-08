@@ -1,6 +1,6 @@
 (function(){
 	
-	// CloudWall profile creator,
+	// CloudWall 2.2.3 profile creator,
 	// for standalone build
 	
 	// Loads default profile, gen keys
@@ -33,7 +33,7 @@
 		return $("#cw-space").my(
 			{
   "id": "cw.Sys.Profile.Create",
-  "build": 62,
+  "build": 64,
   "params": {
     "animate": 100,
     "effect": function ($e,onoff,duration) {
@@ -485,7 +485,7 @@
   "Cropper": {
     "params": {
       "strict": true,
-      "width": 820
+      "width": 821
     },
     "data": {
       "filename": "",
@@ -497,24 +497,25 @@
           var html = $.my.formgen([
             '<div class="fl mr20 tac vat bg-lgray" style="width:600px;height:450px;'
               +'overflow:hidden;position:relative;line-height:450px;" id="crop-frame">',
-            '<img id="source" class="vam" style="max-width:600px; max-height:450px; background:white" src="" />',
-            '<div class="w600  dib" style="height:450px;position:absolute;top:0;left:0">',
-            '<span class="dib vam fs110 button">',
-            '<span class="fi-photo"><span class="fs110"> &nbsp;Select Image</span></span>',
-            '</span>',
-            '<input type="file" id="file" class="w600 dib" accept="image/jpeg,image/png" '
-              +'style="height:450px;cursor:pointer;opacity:0; position:absolute;top:0;left:0">',
-            '</div>',
+              '<img id="source" class="vam" style="max-width:600px; max-height:450px; background:white" src="" />',
+              '<div class="w600  dib" style="height:450px;position:absolute;top:0;left:0">',
+                '<span class="dib vam fs110 button">',
+                  '<span class="fi-photo"><span class="fs110"> &nbsp;Select Image</span></span>',
+                '</span>',
+                '<input type="file" id="file" class="w600 dib" accept="image/jpeg,image/png" '
+                  +'style="height:450px;cursor:pointer;opacity:0; position:absolute;top:0;left:0">',
+              '</div>',
             '</div>',
             '<div class="w200 dib vat" id="xpreview">',
-            '<canvas id="preview" class="bg-lgray" style="width:200px;height:200px" width='
-              +form.data.size+' height='+form.data.size+' style="overflow:hidden;"></canvas>',
-            {row:"200px",rowCss:"mt10 pt15 btd fs90 tac"},
-            ["","btn#btn-apply.mr5.green",{val:"Apply"}, "btn#btn-close.mr0",{val:"Cancel"}],
+              '<canvas id="preview" class="bg-lgray" style="width:200px;height:200px" width='
+                +form.data.size+' height='+form.data.size+' style="overflow:hidden;"></canvas>',
+              {row:"200px",rowCss:"mt10 pt15 btd fs90 tac"},
+              ["","btn#btn-apply.mr5.green",{val:"Apply"}, "btn#btn-close.mr0",{val:"Cancel"}],
             '</div>',
-            '<div class="w200 dib vat" id="xwarn">',    
-            '</div>',
-            '<div class="hide"><canvas id="x2" width='+form.data.size*2+' height='+form.data.size*2+'></canvas></div>'
+            '<div class="w200 dib vat" id="xwarn"></div>',
+            '<div class="hide">',
+              '<canvas id="x2" width='+form.data.size*2+' height='+form.data.size*2+'></canvas>',
+            '</div>'
           ]);
           $o.html(html);
         
