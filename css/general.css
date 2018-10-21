@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/* #####   General CSS 2.2.3  #####*/
+/* #####   General CSS 2.4.1  #####*/
 * {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -9,7 +9,7 @@
 body {
   padding: 0;
   -webkit-text-size-adjust: 100%;
-  font: 18px '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', 'Segoe UI', Helvetica, Tahoma, Arial, Verdana, Sans-serif;
+  font: 18px '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', 'Segoe UI', Roboto, Helvetica, Tahoma, Arial, Verdana, Sans-serif;
   color: #38414c;
   line-height: 1.3em;
   background: #fff;
@@ -94,6 +94,15 @@ th {
 }
 .cx {
   cursor: col-resize;
+}
+.prel {
+  position: relative!important;
+}
+.pabc {
+  position: absolute!important;
+}
+.pfix {
+  position: fixed!important;
 }
 /* Colors */
 .white {
@@ -768,7 +777,7 @@ input,
 select,
 option,
 button {
-  font: 100% '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', 'Segoe UI', Helvetica, Tahoma, Arial, Verdana, Sans-serif;
+  font: 100% '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', 'Segoe UI', Roboto, Helvetica, Tahoma, Arial, Verdana, Sans-serif;
   line-height: 1.3em;
   color: #4d5a6a;
   outline: none!important;
@@ -827,7 +836,7 @@ input:not([type=radio]):not([type=checkbox]):not([type=button]):focus {
 }
 /* ---- Textarea ---- */
 textarea {
-  font: 100% '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', 'Segoe UI', Helvetica, Tahoma, Arial, Verdana, Sans-serif;
+  font: 100% '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', 'Segoe UI', Roboto, Helvetica, Tahoma, Arial, Verdana, Sans-serif;
   line-height: 1.3em;
   color: #4d5a6a;
   padding: 0.35em 0.4em 0.35em 0.4em;
@@ -3214,6 +3223,67 @@ a img {
 .mb200 {
   margin-bottom: 200px!important;
 }
+/* Z-index */
+.zi1 {
+  z-index: 1;
+}
+.zi2 {
+  z-index: 2;
+}
+.zi3 {
+  z-index: 3;
+}
+.zi4 {
+  z-index: 4;
+}
+.zi5 {
+  z-index: 5;
+}
+.zi6 {
+  z-index: 6;
+}
+.zi7 {
+  z-index: 7;
+}
+.zi8 {
+  z-index: 8;
+}
+.zi9 {
+  z-index: 9;
+}
+.zi10 {
+  z-index: 10;
+}
+.zi11 {
+  z-index: 11;
+}
+.zi12 {
+  z-index: 12;
+}
+.zi13 {
+  z-index: 13;
+}
+.zi14 {
+  z-index: 14;
+}
+.zi15 {
+  z-index: 15;
+}
+.zi16 {
+  z-index: 16;
+}
+.zi17 {
+  z-index: 17;
+}
+.zi18 {
+  z-index: 18;
+}
+.zi19 {
+  z-index: 19;
+}
+.zi20 {
+  z-index: 20;
+}
 /* Font size */
 .fs40 {
   font-size: 40%!important;
@@ -3449,6 +3519,9 @@ a img {
 .nw {
   white-space: nowrap;
 }
+.wn {
+  white-space: normal!important;
+}
 .ell {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3497,11 +3570,23 @@ a img {
 .bad {
   border: 1px dotted rgba(108, 164, 205, 0.35);
 }
+.br0 {
+  border-radius: 0px !important;
+}
+.br1 {
+  border-radius: 1px !important;
+}
 .br2 {
   border-radius: 2px !important;
 }
+.br3 {
+  border-radius: 3px !important;
+}
 .br4 {
   border-radius: 4px !important;
+}
+.br5 {
+  border-radius: 5px !important;
 }
 .br6 {
   border-radius: 6px !important;
@@ -4724,7 +4809,7 @@ body > .ui-autocomplete {
 /* CODEMIRROR */
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
-  font: 13px 'PT Mono', Monaco, monospace;
+  font: 13px Cousine, 'PT Mono', Monaco, monospace;
   height: auto;
 }
 .CodeMirror-scroll {
@@ -4882,7 +4967,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 /* The rest of this file contains styles related to the mechanics of
 the editor. You probably shouldn't touch them. */
 .CodeMirror {
-  line-height: 1.32em;
+  line-height: 1.307em;
   position: relative;
   overflow: hidden;
   background: white;
@@ -4962,7 +5047,7 @@ flickering artifacts. */
 }
 .CodeMirror-lines {
   cursor: text;
-  line-height: 1.3em;
+  line-height: 1.307em;
 }
 .CodeMirror pre {
   /* Reset some styles that the rest of the page might have set */
@@ -5094,12 +5179,12 @@ body .redactor_box_fullscreen {
   box-shadow: none;
   color: #e3e9ec;
   font-size: 13px;
-  font-family: Monaco, monospace, sans-serif;
+  font-family: Cousine, 'PT Mono', Monaco, monospace;
   resize: none;
 }
 .redactor_editor code,
 .redactor_editor pre {
-  font-family: Monaco, monospace;
+  font-family: Cousine, 'PT Mono', Monaco, monospace;
   font-size: 0.85em;
 }
 .redactor_editor,
@@ -5515,7 +5600,7 @@ Toolbar classes
   font-style: italic;
 }
 .redactor_format_pre {
-  font-family: monospace, sans-serif;
+  font-family: Cousine, 'PT Mono', Monaco, monospace;
 }
 .redactor_format_h1,
 .redactor_format_h2,
@@ -5602,7 +5687,7 @@ DROPDOWN
   background: #fff;
   box-shadow: 0 0 69px 10px rgba(0, 20, 47, 0.5);
   color: inherit;
-  font-size: 14pt;
+  font-size: 18px;
 }
 #redactor_modal header {
   padding: 11px 30px 0 15px;
@@ -5630,6 +5715,7 @@ DROPDOWN
   float: none !important;
   margin: 10px 0 3px 0 !important;
   padding: 0 !important;
+  font-size: 90%;
 }
 #redactor_modal textarea {
   display: block;
@@ -5722,6 +5808,9 @@ DROPDOWN
   text-decoration: none;
   text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8);
   filter: none;
+}
+#redactor_modal #redactor_modal_footer {
+  margin-top: 8px;
 }
 #redactor_modal .redactor_btn_modal_close {
   display: none;
@@ -5912,14 +6001,14 @@ img.jcrop-preview {
 }
 /* jsondiff */
 .jsondiffpatch-delta {
-  font-family: 'PT Mono', Monaco, monospace;
+  font-family: Cousine, 'PT Mono', Monaco, monospace;
   font-size: 1em;
   margin: 0;
   padding: 0 0 0 12px;
   display: inline-block;
 }
 .jsondiffpatch-delta pre {
-  font-family: 'PT Mono', Monaco, monospace;
+  font-family: Cousine, 'PT Mono', Monaco, monospace;
   font-size: 12px;
   margin: 0;
   padding: 0;

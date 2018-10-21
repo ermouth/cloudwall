@@ -1,1 +1,101 @@
-<!DOCTYPE html> <html> <head> <title>Edit your profile</title> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> <link rel="icon" type="image/png" href="i/favicon.png"/>  <link rel="stylesheet" type="text/css" href="css/general.css"/> <link rel="stylesheet" type="text/css" href="css/cw.css"/>  <script src="lib/general.js"></script> <script src="lib/pouchdb.js"></script> <script src="lib/plugins.js"></script>  <script src="sys/crypto.js"></script> </head> <body> <div id="cw-notes"></div> <div id="cw-body" style="width:600px" class="pt25 pb15"> <div id="cw-header" class="cb fs90 blue pb20 mb30" style="width:100%;border-bottom: 1px solid rgba(35, 118, 200, 0.25);"> <a href="../" class="dib vat tdn w240 ml-40 o80"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="100%" viewbox="0, 0, 1000, 80"> <defs> <linearGradient id="G_9" gradientUnits="userSpaceOnUse" x1="9.905" y1="60" x2="137.96" y2="20"> <stop offset="0" stop-color="#ACD6FF"/> <stop offset="0.455" stop-color="#9AC4F5"/> <stop offset="1" stop-color="#7494D0"/> </linearGradient> </defs> <path d="M92,0 C113,-0 128,17 127,35 C145,39 147,51 147,56 C147,71 136,79 122,79 L23,79 C10,79 0,70 0,58 C-0,46 9,38 19,37 C19,20 33,8 50,8 C58,8 63,11 65,13 C66,9 76,0 92,0 z" fill="#FFFFFF"/> <path d="M22,80 L22,79 L21,79 C19,79 17,79 15,78 C9,76 4,72 1,67 C1,66 1,66 1,65 L25,65 L25,80 z M95,80 L95,65 L29,65 L29,80 z M125,80 L125,79 C127,79 127,79 130,79 C132,78 132,78 134,77 C138,75 142,72 144,69 C144,68 145,67 145,66 C146,66 146,65 146,65 L99,65 L99,80 z M147,61 C148,57 147,53 146,49 C145,47 144,46 143,44 C143,43 142,43 142,43 L136,43 L136,61 z M132,61 L132,43 L66,43 L66,61 z M62,61 L62,43 L6,43 C3,46 0,50 0,55 C-0,57 -0,58 0,60 C0,61 0,61 0,61 z M138,39 C138,39 137,39 137,38 C135,37 133,36 131,36 C129,35 129,35 127,35 C127,34 127,33 127,32 C127,28 126,24 125,21 L125,21 L99,21 L99,39 z M95,39 L95,21 L29,21 L29,39 z M25,39 L25,21 L24,21 C24,21 24,21 23,22 C21,26 19,32 19,37 C17,37 17,37 15,38 C13,39 14,38 12,39 z M123,17 C123,16 122,16 122,15 C121,13 119,12 118,10 C112,5 105,1 97,0 C96,0 94,-0 92,0 C86,0 80,1 75,4 C72,5 69,8 66,10 L66,11 L66,17 z M62,17 L62,11 C59,10 58,9 55,9 C54,9 53,8 51,8 C51,8 49,8 48,8 C46,8 44,9 42,9 C37,10 33,13 29,16 C28,16 28,16 28,17 z" fill="url(#G_9)"/> <path d="M268,19 L256,23 Q244,11 223,11 Q207,11 197,19 Q187,27 187,39 Q187,52 197,60 Q207,68 224,68 Q245,68 256,56 L267,62 Q259,71 249,75 Q238,80 223,80 Q203,80 189,69 Q174,58 174,39 Q174,21 189,10 Q203,-0 223,-0 Q252,-0 268,19 z M416,45 Q416,55 408,62 Q400,68 387,68 Q373,68 365,62 Q357,55 357,45 Q357,35 365,29 Q373,22 387,22 Q400,22 408,29 Q416,35 416,45 z M430,45 Q430,30 416,20 Q404,11 387,11 Q369,11 357,20 Q343,30 343,45 Q343,61 357,71 Q369,79 387,79 Q404,79 416,71 Q430,61 430,45 z M519,13 L507,13 L507,54 Q507,68 481,68 Q456,68 456,54 L456,13 L443,13 L443,56 Q443,66 453,73 Q464,79 481,79 Q499,79 509,73 Q519,66 519,56 z M552,66 L552,25 L583,25 Q594,25 600,30 Q607,36 607,46 Q607,55 601,60 Q595,66 585,66 z M540,13 L540,77 L584,77 Q592,77 600,75 Q606,72 610,69 Q621,57 621,45 Q621,31 610,22 Q600,13 582,13 z M739,2 L720,65 L700,2 L684,2 L665,65 L645,2 L631,2 L656,77 L673,77 L692,14 L711,77 L728,77 L753,2 z M783,52 L799,24 L815,52 z M807,13 L791,13 L755,77 L769,77 L777,64 L821,64 L829,77 L843,77 z M916,66 L873,66 L873,13 L860,13 L860,77 L916,77 z M1000,66 L949,66 L949,13 L936,13 L936,77 L1000,77 z M339,66 L296,66 L296,13 L283,13 L283,77 L339,77 z" fill="#719BD3"/> </svg></a> </div> <div id="cw-space"></div> </div> </body> <script>$(function(){$.my.modal.parent("#cw-body"),PouchDB.enableAllDbs=!0,$("#cw-space").my({id:"cw.Sys.Profile.Editor",build:11,params:{animate:100,effect:function(a,b,c){return b?(a.slideDown(c),void 0):(a.slideUp(c),void 0)}},error:'<span class="xgray fs110">Sorry, no CloudWall profile found.</span><br><a href="./index.html" class="button tdn lh160 pl30 pr30 mt20"><span class="fi-torso o70 mr5"></span>Create profile...</a>',ui:{"#pic":{bind:function(a,b,c){return null!=b&&$.my.modal({manifest:this.Cropper,data:{data:"",filename:""}}).then(function(b){b&&b.data&&(a.doc.pic="data:image/jpeg;base64,"+b.data,c.trigger("recalc"),b.data="")}),a.doc.pic},events:"click.my"},"#name":{bind:"doc.name",check:/^(|[a-z0-9]{3,40})$/i,error:"3–40 latins and nums",css:{":disabled":function(a){return!a.isnew}},recalc:"#pin"},"#pin":{bind:"pin"},"#btn-create":{delay:50,bind:function(a,b,c){function d(){return cw.lib.md5(cw.lib.md5(cw.lib.md5(a.pin)+cw.lib.hash8(a.pin))+a.doc.name)}var e=this,f=a.doc.name+"-"+a.doc.uid;if(null!=b&&c.my().root.my("valid")&&this.db)if("79adusu9"==cw.lib.sdbm(c.my("find","#pic").attr("src")))cw.lib.note("Please change userpic","error");else{a.isnew?(a.doc.pin=d(),a.doc.dbs[0].creator=f,a.doc.keys=a.doc.keys.map(function(b){return b.emitter=f,b.link=a.doc.contact,b})):a.pin&&(a.doc.pin=d());try{cw.crypto.enc(a.doc)}catch(a){console.log(a.message,a.stack,a)}a.isnew?($.my.modal('<div class=" pt20 pb15 w350 tac blue">Loading system apps, it can take a time. <br>Please, wait.<br><div class="cw-busy w50 mt10"></div></div>',function(){},500),$.ajax({url:"cw.apps.json",type:"GET",dataType:"json",cache:!1}).then(function(b){var c,d,f,g;if(Object.isArray(b)&&b.length){c=Object.clone(b,!0);for(var d=0;d<c.length;d++)if(g=c[d],g.srcrev=g._rev,delete g._rev,g._attachments)for(f in g._attachments)g._attachments[f]=Object.select(g._attachments[f],["content_type","data"]);c.push(cw.crypto.enc(a.doc)),e.db.bulkDocs({docs:c}).then(function(a){$.my.modal(),cw.lib.note("Account created, reloading page.","ok",5e3),window.location.replace("./index.html")},function(a){$.my.modal(),cw.lib.note("Saving account info and apps failed. Try again, please.","error",5e3),console.log(a)})}else $.my.modal(),cw.lib.note("Oops, server responded with error. Please retry in 5-10 minutes.","error",5e3),console.log(b)}).fail(function(a){$.my.modal(),cw.lib.note("Error loading apps. Try again, please.","error",5e3),console.log(a)})):this.db.put(cw.crypto.enc(a.doc),function(){window.location.replace("./")})}},events:"click.my",watch:"#name",css:{":disabled":function(a){return!a.doc.name||!/^(|[a-z0-9]{3,40})$/i.test(a.doc.name)}}},"#keylist":{manifest:"Keys",bind:"doc.keys",check:!0,list:'<div class="mb20 pt20 btd"></div>'},"#btn-addkey":{bind:function(a,b,c){null!=b&&$.my.modal({manifest:cw.lib.fuse({},this.Confirm,{ui:{"#key":{bind:function(a,b){if(null!=b)if(/^.{3,40}$/.test(b.compact()))a.key=cw.lib.fuse({},a.empty,{id:cw.lib.hash8(Number.random(-1e13,1e13)+Date.now()+""),key:cw.lib.key16(Number.random(-1e13,1e13)),stamp:Date.now(),emitter:"{name}-{uid}".assign(cw.crypto.me()),link:cw.crypto.me().contact,local:!1,name:b.compact(),desc:b.compact()});else if(b.length>100)try{var c=cw.lib.base64(b,!0);Object.isObject(c)&&c.name&&c.id&&c.emitter&&c.key&&!c.local?a.key=cw.lib.fuse({},a.empty,c,{stamp:Date.now()}):delete a.key}catch(b){delete a.key}else delete a.key},check:function(a,b){var c=!1,d=!1,e=(b||"").compact();if(/^.{3,40}$/.test(e)){if(a.names.indexOf(e+"|"+cw.crypto.me().name)>-1)return"Name already exists, no dupes allowed";c=1}else if(e.length>100)try{var f=cw.lib.base64(e,!0);if(!(Object.isObject(f)&&f.name&&f.id&&f.emitter&&f.key))return"Invalid key structure";if(f.local)return"This is non-public key, unable to install";if(a.ids.indexOf(f.id)>-1)return"Key already installed";if(a.names.indexOf(f.name+"|"+f.emitter.split("-")[0])>-1)return"Key with this name/user pair already exist, no dupes allowed";d=1}catch(a){return"Invalid key code"}return c||d?"":"Input required"}}}}),data:{empty:this.Keys.data,names:a.doc.keys.map(function(a){return a.name+"|"+a.emitter.split("-")[0]}),ids:a.doc.keys.map(function(a){return a.id}),text:'<p>Enter key name or key share code</p><div><input type="text" id="key" placeholder="Short name or long code" class="w350 fs120"><div class="my-error-tip fs80"></div></div>',ok:"Add key"},esc:!0}).then(function(a){Object.isObject(a)&&a.key&&c.my("find","#keylist").trigger("insert",{where:0,what:Object.clone(a.key,!0)})})},events:"click.my"}},data:{isnew:!1,dburl:"",dbpwd:"",dblogin:"",prevpin:"",pin:"",doc:{_id:"cw",type:"settings",stamp:0,name:"",pin:"",uid:"",contact:"",crypto:"PIN",tags:{},keys:[],dbs:[],pic:""}},init:function(a,b){function c(c){c?(cw.log("Starting cw.SysProfile.Editor"),$.extend(!0,b.data.doc,c),e.db=d,b.data.doc.uid||(b.data.doc.uid=cw.lib.hash8(Date.now()+Number.random(1e30))),a.formgen(e.FormHTML),a.find("#abouttext").html(e.Intro),g||(a.find("#btn-create").val("Save"),a.find(".btn-link").hide(),a.find("#keys").show(),a.find("#abouttext").hide()),f.resolve()):($("#cw-header img").animate({"margin-left":"162px","margin-top":"40px"},200),f.reject("No CloudWall profile found."))}var d,e=this,f=$.Deferred(),g=!1,h=cw.crypto._settings;e.Pouch=PouchDB,e.Settings=h,b.data.isnew=g,cw.log("~~~ Profile editor started ~~~");var d=new PouchDB("cw");return d.get("cw").then(function(a){a.CRYPTO?(cw.log("PIN requested."),cw.crypto._init(a).then(function(){cw.log("PIN ok."),c(h())}).fail(function(){cw.log("Error: can‘t decrypt profile"),f.reject("Invalid PIN")})):(cw.log("Profile is not encrypted"),c(a))}).catch(function(){c()}),f.promise()},Confirm:{id:"cw.Sys.Confirm",params:{delay:20,strict:!0,width:350},data:{text:"",css:"xgray",ok:"Ok",cancel:"Cancel"},init:function(a,b){var c=b.data;a.formgen(['<div class="'+c.css+'">'+c.text+"</div>",{label:"70px",row:"350px",rowCss:"my-row mt15 pt15 fs90 mb-5 xgray btd"},["","btn#btn-ok.green.mr5",{val:c.ok},"btn#btn-cancel",{val:c.cancel}]])},ui:{"#btn-ok":{bind:function(a,b,c){null!=b&&c.trigger("commit")},events:"click"},"#btn-cancel":{bind:function(a,b,c){null!=b&&c.trigger("cancel")},events:"click"}}},Cropper:{params:{strict:!0,width:820},data:{filename:"",data:"",cropped:!1,size:200},init:function(a,b){var c=$.my.formgen(['<div class="fl mr20 tac vat bg-lgray" style="width:600px;height:450px;overflow:hidden;position:relative;line-height:450px;" id="crop-frame">','<img id="source" class="vam" style="max-width:600px; max-height:450px; background:white" src="" />','<div class="w600  dib" style="height:450px;position:absolute;top:0;left:0">','<span class="dib vam fs110 button">','<span class="fi-photo"><span class="fs110"> &nbsp;Select Image</span></span>',"</span>",'<input type="file" id="file" class="w600 dib" accept="image/jpeg,image/png" style="height:450px;cursor:pointer;opacity:0; position:absolute;top:0;left:0">',"</div>","</div>",'<div class="w200 dib vat" id="xpreview">','<canvas id="preview" class="bg-lgray" style="width:200px;height:200px" width='+b.data.size+" height="+b.data.size+' style="overflow:hidden;"></canvas>',{row:"200px",rowCss:"mt10 pt15 btd fs90 tac"},["","btn#btn-apply.mr5.green",{val:"Apply"},"btn#btn-close.mr0",{val:"Cancel"}],"</div>",'<div class="w200 dib vat" id="xwarn">',"</div>",'<div class="hide"><canvas id="x2" width='+2*b.data.size+" height="+2*b.data.size+"></canvas></div>"]);a.html(c)},style:{" .jcrop-holder":"display:inline-block;vertical-align:middle"},ui:{"#file":{bind:function(a,b,c){function d(b){if(parseInt(b.w)>0){var c,d,e,f,k=h[0],l=j.k,m=b.w*l;m>2*a.size?(e=i[0],f=e.getContext("2d"),f.fillStyle="white",f.fillRect(0,0,2*a.size,2*a.size),f.drawImage(k,b.x*l,b.y*l,m,m,0,0,2*a.size,2*a.size),c=g[0],d=c.getContext("2d"),d.drawImage(e,0,0,2*a.size,2*a.size,0,0,a.size,a.size)):(c=g[0],d=c.getContext("2d"),d.fillStyle="white",d.fillRect(0,0,a.size,a.size),d.drawImage(k,b.x*l,b.y*l,m,m,0,0,a.size,a.size)),a.cropped=!0}}var e,f=c.my().root,g=f.find("#preview"),h=f.find("#source"),i=f.find("#x2"),j={k:1},k="";null!=b&&b&&(e=c[0].files[0],e&&function(){a.filename=e.name;var b,f=new FileReader,g=[];f.onload=function(a){b=new Uint8Array(a.target.result);for(var c=0;c<b.length;c++)g.push(String.fromCharCode(b[c]));k=window.btoa(g.join(""))},f.onloadend=function(){h.load(function(){j.k=h[0].naturalWidth/h.width()}),h.removeClass("hide").attr("src","data:image/jpeg;base64,"+k),j.k=h[0].naturalWidth/h.width(),h.Jcrop({onChange:d,onSelect:d.debounce(20),aspectRatio:1,allowMove:!0},function(){this.animateTo([100,100,300,300])}),k="",c.parent().addClass("hide")},f.readAsArrayBuffer(e)}())}},"#btn-apply":{bind:function(a,b,c){null!=b&&a.cropped&&(a.data=c.my().root.find("#preview")[0].toDataURL("image/jpeg",.93).substr(23),c.my().root.trigger("commit"))},events:"click.my"},"#btn-close":{bind:function(a,b,c){null!=b&&c.my().root.trigger("cancel")},events:"click.my"}}},Keys:{data:{id:"",key:"",stamp:0,name:"Noname",emitter:"",link:"",desc:"",local:!1,shared:[]},init:function(a){a.html($.my.formgen([{row:"350px",label:"0px",rowCss:"my-row pb5"},["",'<span class="mr10">',"inp#keyid.w90.xgray.bold",{disabled:"disabled"},"</span><span>","inp#keyname.w250",{plc:"3-40 chars key name"},"</span>"],'<div class="ml6"  style="word-break:break-all">Key is <span id="keyval"></span></div>','<div class="ml6">','<div class="fr w120 hoverlink blue tar fs90 lh120 o80 hide mt3" id="xbtn">','<span id="xshare"><span class="fs90 fi-share o70"></span> ','<span id="btn-share" class="pseudolink mr10">Share</span></span>','<span class="fs80 fi-minus o70"></span> ','<span id="btn-delkey" class="pseudolink">Del</span>',"</div>",'Emitted by <span id="emitter"></span>',"</div>"]))},ui:{"#keyid":"id","#keyname":{bind:"name",check:/^.{3,40}$/},"#keyval":"key","#emitter":function(a){return a.emitter.split("-")[0]},"#xbtn":{bind:function(){},css:{hide:function(a){return a.local&&a.emitter==cw.crypto.me().name}}},"#xshare":{bind:function(){},css:{hide:function(a){return a.emitter.split("-")[0]!=cw.crypto.me().name}}},"#btn-delkey":{bind:function(a,b,c){null!=b&&c.trigger("remove")},events:"click.my"},"#btn-share":{bind:function(a,b,c){null!=b&&$.my.modal('<p>Copy and send this code:</p><textarea class="w500 fs80 lh120" rows=7>'+cw.lib.base64(a)+"</textarea>",500)},events:"click.my"}}},FormHTML:['<div id="cw-reg" class="w600 vat dib tal" style="margin:0px auto 100px auto">','<div id="left" class="w250 dib vat pr50">',{row:"200px",rowCss:"my-row pb10 tac"},'<div class="slide">','<img id="pic" src="" style="width:200px;height:200px;cursor:pointer" class="db mb2 br4">','<div class="fs70 lgray mb10 tac">Click to change pic</div>',["","inp#name.w200.fs130.pb5.tac.bg-gray6.xgray",{plc:"Login",autocorrect:"off",autocapitalize:"off",autocomplete:"off"},"msg"],["","pwd#pin.w200.fs130.tac",{plc:"New PIN code",title:"Leave blank to skip previous PIN.",autocorrect:"off",autocapitalize:"off",autocomplete:"off"}],["","btn#btn-create.w180.fs100.tac.mt10.mb20",{val:"Create profile",style:"border-radius:100px"}],"</div>","</div>",'<div id="right" class="w350 dib vat">','<div class="fs90 gray slide" id="about">','<div class="fs90 w350" id="keys" style="display:none">','<div class="pb10">','<div class="fr w120 hoverlink blue tar">','<span class="fs90 fi-plus o70"></span> ','<span id="btn-addkey" class="pseudolink">Add key</span>',"</div>",'<h3 class="xgray mb0 mt0">Cryptokeys</h3>',"</div>",'<div id="keylist" class="lh150"></div>',"</div>",'<div class="w350" id="abouttext"></div>',"</div>",'<div class="fs90 gray slide" style="display:none" id="aboutLink"></div>',"</div>","</div>"]},{}).fail(function(a){cw.lib.note(a,"error")})});</script> <script></script> </html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Edit your profile</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="icon"  type="image/png" href="i/favicon.png">
+
+	<!-- CSS first for correct pixel measuring during start -->
+	<link rel="stylesheet" type="text/css" href="css/general.css" />
+	<link rel="stylesheet" type="text/css" href="css/cw.css" />
+
+	<!-- Libs -->
+	<script src="lib/general.js"></script>
+	<script src="lib/plugins.js"></script>
+	<script src="lib/pouchdb.js"></script>
+
+	<!-- CloudWall, profile editor -->
+	<script src="cw/profile-editor-static.js"></script>
+
+</head>
+
+<body>
+	<div id="cw-notes"></div>
+	<div id="cw-body" style="width:530px" class="mt0 pt20 pb15">
+		<div id="cw-space"></div>
+	</div>
+</body>
+
+<script>
+	cw.CW = {};
+	$(function(){ 
+    $.extend(cw.CW, ({	
+	
+	title:						'CloudWall 2.4.1 static',
+	logo:							'logo.svg',									// Logo URL or URL data String
+	titleColor:				'#76b4ed',									// Title preferred color
+	appRepos:					['cw'],											// Sources of apps/components available for all attached DBs
+	appDefault:				'cw/Sys.Hub',								// Default app, which starts on empty path or click on logo	
+	appUpdateURL:			'cw/apps.json',							// External location of app updates
+  static:						true,												// true for non-Couch hosted build
+  storageSalt:			'',													// Salt for creating local buckets, allows to avoid intersections
+  																							// between equally named local buckets in different projects.
+  
+  // Profile 
+  
+  profileTemplate:	'profile.json',							// External profile template or prfile template object
+  profile:					'cw/cw',										// Profile location or profile itself as an onject
+	profileWritable:	true,												// Enables/disables profile mod by user
+  
+  // ACL
+  
+	acl:[{
+    dbs:		['*'], 
+    roles:	['*'], 
+    users:	['*'], 
+    apps:		['*'], 
+    types:	{'*':['*']}
+  }],
+	
+	slotTimeout:					5000,										// Default slot start timeout
+	
+	pluginSetDoc:					'cw-Sys-Plugins-4vx1',	// Doc _id in cw bucket, holding locally available libs
+	
+	syncRestart:					21000,									// Sync restart on fail interval, ms
+	batchSize:						20,											// Sync batch size
+	
+	// CloudWall config
+	
+	$body:								"#cw-body",							// body, real $ obj will be mounted here
+	$upic:								"#cw-upic",							// userpic selector
+	$notes:								"#cw-notes",						// sys msg container
+	minBodyWidth:					1200,										// min body width, px
+	margins:							40,											// desired outer margins around body
+
+	$space:								"#cw-space",						// slots and panes container
+	defaultSpaceWidth:		1200,										// default width of work area
+
+	$slots:								"#cw-slots",						// app slots container
+	$nav:									"#cw-header",						// dock app container
+	appNav:								"cw.Sys.Dock",					// manifest id of dock app
+	appTrust:							"cw.Sys.Trust",					// trust modal app
+
+	slotCloseTimeout:				60,										// Timeout before slot started closing and forced to close
+	slotLayoutDelay:				110,									// Delay slot state changed and slot re-layout fired
+	slot:	'<div class="cw-app"></div>',						// Slot default HTML container
+
+	appToUrlTrackerDebounce:150,									// Delay after app state change and CW reflected it in URL
+	urlObserverInterval:		333,									// Delay after URL hash change and CW start processing it
+	readStateSaverInterval:	5000,									// How often info about read revisions stored to cw bucket
+	dbWatchersDebounce:			5,										// DB events jitter suspend interval
+	
+	dbConnTimeout:					30000,								// max timeslot for bucket connection
+	gcAttsInterval:					600000,								// ttl of freed attachments in cache	
+  
+  appNameMask:						/^[A-Z][A-Za-z0-9]{1,24}(\.[A-Za-z0-9]{1,25}){0,4}$/, // Allowed URL app names mask
+	
+}));
+    cw.login(); 
+  });
+</script>
+</html>
