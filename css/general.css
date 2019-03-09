@@ -5137,6 +5137,170 @@ flickering artifacts. */
     visibility: hidden;
   }
 }
+/*
+
+Name:       Base16 Default Light
+Author:     Chris Kempson (http://chriskempson.com)
+
+CodeMirror template by Jan T. Sott (https://github.com/idleberg/base16-chrome-devtools)
+Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16)
+
+*/
+.cm-s-base16-light.CodeMirror {
+  background: white;
+  color: #202020;
+}
+.cm-s-base16-light div.CodeMirror-selected {
+  background: #e0e0e0 !important;
+}
+.cm-s-base16-light .CodeMirror-cursor {
+  border-left: 1px solid #505050 !important;
+}
+.cm-s-base16-light span.cm-comment {
+  color: #8f5536;
+}
+.cm-s-base16-light span.cm-atom {
+  color: #aa759f;
+}
+.cm-s-base16-light span.cm-number {
+  color: #aa759f;
+}
+.cm-s-base16-light span.cm-property,
+.cm-s-base16-light span.cm-attribute {
+  color: #87A249;
+}
+.cm-s-base16-light span.cm-keyword {
+  color: #ac4142;
+}
+.cm-s-base16-light span.cm-string {
+  color: #F3A062;
+}
+.cm-s-base16-light span.cm-variable {
+  color: #90a959;
+}
+.cm-s-base16-light span.cm-variable-2 {
+  color: #6a9fb5;
+}
+.cm-s-base16-light span.cm-def {
+  color: #d28445;
+}
+.cm-s-base16-light span.cm-bracket {
+  color: #202020;
+}
+.cm-s-base16-light span.cm-tag {
+  color: #ac4142;
+}
+.cm-s-base16-light span.cm-link {
+  color: #aa759f;
+}
+.cm-s-base16-light span.cm-error {
+  background: #ac4142;
+  color: #ffffff;
+}
+.cm-s-base16-light .CodeMirror-activeline-background {
+  background: #DDDCDC !important;
+}
+.cm-s-base16-light .CodeMirror-matchingbracket {
+  text-decoration: underline;
+  color: white !important;
+}
+/* neo theme for codemirror */
+/* Color scheme */
+.cm-s-neo.CodeMirror {
+  background-color: #ffffff;
+  color: #2e383c;
+  line-height: 1.4375;
+}
+.cm-s-neo .cm-comment {
+  color: #75787b;
+}
+.cm-s-neo .cm-keyword,
+.cm-s-neo .cm-property {
+  color: #1d75b3;
+}
+.cm-s-neo .cm-atom,
+.cm-s-neo .cm-number {
+  color: #75438a;
+}
+.cm-s-neo .cm-node,
+.cm-s-neo .cm-tag {
+  color: #9c3328;
+}
+.cm-s-neo .cm-string {
+  color: #b35e14;
+}
+.cm-s-neo .cm-variable,
+.cm-s-neo .cm-qualifier {
+  color: #047d65;
+}
+/* Editor styling */
+.cm-s-neo pre {
+  padding: 0;
+}
+/*
+Copyright (C) 2011 by MarkLogic Corporation
+Author: Mike Brevoort <mike@brevoort.com>
+
+*/
+.cm-s-xq-light span.cm-keyword {
+  line-height: 1em;
+  font-weight: bold;
+  color: #5A5CAD;
+}
+.cm-s-xq-light span.cm-atom {
+  color: #6C8CD5;
+}
+.cm-s-xq-light span.cm-number {
+  color: #164;
+}
+.cm-s-xq-light span.cm-def {
+  text-decoration: underline;
+}
+.cm-s-xq-light span.cm-variable {
+  color: black;
+}
+.cm-s-xq-light span.cm-variable-2 {
+  color: black;
+}
+.cm-s-xq-light span.cm-variable-3 {
+  color: black;
+}
+.cm-s-xq-light span.cm-comment {
+  color: #0080FF;
+  font-style: italic;
+}
+.cm-s-xq-light span.cm-string {
+  color: red;
+}
+.cm-s-xq-light span.cm-meta {
+  color: yellow;
+}
+.cm-s-xq-light span.cm-qualifier {
+  color: grey;
+}
+.cm-s-xq-light span.cm-builtin {
+  color: #7EA656;
+}
+.cm-s-xq-light span.cm-bracket {
+  color: #cc7;
+}
+.cm-s-xq-light span.cm-tag {
+  color: #3F7F7F;
+}
+.cm-s-xq-light span.cm-attribute {
+  color: #7F007F;
+}
+.cm-s-xq-light span.cm-error {
+  color: #f00;
+}
+.cm-s-xq-light .CodeMirror-activeline-background {
+  background: #e8f2ff !important;
+}
+.cm-s-xq-light .CodeMirror-matchingbracket {
+  outline: 1px solid grey;
+  color: black !important;
+  background: yellow;
+}
 /* REDACTOR */
 .redactor_box {
   position: relative;
@@ -5146,7 +5310,7 @@ flickering artifacts. */
 }
 body .redactor_air {
   position: absolute;
-  z-index: 2;
+  z-index: 19;
 }
 /*
 Fullscreen

@@ -1,6 +1,6 @@
-// CloudWall 2.4.1, couchapp build 
+// CloudWall 2.4.2, couchapp build 
 // Preloaded apps and component manifests
-// (c) 2018 ermouth
+// (c) 2019 ermouth
 
 (function(system, jQuery, Pouch) {
 	var cw = Object.merge({}, system);
@@ -941,12 +941,12 @@
   },
   {
     "id": "cw.DB.Shell",
-    "build": 98,
+    "build": 139,
     "app": {
       "name": "List",
       "title": "DB Shell",
       "version": "2.4",
-      "build": 98,
+      "build": 139,
       "collapsed": [".Icons"],
       "author": "ermouth",
       "timeout": "30000",
@@ -956,7 +956,7 @@
         "filter": true
       },
       "nodetitle": "title",
-      "width": [[350,
+      "width": [[335,
           1920],
         1200,
         1400],
@@ -975,6 +975,11 @@
       "search": "",
       "asideOn": true,
       "aside": [{
+          "key": "_",
+          "rows": [],
+          "view": "full"
+        },
+        {
           "key": "#",
           "rows": [],
           "view": "full"
@@ -989,9 +994,11 @@
           "rows": [],
           "view": "full"
         }],
+      "asideMaxRecent": 7,
       "clrUnread": " #2a70a6",
       "clrRead": " #4d5a6a",
       "clrNew": " #818b98",
+      "clrTmpl": " #6ba413",
       "clrHover": " #12a5dc",
       "clrBg": " #e3e9ec",
       "clrBgBrd": " #d7dde1",
@@ -1039,7 +1046,7 @@
                 $o.tags({
                   empty:{name:'‹T›', value:'type'},
                   tags:[[
-                    {name:'AZ', value:'az'},
+                    {name:'AZ', value:'az', css:'xmob'},
                     {name:'<span class="fi-clock o70"></span>', value:'stamp'}
                   ]],
                   tagshim:'',
@@ -1151,29 +1158,33 @@
         "init": function ($o) {
                 var that =this,
                     d = that.data;
-                
                 // on/off filters
                 $o.on('click.my', '.frow', function(evt){
                   var filter = $(this).data('filter');
-                  if (d.filter.indexOf(filter) > -1) d.filter.remove(filter);
-                  else d.filter.push(filter);
-                  that.my.recalc('#slist');
+                  
+                  if (filter[0] != '_') {
+                    if (d.filter.indexOf(filter) > -1) d.filter.remove(filter);
+                    else d.filter.push(filter);
+                    that.my.recalc('#slist');
+                  }
+                  else {
+                    // Open doc
+                    that.RunDoc(filter.substr(1));
+                  }
                 });
-                
                 // clear filter groups
                 $o.on('shellclearfilter.my', (function(evt, val){
                   d.filter = d.filter.filter(e => e[0] != val);
                   //(d.aside.find(e => e.key == val)||{}).view = 'brief';
                   that.my.recalc('#slist');
                 }).debounce(20));
-                
               
           },
         "bind": "aside",
         "manifest": function (row) {
                 var man = Object.clone(this.Panel, true);
                 man.Name = this.lang.PAN_TITLES[row.key];
-      //console.log(man.Name)
+                //console.log(man.Name)
                 return man;
               
           },
@@ -1358,6 +1369,7 @@
       },
       "total": 0
     },
+    "TemplateTags": ["~Template~"],
     "Actions": {
     },
     "Apps": {
@@ -1403,8 +1415,10 @@
         "TIP_RESYNC": "Resync bucket with the remote DB",
         "MSG_RESYNC": "Started forced resync",
         "PLC_SEARCH": "Search...",
+        "MSG_CLONED": "Created new doc from ‘{1}’ template. Don’t forget to change doc name before save!",
         "ERR_NOAPP": "No app to open doc {1}, sorry",
         "PAN_TITLES": {
+          "_": "Recent docs",
           "#": "Tags",
           ":": "Types",
           "@": "Users"
@@ -1433,8 +1447,10 @@
         "TIP_RESYNC": "Синхронизировать локальные данные с сервером",
         "MSG_RESYNC": "Запущена принудительная репликация",
         "PLC_SEARCH": "Поиск...",
+        "MSG_CLONED": "Создан новый документ на основе шаблона «{1}». Переименуйте документ перед сохранением!",
         "ERR_NOAPP": "Нет подходящего приложения для открытия документа {1}",
         "PAN_TITLES": {
+          "_": "Недавно открытые",
           "#": "Теги",
           ":": "Типы документов",
           "@": "Пользователи"
@@ -1528,7 +1544,8 @@
       " ": function ($o) {
             var that = this,
                 d = that.data,
-                docInfo = !! that.DocInfo;
+                docInfo = !! that.DocInfo,
+                MT = 599;
             
             var fs = 16,            // font size
                 nh = 2*fs - 2,      // nav panel content height
@@ -1547,11 +1564,13 @@
               // Navpane
               ' #snav':    {
                 '':          '{dv}; width:{w}px; height:{navh}px;',
-                ' #dbico':  '{dv}; width:{nh}px; height:{nh}px; ',
+                ' #dbico':  '{dvxmob}; width:{nh}px; height:{nh}px; ',
                 ' #dbname':  [
-                  '{dv}; {oh}; {ell}; width:calc({colw}px - {nh}px - {padw}px - 40px); ',
+                  '{dvxmob}; {oh}; {ell}; width:calc({colw}px - {nh}px - {padw}px - 40px); ',
                   'font-size:1.5em; line-height:{nh}px; padding:0 0 0 4px;'
-                ].join('')
+                ].join(''),
+                ' #sactions':'{dv};width:{actw}px;',
+                ' #sflag':'{dv};width:{flagw}px;'
               },
               
               // Filters and doc list block below navpane
@@ -1560,6 +1579,8 @@
               ' .colw':    'width:{colw}px;',
               ' .colwg':  'width:calc({pcolw}px + {padh}px);',
               ' .panw':    'width:{panw}px;',
+              ' .xmob':    '{xmob}',
+              ' .xnrw':    '{xnrw}',
               
               // Filters
               ' #sfilters':  {
@@ -1584,12 +1605,10 @@
                     ' .ficon':'opacity:0.7;',
                     ' .ficon.ficon-type':'opacity:1;'
                   },
-                  '.factive:hover':  'background-color:{clrBgHov};'
+                  '.factive:hover':  'background-color:{clrBgHov};',
+                  '.row-template':'color:{clrTmpl};'
                 }
               },
-              
-              
-              
               // Docs with filters pane open
               '  #sdocs':  {
                 '':          '{dv}; width:{panw}px; height:{colh}px; outline:none; white-space:normal;',
@@ -1600,6 +1619,7 @@
                   'column-count:{xcols}; column-gap:{padh}px; clear:both;'
                 ].join(' ')
               },
+              
               // Docs with filters pane hidden
               ' #sfilters.hide + #sdocs':{
                 '':          'width:{w}px; padding-left:0px;',
@@ -1609,6 +1629,17 @@
               // Row
               ' .drow':{
                 '':          '{dv}; width:{pcolw}px; height:{rowh}px; margin-bottom:1px; white-space:nowrap;',
+                ' .dname':{  
+                  '':          '{dv}; {oh}; {ell}; max-width:{rname}px; padding-left:3px; transition: color 0.3s; cursor:pointer;',
+                  ':hover':    'color:{clrHover}!important;'
+                },
+                '.row-app .dname':  'font-weight:500; font-size:1.05em;',
+                
+                ' .dico':    [
+                  '{dv}; width:{lh}px; height:{lh}px; background-position: 0px 1px;',
+                  'background-repeat:no-repeat; background-size:{xlh}px {xlh}px;',
+                  docInfo ? 'cursor:help; cursor:context-menu;':''
+                 ].join(' '),
                 
                 '.row-sub':{
                   ':before':[
@@ -1620,17 +1651,10 @@
                 
                 '.row-parent':'font-weight:bolder; font-size:1.05em;',
                 
-                ' .dname':{  
-                  '':          '{dv}; {oh}; {ell}; max-width:{rname}px; padding-left:3px; transition: color 0.3s; cursor:pointer;',
-                  ':hover':    'color:{clrHover}!important;'
-                },
-                '.row-app .dname':  'font-weight:500; font-size:1.05em;',
-                
-                ' .dico':    [
-                  '{dv}; width:{lh}px; height:{lh}px; background-position: 0px 1px;',
-                  'background-repeat:no-repeat; background-size:{xlh}px {xlh}px;',
-                  docInfo ? 'cursor:help; cursor:context-menu;':''
-                 ].join(' ')
+                '.row-template':{
+                  ' .dname':'color:{clrTmpl};',
+                  '':'font-weight:bolder; font-size:1.05em;',
+                }
               },
               
               // Row colors
@@ -1688,14 +1712,35 @@
                   pb   = parseInt($sp.css('paddingBottom')) || 10,
                   ah   = h - ofs - pt - pb;
               var w     = $o.width() | 0,
-                  cols  =  w<390?1:w<660?2:w<880?3:w<1100?4:w<1320?5:w<1540?6:7,
-                  xcols  = cols - 1,
-                  colw  = w / cols | 0,
-                  panw  = w - colw,
-                  pcolw = (panw - (xcols - 1) * pth) / xcols | 0,
-                  col1  = 1;
+                  mob    = w <= MT;
+              
+              if (!mob) {
+                var cols  =  w<600?2:w<880?3:w<1100?4:w<1320?5:w<1540?6:7,
+                    xcols  = cols - 1,
+                    colw  = w / cols | 0,
+                    panw  = w - colw,
+                    pcolw = (panw - (xcols - 1) * pth) / xcols | 0,
+                    col1  = 1,
+                    flagw = colw,
+                    actw  = panw;
+              }
+              else {
+                var cols  =  w<350?1:w<530?2:3,
+                    xcols  = (cols - 1) || 1,
+                    colw  = w / cols | 0,
+                    panw  = w - colw,
+                    pcolw = (panw - (xcols - 1) * pth) / xcols | 0,
+                    col1  = 1,
+                    flagw = 42,
+                    actw  = w - flagw;
+              }
+              
+              //if (mob && pcolw < w) pcolw = w | 0;
               var s = {
                 dv:      'display:inline-block;vertical-align:top',
+                dvxmob:  mob?'display:none;':'display:inline-block;vertical-align:top',
+                xmob:    mob?'display:none!important;':'',
+                xnrw:    w<900?'display:none!important;':'',
                 oh:      'overflow:hidden',
                 ell:    'white-space:nowrap; text-overflow:ellipsis',
                 fs:      fs,
@@ -1715,13 +1760,18 @@
                 panw:    panw,
                 pcolw:  pcolw,
                 rowh:    nh + 2,
-                rname:  pcolw - lh
+                rname:  pcolw - lh,
+                
+                flagw:  flagw,
+                actw:    actw
               };
               
               // copy colors
               Object.keys(d)
               .filter (k=>'clr'==k.substr(0,3))
               .forEach(k=>s[k]=d[k]);
+              
+              //console.log(Object.clone(s,!0))
               
               return s;
             }
@@ -1759,7 +1809,7 @@
       " button.markfocus:focus:after": "content:\" \";position:absolute;top:3px; right:3px;width:4px;height:4px;border-radius:3px; overflow:hidden;background-color: #fff!important;z-index:+2;"
     },
     "HTML": {
-      "App": "<div id=\"snav\" class=\"bbs xgray\">\n\n  <div class=\"colw dib vat oh\">\n    <img id=\"dbico\" src=\"\">\n    <div id=\"dbname\" class=\"bolder\"></div>\n    <div class=\"dib vat btnswitch pt1\">\n      <div id=\"btn-filter\" class=\"active w40 dib vat tac nw fs90 tag\" title=\"{TIP_FILTER}\"></div>\n    </div>\n  </div>\n\n  <div id=\"sactions\" class=\"panw dib vat oh nw tac pt1\">\n    \n    <div class=\"fr tal\" style=\"max-width:200px;width:20%;\">\n      <div class=\"fi-magnifying-glass blue o50 fs95\" style=\"position: absolute; z-index: +1; left: 7px;top: 3px;\"></div>\n      <input type=\"text\" id=\"ssearch\" class=\"ui-search w100p ml0 mr0 mt0 pr10\" \n             placeholder=\"{PLC_SEARCH}\" style=\"background-image:none;padding-right:19px!important;\">\n      <span class=\"fs80 dib vat pt2 blue ui-search-clear\" style=\"margin-left:-19px!important;\" \n            onclick=\"$(this).siblings('input:eq(0)').val('').blur()\">✕</span>\n    </div>\n\n    <div class=\"pr16 dib vat\">\n      <button id=\"btn-newdoc\" class=\"mr2 green\" data-sdlg=\"nav\"><span class=\"fi-plus o60 fs90 lh120\"></span> {BTN_NEWDOC}</button>\n      <button id=\"btn-runapp\" class=\"mr2\"\tdata-sdlg=\"nav\"><span class=\"fi-play o60 fs90 lh120\"></span> {BTN_RUN}</button>\n      <button id=\"btn-resync\" class=\"mr2 hide\"><span class=\"fi-loop o70 lh120\"></span> {BTN_RESYNC}</button>\n    </div>\n    \n    <div id=\"sorder\" class=\" dib vat btnswitch\"></div>\n\n  </div>\n</div>\n\n<div id=\"sapp\" class=\"xgray nw\">\n  <section id=\"sfilters\" class=\"mt-3 hide\">\n    <section id=\"spanels\" class=\"\">\n    </section>\n  </section>\n\n  <section id=\"sdocs\">\n    <section id=\"slist\">\n    </section>\n  </section>\n</div>",
+      "App": "<div id=\"snav\" class=\"bbs xgray\">\n\n  <div id=\"sflag\" class=\"oh\">\n    <img id=\"dbico\" src=\"\">\n    <div id=\"dbname\" class=\"bolder\"></div>\n    <div class=\"dib vat btnswitch pt1\">\n      <div id=\"btn-filter\" class=\"active w40 dib vat tac nw fs90 tag\" title=\"{TIP_FILTER}\"></div>\n    </div>\n  </div>\n\n  <div id=\"sactions\" class=\"oh nw tac pt1\">\n    \n    <div class=\"fr tal\" style=\"max-width:200px;width:27%;\">\n      <div class=\"fi-magnifying-glass blue o50 fs95\" style=\"position: absolute; z-index: +1; left: 7px;top: 3px;\"></div>\n      <input type=\"text\" id=\"ssearch\" class=\"ui-search w100p ml0 mr0 mt0 pr10\" \n             placeholder=\"{PLC_SEARCH}\" style=\"background-image:none;padding-right:19px!important;\">\n      <span class=\"fs80 dib vat pt2 blue ui-search-clear\" style=\"margin-left:-19px!important;\" \n            onclick=\"$(this).siblings('input:eq(0)').val('').blur()\">✕</span>\n    </div>\n\n    <div class=\"pr16 dib vat\">\n      <button id=\"btn-newdoc\" class=\"mr2 green\" data-sdlg=\"nav\">\n        <span class=\"fi-plus o60 fs90 lh120\"></span><span class=\"xnrw\">&nbsp;{BTN_NEWDOC}</span>\n      </button>\n      <button id=\"btn-runapp\" class=\"mr2\"\tdata-sdlg=\"nav\">\n        <span class=\"fi-play o60 fs90 lh120\"></span><span class=\"xnrw\">&nbsp;{BTN_RUN}</span>\n      </button>\n      <button id=\"btn-resync\" class=\"mr2 hide\">\n        <span class=\"fi-loop o70 lh120\"></span><span class=\"xnrw\">&nbsp;{BTN_RESYNC}</span>\n      </button>\n    </div>\n    \n    <div id=\"sorder\" class=\" dib vat btnswitch\"></div>\n\n  </div>\n</div>\n\n<div id=\"sapp\" class=\"xgray nw\">\n  <section id=\"sfilters\" class=\"mt-3 hide\">\n    <section id=\"spanels\" class=\"\">\n    </section>\n  </section>\n\n  <section id=\"sdocs\">\n    <section id=\"slist\">\n    </section>\n  </section>\n</div>",
       "Row": "<div class=\"drow {css}\" data-docid=\"{hid}\"><div class=\"dico\"></div><div class=\"dname\">{htitle}</div></div>",
       "RowP": "<div class=\"drow {css} {pcss}\" data-docid=\"{hid}\"><div class=\"dico\"></div><div class=\"dname\">{htitle}</div></div>",
       "RowIco": "<div class=\"drow {css}\" data-docid=\"{hid}\"><div class=\"dico\" style=\"background-image:url('{pic}');\"></div><div class=\"dname\">{htitle}</div></div>"
@@ -1774,7 +1824,7 @@
               }, opts0 || {});
           
           if (opts.keys) ['startkey','endkey'].forEach(k => delete opts[k]);
-          var q = cw.version() < '2.4.0' ? 'cloudwall/info':'info';
+          var q = cw.version() < '2.4.0' ? 'cloudwall/info':'DB-Shell/info';
           return that.db.query(q, opts)
           .then(function(res){
             that.CacheRows(res.rows);
@@ -1791,6 +1841,7 @@
               ckeys    = cw.lib.a2o(cw.crypto.keys().map(e => e.id)),
               types,
               isStar = true,
+              TmplTags = that.TemplateTags,
               acc     = {},
               _sdbm   = cw.lib.sdbm;
           
@@ -1849,11 +1900,23 @@
               .join(' ')
             }
             
-            // Is read?
-            var read = that.db.isread(r.id);
-            if (!read) css += ' upd-new';
-            else if (read.rev.split('-')[0] != v.rev+'') css += ' upd-unread';
-            else css += ' upd-read';
+            // Is template 
+            var isT = false;
+            for(var i=0; i<TmplTags.length && !isT; i++) {
+              isT = isT || !!(v.tags[TmplTags[i]]);
+            }
+            
+            if (isT) {
+              css += ' row-template';
+              v._tmpl = true;
+            }
+            else {
+              // Is read?
+              var read = that.db.isread(r.id);
+              if (!read) css += ' upd-new';
+              else if (read.rev.split('-')[0] != v.rev+'') css += ' upd-unread';
+              else css += ' upd-read';
+            }
             
             // Is crypto?
             if (v.crypto) {
@@ -1971,14 +2034,18 @@
               ftypes = {},
               search = d.search.trim(),
               ishidden = that.db.ishidden || function(){return null;},
+              isread = that.db.isread || function(){return null;},
               refind = null,
-              ord = d.order+'';
+              ord = d.order+'',
+              recent = [],
+              All = that.All;
           
           if (search) refind = search.split(' ').compact(true).map(function(e){
             return new RegExp(RegExp.escape(e), 'i');
           });
           
           var res = {
+            recent: [],
             rows:    [],
             ctr:     {},
             total:  0
@@ -2001,11 +2068,18 @@
               hastypes   = !!size(ftypes),
               parents    =  {};
           
-          var fr = Object.values(that.All)
+          var fr = Object.values(All)
           .filter(function(row){
             var i, ok = true;
             
             if (ishidden(row.id)) return false;
+            
+            // Recent
+            var read = isread(row.id);
+            if (read) {
+              recent.push(('00000000'+read.stamp.toString(36)).substr(-8)+row.id);
+            }
+            row._read = read;
             
             // all tags must be present in the doc
             if (hastags) {
@@ -2056,7 +2130,7 @@
                 row.pcss = '';
                 return row;
               }
-              if (row.parent && frid[row.parent] && (p = that.All[row.parent])) {
+              if (row.parent && frid[row.parent] && (p = All[row.parent])) {
                 if (!row._p && row.pcss.indexOf('row-sub')==-1) row.pcss += ' row-sub';
                 row._p = {type: p.type, title: p.title, app:!!p.app};
                 parents[row.parent] = true;
@@ -2091,9 +2165,15 @@
             });
           }
           
-          
-          // Sort;  
+          // Sort rows
           res.rows = fr.sort(that.Sort[d.order]);
+          
+          // Sort and slice recent
+          res.recent = recent.sort()
+          .slice(-d.asideMaxRecent || -7)
+          .reverse()
+          .map(e => All[e.substr(8)])
+          .compact();
           
           // Build aside panel
           that.BuildAside(res);
@@ -2111,10 +2191,11 @@
               d = that.data,
               keys = Object.keys,
               asd = that.data.aside,
-              m = {'#':[], '@':[], ':':[]},
+              m = {'#':[], '@':[], ':':[], '_':[]},
               f = cw.lib.a2o(d.filter),
               acts = that.db.actions();
           
+          // Build filters
           keys(r.ctr).forEach(function(k){
             var panel = k[0];
             if (!m[panel]) return;
@@ -2144,16 +2225,32 @@
             });
           });
           
+          // Put rows to data
           asd.forEach(function(panel){
             var k = panel.key;
-            panel.rows = m[k].sort(_sortFilters);
+            if (k=='_') panel.rows = r.recent.map(_doc2row);
+            else panel.rows = m[k].sort(_sortFilters);
           });
+          
+          return asd;
           
           // - - - - - -
           
           function _sortFilters(a,b) {
             //return b.ctr - a.ctr;
             return a.name>b.name?1:a.name==b.name?0:-1;
+          }
+          // - - - - - -
+          function _doc2row(row){
+            return {
+              name:   row.title,
+              hname:   row.htitle,
+              ctr:    '',
+              css:    row._tmpl?' row-template':'',
+              active:  false,
+              filter:  '_'+row.id,
+              icon:    acts[row.type] ? 'ficon-type type-'+cw.lib.sdbm(row.type) :'ficon-type type-unknown'
+            }
           }
         },
       "Ico2url": function _ico2url(s) {
@@ -2205,10 +2302,26 @@
           if (!that.All[id]) return false;
           var doc = that.All[id],
               t = that.Types[doc.type],
-              err = '';
+              err = '',
+              dbro = that.db.settings('readOnly');
+          
+          // Check if a template
+          if (t && !dbro && that.TemplateTags.reduce((a,b) => a || doc.tags[b],false)) {
+    that.Cmd('create', doc.id)
+            .then(function(res){
+              //console.log(res)
+              var ndoc = cw.lib.getref(res.$app.my('data'), res.app.nodedoc);
+              ndoc.tags.remove.apply(ndoc.tags, that.TemplateTags);
+              res.$app.my('redraw');
+              cw.lib.note(that.lang.MSG_CLONED.assign(res.title.stripTags().escapeHTML()), 'ok');
+            })
+            .fail(function(code, msg){
+              cw.lib.note(msg, 'error');
+            })
+          }
           // open doc in editor
-          if (t && !doc.app) {
-            var action = (that.db.settings('readOnly')?['view','edit']:['edit','view']).reduce(function(acc, b){
+          else if (t && !doc.app) {
+            var action = (dbro ? ['view','edit']:['edit','view']).reduce(function(acc, b){
               if (acc) return acc;
               if (t.actions.indexOf(b)>-1) return b;
             },'');
@@ -2235,7 +2348,6 @@
             that.app.run([that.db.name, 'Sys.JSON', cw.lib.tourl64(['edit', id])].join('/'));
           }
           else err = that.lang.ERR_NOAPP.assign(doc.hname);
-          
           return err;
         },
       "Cmd": function _cmd(cmd,id,params) {
@@ -2296,7 +2408,7 @@
             if (opts) url += '/'+ cw.lib.tourl64(opts);
             
             that.app.run(url)
-            .then(function(slot)      {  pi.resolve(); })
+            .then(function(slot)      {  pi.resolve(slot); })
             .fail(function(code, msg)  { _err(code==1?400:500, msg); });
           }
         },
@@ -2344,8 +2456,8 @@
             }
             if (ta > tb)   return 100;
             if (ta < tb)  return -100;
-            ta = a.title;
-            tb = b.title;
+            ta = (a._tmpl?'!0 ':'') + a.title;
+            tb = (b._tmpl?'!0 ':'') + b.title;
             
             if (a._p) ta = a._p.title + ta;
             if (b._p) tb = b._p.title + tb;
@@ -2492,7 +2604,7 @@
                     if (v!=null) {
                       if (a.length) $o.trigger('shellclearfilter.my', d.key);
                     }
-                    return a.length?this.lang.BTN_CLEAR.assign(a.length):d.rows.length;
+                    return a.length?this.lang.BTN_CLEAR.assign(a.length):d.key=='_'?'':d.rows.length;
                   
             },
           "events": "click.my",
@@ -3300,7 +3412,7 @@
   },
   {
     "id": "cw.Sys.Attachments",
-    "build": 75,
+    "build": 76,
     "params": {
       "width": 400
     },
@@ -3349,7 +3461,7 @@
         }
     },
     "init": function ($o,form) {
-    var that=this,
+    var that = this,
         d = form.data;
     
     // since we may transfer functions using data,
@@ -3382,9 +3494,9 @@
     );
     
     // Preload
-    $o.on("click.my",".cw-att-dl", function(){
+    $o.on('click.my', '.cw-att-dl', function(){
       var fname =$(this).data("fname"), 
-        text = $(this).attr("title"),
+        text = $(this).attr('title'),
         oatt;
       
       if (d.doc._attachments && d.doc._attachments[fname] && !d.doc._attachments[fname].stub) {
@@ -3400,12 +3512,16 @@
     });
     
     function processAtt (fname, att){
-      var o, html="", width=450, file, 
+      var o, 
+                html = '', 
+                width = 450, 
+                file, 
           mod = $.extend({Lang:that.Lang}, that.ModalManageAtt, true),
           noDel = false;
+            
       if (Object.size(att)) {
         o = att[Object.keys(att)[0]];
-        file = o.url||("data:"+o.content_type+";base64,"+o.data);
+        file = o.url||('data:' + o.content_type + ';base64,' + o.data);
         if (/^image/.test(o.content_type)) width=($(window).width()-120).clamp(800, 1200);
         try{
           noDel = !!d.noDelete(fname, d.doc);
@@ -3413,11 +3529,11 @@
         $.my.modal({
           manifest:mod, 
           data:{
-            name:fname,
-            size:o.size,
-            digest:o.digest,
-            url:file,
-            mime:o.content_type,
+            name:    fname,
+            size:    o.size || o.length,
+            digest:  o.digest,
+            url:    file,
+            mime:    o.content_type,
             noDelete:noDel
           }, 
                 css: 'p20',
@@ -3426,9 +3542,9 @@
         })
         .then(function(res){
           if (Object.isObject(res)) {
-            if (res.cmd==="delete") {
+            if (res.cmd == 'delete') {
               delete d.doc._attachments[fname];
-              $o.find("#att-fpanel").trigger("redraw");
+              $o.find('#att-fpanel').trigger('redraw');
               $o.trigger('change');
             }
           }
@@ -4545,7 +4661,7 @@
   },
   {
     "id": "cw.Sys.Dock",
-    "build": 125,
+    "build": 134,
     "params": {
       "delay": 20,
       "restyle": 1
@@ -4580,9 +4696,15 @@
           
     // ico, refer state
     $o.on('click.my', 'img#l-ico', function(){
+            
+            var $i = $(this);
+            
+            if ($o.width() <= 600) {
+              cw.state.set($i.next().attr('href'));
+              return;
+            }
       
-      var $i = $(this), 
-          $f = $i.my().root,
+      var $f = $i.my().root,
           slot = $i.my('data');
       if ($i.data('modal')) return $i.modal(true);
       $i.modal({
@@ -5007,13 +5129,32 @@
         },
         " #l-apptabs": "width:calc(100% - 72px - 64px);",
         " .l-tab": {
-          "": "line-height:29px; height:32px; min-width:45px; max-width:220px; transition:width 0.2s;border-right:1px solid #9ea6b0;display:inline-block;vertical-align:top;overflow:hidden;",
-          " ": function () {
-        return 'width:calc(100% / '+(this.Tabs.length || 1)+');';
+          "": function ($o) {
+                    var w = $o.width();
+                    if (w>600) {
+          return {
+                        '':'width:calc(100% / '+(this.Tabs.length || 1)+');',
+                        ' #l-tabname':'display:inline-block;',
+                        ' #l-ico':'cursor:help; cursor:context-menu;'
+                      };
+                    }
+                    else {
+                      return {
+                        '':  {
+                          '':'width:44px;',
+                          ' #l-tabname':'display:none;'
+                        },
+                        '.active':{
+                          '':'width:calc(100% - '+((+this.Tabs.length || 1)*45 - 45)+'px);',
+                          ' #l-tabname':'display:inline-block;'
+                        },
+                      }
+                    }
       
             },
           ":hover": {
           },
+          " ": "line-height:29px; height:32px; min-width:45px; max-width:220px; transition:width 0.2s;border-right:1px solid #9ea6b0;display:inline-block;vertical-align:top;overflow:hidden;",
           " #btn-tabclose": "cursor:pointer;display:none;color:rgba(255,255,255,0.25);",
           " #l-tabstate": "color:rgba(141,209,255,0.92);",
           " #l-tabstate.hide+#btn-tabclose": "display:block;",
@@ -5029,10 +5170,10 @@
           " a": "text-decoration:none;transition: opacity 0.3s;color:white!important;opacity:0.8!important;",
           ":hover a": "opacity:1!important;",
           " #l-tabname": {
-            "": "width:calc(100% - 27px - 16px); display:inline-block; overflow:hidden; text-overflow:ellipsis;padding:0 0 3px 0; white-space: nowrap;",
+            "": "width:calc(100% - 27px - 16px); overflow:hidden; text-overflow:ellipsis;padding:0 0 3px 0; white-space: nowrap;",
             ".smaller": "font-size:0.95em;"
           },
-          " #l-ico": "width:27px;height:32px;padding:7px 5px 9px 6px;display:inline-block;vertical-align:top;opacity:0.75;transition:opacity 0.3s; cursor:help; cursor:context-menu;",
+          " #l-ico": "width:27px;height:32px;padding:7px 5px 9px 6px;display:inline-block;vertical-align:top;opacity:0.75;transition:opacity 0.3s;",
           ":hover #l-ico": "opacity:0.9;",
           ".active": {
             " a": "color:#001328!important;opacity:0.8!important;font-weight:bolder;",

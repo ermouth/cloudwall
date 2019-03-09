@@ -1,10 +1,10 @@
-// CloudWall 2.4.1 brief static
+// CloudWall 2.4.2 brief static
 // For user profile PIN and cryptokeys editor
-// (c) 2018 ermouth
+// (c) 2019 ermouth
 
 // ------------------------------------
 
-// CloudWall 2.4.1
+// CloudWall 2.4.2
 // Storage manager/decorator
 // Requires Sugar, jQuery, PouchDB, cw.lib, cw.crypto
 
@@ -135,9 +135,9 @@
 
 // ------------------------------------
 
-// CW 2.4.1 
+// CW 2.4.2 
 // Profile doc reader/writer
-// (c) 2018 ermouth
+// (c) 2019 ermouth
 
 if (!('cw' in window)) window.cw = {};
 
@@ -282,9 +282,9 @@ if (!('cw' in window)) window.cw = {};
 
 // ------------------------------------
 
-// CW 2.4.1 
+// CW 2.4.2 
 // Crypto lib and settings sandbox
-// (c) 2018 ermouth
+// (c) 2019 ermouth
 
 if (!('cw' in window)) window.cw = {};
 
@@ -663,7 +663,7 @@ if (!cw.crypto) cw.crypto = (function() {
   // Applies update over dbid bucket,
   // returns Promise, which is resolved 
   // on profile saved.
-  // Optional allback done is called on update command
+  // Optional callback done is called on update command
   // finishes or fails.
 
   if (isS(dbid) && null== update) return Object.merge({}, D[dbid]||{}, true);
@@ -1254,9 +1254,9 @@ if (!cw.crypto) cw.crypto = (function() {
 
 // ------------------------------------
 
-// CW 2.4.1 static
+// CW 2.4.2 static
 // CouhDB login and profile editor start
-// (c) 2018 ermouth
+// (c) 2019 ermouth
 
 (function(){
 
@@ -1932,9 +1932,9 @@ if (!cw.crypto) cw.crypto = (function() {
 
 // ------------------------------------
 
-// CW 2.4.1 
+// CW 2.4.2 
 // Plugins localizer
-// (c) 2018 ermouth
+// (c) 2019 ermouth
 
 (function (){
 

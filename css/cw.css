@@ -30,239 +30,154 @@
 
 }
 
-
 /* ### CLOUDWALL SPECIFIC ### */
-
 #cw-body {
-	margin:32px auto 0 auto; 
-	font-size:19px; 
-	line-height:26px;
-	text-rendering: geometricPrecision;
-	font-weight:300;
+  margin: 32px auto 0 auto;
+  font-size: 19px;
+  line-height: 26px;
+  text-rendering: geometricPrecision;
+  font-weight: 300;
 }
-
-input, textarea, button {
-	font-weight:inherit;
+input,
+textarea,
+button {
+  font-weight: inherit;
 }
-
 #cw-body #cw-slots {
-	display:inline-block;
-	text-align:center;
-	overflow:visible;
-	min-height:150px;
+  display: inline-block;
+  text-align: center;
+  overflow: visible;
+  min-height: 150px;
 }
-
 #cw-body #cw-upic {
-	border-radius: 200px;
-	width: 32px;
-	float: right;
-	margin: -5px -2px 0 0;
+  border-radius: 200px;
+  width: 32px;
+  float: right;
+  margin: -5px -2px 0 0;
 }
-
 #cw-body .cw-app {
-	display:inline-block!important; 
-	transition:opacity 0.25s;
-	text-align:left;
-	opacity:0.006;
-	min-height:200px;
+  display: inline-block !important;
+  transition: opacity 0.25s;
+  text-align: left;
+  opacity: 0.006;
+  min-height: 200px;
 }
-
 #cw-body .cw-app.cw-app-active {
-	opacity:1;
+  opacity: 1;
 }
-
 #cw-body .cw-app.hide {
-	display:none!important;
-	opacity:0.06
+  display: none!important;
+  opacity: 0.06;
 }
-
 #cw-body .cw-app.cw-app-init {
-	opacity:0.006!important;
-	position:absolute!important;
-	top:3000px!important;
-	left:0px!important;
+  opacity: 0.006!important;
+  position: absolute!important;
+  top: 3000px!important;
+  left: 0px!important;
 }
-
 #cw-body .cw-app.cw-app-busy:before {
-	content:" ";
-	position:absolute;
-	z-index:+1993;
-	background-color:rgba(255,255,255,0.5);
-	width:100%;
-	height:120%;
-	left:0;
+  content: " ";
+  position: absolute;
+  z-index: 1993;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 100%;
+  height: 120%;
+  left: 0;
 }
-
 #cw-body .cw-busy {
-	height:5px;
-	display:inline-block;
-	min-width:30px;
-	border-radius:10px;
-	overflow:hidden;
-	background-image: url(../i/loader-bar2.gif);
-	background-repeat: repeat-x;
+  height: 5px;
+  display: inline-block;
+  min-width: 30px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-image: url(../i/loader-bar2.gif);
+  background-repeat: repeat-x;
 }
-
 #cw-notes {
-	top:52px!important;
+  top: 52px!important;
 }
-
-
 /* $.my */
-
-#cw-body .my-error-tip {font-size:85%; color:rgba(204,0,32,0.7); padding:0px 0 6px 0px; line-height: 1.2em;}
-#cw-body .my-error .variants .tag.active {background-color:#fdd;	color:rgba(204,0,32,0.7) }
-#cw-body .my-row input, .my-row textarea, .my-row select, .my-row .button {margin:0}
-#cw-body .my-row textarea {vertical-align:top}
-#cw-body .my-row .my-label {font-size:90%;line-height:1.1em;}
+#cw-body .my-error-tip {
+  font-size: 85%;
+  color: rgba(204, 0, 32, 0.7);
+  padding: 0px 0 6px 0px;
+  line-height: 1.2em;
+}
+#cw-body .my-error .variants .tag.active {
+  background-color: #fdd;
+  color: rgba(204, 0, 32, 0.7);
+}
+#cw-body .my-row input,
+.my-row textarea,
+.my-row select,
+.my-row .button {
+  margin: 0;
+}
+#cw-body .my-row textarea {
+  vertical-align: top;
+}
+#cw-body .my-row .my-label {
+  font-size: 90%;
+  line-height: 1.1em;
+}
 #cw-body .my-row .my-shortcut {
-	margin:0 0 0 0.25em;
-	text-decoration: underline;
-	color: #5481A0;
-	cursor: pointer; opacity:0.7;
-	transition: opacity 0.3s;
-	-webkit-transition: opacity 0.3s, border 0.3s;
-	-opera-transition: opacity 0.3s, border 0.3s;
-	-ms-transition: opacity 0.3s, border 0.3s;
-	-moz-transition: opacity 0.3s, border 0.3s;
+  margin: 0 0 0 0.25em;
+  text-decoration: underline;
+  color: #5481A0;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+  -webkit-transition: opacity 0.3s, border 0.3s;
+  -opera-transition: opacity 0.3s, border 0.3s;
+  -ms-transition: opacity 0.3s, border 0.3s;
+  -moz-transition: opacity 0.3s, border 0.3s;
 }
-
-#cw-body .my-row .my-shortcut:hover {opacity:1;}
-
-#cw-body .my-row div.my-error-tip {padding:0.3em 0 0 0}
-#cw-body .my-row span.my-error-tip {padding:0}
-
-
-
+#cw-body .my-row .my-shortcut:hover {
+  opacity: 1;
+}
+#cw-body .my-row div.my-error-tip {
+  padding: 0.3em 0 0 0;
+}
+#cw-body .my-row span.my-error-tip {
+  padding: 0;
+}
 /* SEARCH  */
-
 #cw-body .ui-search {
-	border-radius:50px!important;
-	padding-left:22px!important;
-	padding-right:22px!important;
-	background-position:5px center; 
-	background-repeat:no-repeat;
-	position:relative;
+  border-radius: 50px!important;
+  padding-left: 22px!important;
+  padding-right: 22px!important;
+  background-position: 5px center;
+  background-repeat: no-repeat;
+  position: relative;
 }
-
 #cw-body .ui-search-clear {
-	margin:1px 0 -1px -21px;
-	position:relative;
-	opacity:0; display:none;
-	-webkit-transition:opacity 0.3s;
-	cursor:pointer;
-	z-index:5
+  margin: 1px 0 -1px -21px;
+  position: relative;
+  opacity: 0;
+  display: none;
+  -webkit-transition: opacity 0.3s;
+  cursor: pointer;
+  z-index: 5;
 }
-
-#cw-body .ui-search.small + .ui-search-clear  {
-	margin-bottom:-2px
+#cw-body .ui-search.small + .ui-search-clear {
+  margin-bottom: -2px;
 }
-
 #cw-body .ui-search.bg-yellow + .ui-search-clear {
-	opacity:0.5;
-	display:inline-block;
+  opacity: 0.5;
+  display: inline-block;
 }
-
 #cw-body .ui-search.bg-yellow + .ui-search-clear:hover {
-	opacity:1;
+  opacity: 1;
 }
-
-#cw-body .my-search input.ui-search {background-color:#FFF088!important}
-#cw-body .my-search .ui-search-clear {opacity: 0.5!important;display: inline-block!important;}
-
-
-
+#cw-body .my-search input.ui-search {
+  background-color: #fff088 !important;
+}
+#cw-body .my-search .ui-search-clear {
+  opacity: 0.5!important;
+  display: inline-block !important;
+}
 /* SELECT2 */
 #cw-body .select2-container .select2-choice {
-	font-size: 90%;
-	line-height: 1.7em;
+  font-size: 90%;
+  line-height: 1.7em;
 }
-
-
-/* Codemirror */
-
-/*
-
-Name:       Base16 Default Light
-Author:     Chris Kempson (http://chriskempson.com)
-
-CodeMirror template by Jan T. Sott (https://github.com/idleberg/base16-chrome-devtools)
-Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16)
-
-*/
-
-.cm-s-base16-light.CodeMirror {background: white; color: #202020;}
-.cm-s-base16-light div.CodeMirror-selected {background: #e0e0e0 !important;}
-.cm-s-base16-light .CodeMirror-cursor {border-left: 1px solid #505050 !important;}
-
-.cm-s-base16-light span.cm-comment {color: #8f5536;}
-.cm-s-base16-light span.cm-atom {color: #aa759f;}
-.cm-s-base16-light span.cm-number {color: #aa759f;}
-
-.cm-s-base16-light span.cm-property, .cm-s-base16-light span.cm-attribute {color: #87A249;}
-.cm-s-base16-light span.cm-keyword {color: #ac4142;}
-.cm-s-base16-light span.cm-string {color: #F3A062;}
-
-.cm-s-base16-light span.cm-variable {color: #90a959;}
-.cm-s-base16-light span.cm-variable-2 {color: #6a9fb5;}
-.cm-s-base16-light span.cm-def {color: #d28445;}
-.cm-s-base16-light span.cm-bracket {color: #202020;}
-.cm-s-base16-light span.cm-tag {color: #ac4142;}
-.cm-s-base16-light span.cm-link {color: #aa759f;}
-.cm-s-base16-light span.cm-error {background: #ac4142; color: #ffffff;}
-
-.cm-s-base16-light .CodeMirror-activeline-background {background: #DDDCDC !important;}
-.cm-s-base16-light .CodeMirror-matchingbracket { text-decoration: underline; color: white !important;}
-
-
-/* neo theme for codemirror */
-
-/* Color scheme */
-
-.cm-s-neo.CodeMirror {
-	background-color:#ffffff;
-	color:#2e383c;
-	line-height:1.4375;
-}
-.cm-s-neo .cm-comment {color:#75787b}
-.cm-s-neo .cm-keyword, .cm-s-neo .cm-property {color:#1d75b3}
-.cm-s-neo .cm-atom,.cm-s-neo .cm-number {color:#75438a}
-.cm-s-neo .cm-node,.cm-s-neo .cm-tag {color:#9c3328}
-.cm-s-neo .cm-string {color:#b35e14}
-.cm-s-neo .cm-variable,.cm-s-neo .cm-qualifier {color:#047d65}
-
-
-/* Editor styling */
-
-.cm-s-neo pre {
-	padding:0;
-}
-
-
-
-/*
-Copyright (C) 2011 by MarkLogic Corporation
-Author: Mike Brevoort <mike@brevoort.com>
-
-*/
-.cm-s-xq-light span.cm-keyword {line-height: 1em; font-weight: bold; color: #5A5CAD; }
-.cm-s-xq-light span.cm-atom {color: #6C8CD5;}
-.cm-s-xq-light span.cm-number {color: #164;}
-.cm-s-xq-light span.cm-def {text-decoration:underline;}
-.cm-s-xq-light span.cm-variable {color: black; }
-.cm-s-xq-light span.cm-variable-2 {color:black;}
-.cm-s-xq-light span.cm-variable-3 {color: black; }
-.cm-s-xq-light span.cm-property {}
-.cm-s-xq-light span.cm-operator {}
-.cm-s-xq-light span.cm-comment {color: #0080FF; font-style: italic;}
-.cm-s-xq-light span.cm-string {color: red;}
-.cm-s-xq-light span.cm-meta {color: yellow;}
-.cm-s-xq-light span.cm-qualifier {color: grey}
-.cm-s-xq-light span.cm-builtin {color: #7EA656;}
-.cm-s-xq-light span.cm-bracket {color: #cc7;}
-.cm-s-xq-light span.cm-tag {color: #3F7F7F;}
-.cm-s-xq-light span.cm-attribute {color: #7F007F;}
-.cm-s-xq-light span.cm-error {color: #f00;}
-
-.cm-s-xq-light .CodeMirror-activeline-background {background: #e8f2ff !important;}
-.cm-s-xq-light .CodeMirror-matchingbracket {outline:1px solid grey;color:black !important;background:yellow;}

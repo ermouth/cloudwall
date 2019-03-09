@@ -1,4 +1,4 @@
-# CloudWall 2.4.1 static
+# CloudWall 2.4.2 static
 CloudWall is a platform for developing, testing, building, deploying and running CouchDB hosted apps. 
 See details and running version at [https://cloudwall.me](https://cloudwall.me).
 
@@ -49,4 +49,4 @@ To make custom build of CloudWall, please read [how to install](https://cloudwal
 
 ---
 
-(c) 2018 ermouth. CloudWall is MIT-licensed.
+(c) 2019 ermouth. CloudWall is MIT-licensed.

@@ -1,6 +1,6 @@
-// CW 2.4.1 
+// CW 2.4.2 
 // Static hosting login and system start
-// (c) 2018 ermouth
+// (c) 2019 ermouth
 
 (function(){
 
@@ -896,7 +896,7 @@
       );
       cw.start().then(function (a){
         pi.resolve();
-        console.log ('=== CloudWall 2.4.1 static ===');
+        console.log ('=== CloudWall 2.4.2 static ===');
       }, function (e, msg) {
         pi.reject(500, 'Startup sequence reported: '+e);
       });
